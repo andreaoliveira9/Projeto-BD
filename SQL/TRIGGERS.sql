@@ -95,7 +95,6 @@ as
         declare @Weight as float;
         declare @Position as varchar(20);
         declare @TeamID as int;
-        select @CCNumber = CCNumber from inserted;
         select @Name = [Name] from inserted;
         select @Number = [Number] from inserted;
         select @Height = Height from inserted;
@@ -104,21 +103,13 @@ as
         select @TeamID = Team_ID from inserted;
 
         -- Verifica se os campos são nulos
-        if (@CCNumber is null or @Number is null or @Height is null or @Weight is null or @Position is null or @TeamID is null)
+        if (@Number is null or @Height is null or @Weight is null or @Position is null or @TeamID is null)
             begin
                 raiserror('CCNumber, Number, Height, Weight, Position and TeamID cannot be null', 16, 1);
                 rollback transaction;
                 return;
             end;
-        
-        -- Verifica se o CCNumber já existe
-        if (NBA.checkCCNumber(@CCNumber) > 0)
-            BEGIN
-                raiserror('CCNumber already exists', 16, 1);
-                rollback transaction;
-                return;
-            end;
-        
+    
         -- Verifica se a equipa existe
         if (not exists (select 1 from NBA.Team where ID = @TeamID))
             begin
