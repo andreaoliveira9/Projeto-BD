@@ -114,7 +114,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.richTextBox3 = new System.Windows.Forms.RichTextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.Bilhetes = new System.Windows.Forms.ListBox();
+            this.Bilhetes_Jogo = new System.Windows.Forms.ListBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
@@ -140,6 +140,7 @@
             this.textBox21 = new System.Windows.Forms.TextBox();
             this.label37 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.Tabela_Classificativa = new System.Windows.Forms.ListBox();
             this.tabPage1.SuspendLayout();
             this.Equipas_Tab.SuspendLayout();
             this.Treinadores_Tab.SuspendLayout();
@@ -149,6 +150,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.Tabela_Classificativa);
             this.tabPage1.Controls.Add(this.dateTimePicker1);
             this.tabPage1.Controls.Add(this.textBox21);
             this.tabPage1.Controls.Add(this.label37);
@@ -157,7 +159,7 @@
             this.tabPage1.Controls.Add(this.label16);
             this.tabPage1.Controls.Add(this.label29);
             this.tabPage1.Controls.Add(this.comboBox5);
-            this.tabPage1.Controls.Add(this.Bilhetes);
+            this.tabPage1.Controls.Add(this.Bilhetes_Jogo);
             this.tabPage1.Controls.Add(this.textBox6);
             this.tabPage1.Controls.Add(this.label17);
             this.tabPage1.Controls.Add(this.label26);
@@ -1116,15 +1118,15 @@
             this.label9.TabIndex = 84;
             this.label9.Text = "Estatística";
             // 
-            // Bilhetes
+            // Bilhetes_Jogo
             // 
-            this.Bilhetes.FormattingEnabled = true;
-            this.Bilhetes.ItemHeight = 16;
-            this.Bilhetes.Location = new System.Drawing.Point(953, 97);
-            this.Bilhetes.Margin = new System.Windows.Forms.Padding(2);
-            this.Bilhetes.Name = "Bilhetes";
-            this.Bilhetes.Size = new System.Drawing.Size(315, 388);
-            this.Bilhetes.TabIndex = 107;
+            this.Bilhetes_Jogo.FormattingEnabled = true;
+            this.Bilhetes_Jogo.ItemHeight = 16;
+            this.Bilhetes_Jogo.Location = new System.Drawing.Point(953, 97);
+            this.Bilhetes_Jogo.Margin = new System.Windows.Forms.Padding(2);
+            this.Bilhetes_Jogo.Name = "Bilhetes_Jogo";
+            this.Bilhetes_Jogo.Size = new System.Drawing.Size(315, 164);
+            this.Bilhetes_Jogo.TabIndex = 107;
             // 
             // textBox6
             // 
@@ -1377,7 +1379,18 @@
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(199, 22);
             this.dateTimePicker1.TabIndex = 120;
+            this.dateTimePicker1.Value = new System.DateTime(2023, 5, 22, 0, 0, 0, 0);
             this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
+            // 
+            // Tabela_Classificativa
+            // 
+            this.Tabela_Classificativa.FormattingEnabled = true;
+            this.Tabela_Classificativa.ItemHeight = 16;
+            this.Tabela_Classificativa.Location = new System.Drawing.Point(953, 321);
+            this.Tabela_Classificativa.Margin = new System.Windows.Forms.Padding(2);
+            this.Tabela_Classificativa.Name = "Tabela_Classificativa";
+            this.Tabela_Classificativa.Size = new System.Drawing.Size(315, 164);
+            this.Tabela_Classificativa.TabIndex = 121;
             // 
             // Form1
             // 
@@ -1468,7 +1481,7 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.ComboBox comboBox5;
-        private System.Windows.Forms.ListBox Bilhetes;
+        private System.Windows.Forms.ListBox Bilhetes_Jogo;
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label26;
@@ -1515,6 +1528,7 @@
         private System.Windows.Forms.ListBox Lista_Equipas;
         private System.Windows.Forms.TextBox textBox20;
         private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.ListBox Tabela_Classificativa;
     }
 }
 
