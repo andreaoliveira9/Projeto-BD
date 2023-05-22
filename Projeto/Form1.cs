@@ -277,5 +277,15 @@ namespace Projeto
             reader2.Close();
             cn.Close();
         }
+
+        private void label19_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label23_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
