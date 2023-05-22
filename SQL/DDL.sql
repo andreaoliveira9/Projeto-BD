@@ -2,9 +2,9 @@
 -- go
 
 /* Destroy dependencies and tables*/
-alter table NBA.Average_Individual_Numbers drop constraint PlayerFK;    
 alter table NBA.Average_Individual_Numbers drop constraint PlayerFK;
 alter table NBA.Player drop constraint TeamFK3;
+alter table NBA.Player drop constraint PlayerIDFK;
 alter table NBA.Ticket drop constraint GameFK;
 alter table NBA.Ticket drop constraint TeamFK2;
 alter table NBA.Stadium drop constraint TeamFK1;
