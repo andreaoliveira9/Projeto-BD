@@ -140,9 +140,9 @@ as
 go
 
 -- Criação da função com os filtro de equipa e contrato dos jogadores
-drop function IF EXISTS NBA.filtrarJogadoresPorEquipaEContrato;
+drop function IF EXISTS NBA.filtrarJogadoresPorEquipaEContratoEPosicao;
 go
-create function NBA.filtrarJogadoresPorEquipaEContrato(@equipa varchar(50), @contrato bit, @posicao varchar(30)) returns table
+create function NBA.filtrarJogadoresPorEquipaEContratoEPosicao(@equipa varchar(50), @contrato bit, @posicao varchar(30)) returns table
 as
 return (
     select *

@@ -157,35 +157,15 @@ after insert, update
 as
     begin
         set nocount on;
-        declare @CCNumber as int;
         declare @Name as varchar(50);
         declare @Age as date;
-        declare @ContractID as varchar(50);
-        select @CCNumber = CCNumber from inserted;
         select @Name = [Name] from inserted;
         select @Age = Age from inserted;
-        select @ContractID = Contract_ID from inserted;
 
         -- Verifica se os campos são nulos
-        if (@CCNumber is null or @Name is null or @Age is null or @ContractID is null)
+        if (@Name is null or @Age is null)
             begin
                 raiserror('CCNumber, Name, Age and ContractID cannot be null', 16, 1);
-                rollback transaction;
-                return;
-            end;
-        
-        -- Verifica se o CCNumber já existe
-        if (NBA.checkCCNumber(@CCNumber) > 0)
-            BEGIN
-                raiserror('CCNumber already exists', 16, 1);
-                rollback transaction;
-                return;
-            end;
-        
-        -- Verifica se o contrato existe
-        if (NBA.checkContractID(@ContractID) = 0)
-            BEGIN
-                raiserror('ContractID does not exist', 16, 1);
                 rollback transaction;
                 return;
             end;

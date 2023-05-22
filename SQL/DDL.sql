@@ -49,10 +49,10 @@ create table NBA.Person (
 create table NBA.Team (
     ID              int                 not null,
     [Name]          varchar(50)         not null,
-    [Owner]         varchar(50)         not null,
     City            varchar(50)         not null,
     Conference      varchar(50)         not null,
     Found_Year      int                 not null        check(Found_Year > 0),
+    Owner_CCNumber  int,
     Coach_CCNumber  int,
 
     primary key (ID),
