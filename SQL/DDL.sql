@@ -78,7 +78,7 @@ create table NBA.Ticket (
     Price                   float               not null        check(Price > 0),
     Restantes               int                 not null        check(Restantes >= 0),
     Game_ID                 int                 not null,
-    Team_ID                 int                 not null,
+    Team_ID                 int                 not null
 );
 
 

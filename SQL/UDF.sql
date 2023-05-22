@@ -8,22 +8,6 @@ as
 	return (select * from NBA.Player)
 go
 
-/* OBTER A LISTA DE TREINADORES */
-drop function IF EXISTS NBA.obterTreinadores;
-go
-create function NBA.obterTreinadores() returns table 
-as 
-	return (select * from NBA.Coach)
-go
-
-/* OBTER A LISTA DE JOGOS */
-drop function IF EXISTS NBA.obterJogos;
-go
-create function NBA.obterJogos() returns table
-as 
-    return (select * from NBA.Game)
-go
-
 /* OBTER A LISTA DE JOGADORES COM CONTRATO */
 drop function IF EXISTS NBA.obterPlayersWithContract;
 go
@@ -38,6 +22,14 @@ go
 create function NBA.obterPlayersWithoutContract() returns table
 as 
     return (select * from NBA.PlayersWithoutContract)
+go
+
+/* OBTER A LISTA DE TREINADORES */
+drop function IF EXISTS NBA.obterTreinadores;
+go
+create function NBA.obterTreinadores() returns table 
+as 
+	return (select * from NBA.Coach)
 go
 
 /* OBTER A LISTA DE TREINADORES COM CONTRATO */
@@ -56,6 +48,22 @@ as
     return (select * from NBA.CoachesWithoutContract)
 go
 
+/* OBTER A LISTA DE EQUIPAS */
+drop function IF EXISTS NBA.obterEquipas;
+go
+create function NBA.obterEquipas() returns table 
+as 
+	return (select * from NBA.Team)
+go
+
+/* OBTER A LISTA DE JOGOS */
+drop function IF EXISTS NBA.obterJogos;
+go
+create function NBA.obterJogos() returns table
+as 
+    return (select * from NBA.Game)
+go
+
 /* OBTER A LISTA DE JOGOS COM RESULTADO */
 drop function IF EXISTS NBA.obterGamesWithResult;
 go
@@ -72,7 +80,7 @@ as
     return (select * from NBA.GamesWithoutResult)
 go
 
-/* OBTER A LISTA DE Guard */
+/* OBTER A LISTA DE PLAYERS GUARD */
 drop function IF EXISTS NBA.obterPlayerGuard;
 go
 create function NBA.obterPlayerGuard() returns table
@@ -84,7 +92,7 @@ as
 go
 
 
-/* OBTER A LISTA DE Forward */
+/* OBTER A LISTA DE PLAYERS FORWARD */
 drop function IF EXISTS NBA.obterPlayerForward;
 go
 create function NBA.obterPlayerForward() returns table
@@ -95,7 +103,7 @@ as
             where Position = 'Forward')
 go
 
-/* OBTER A LISTA DE Forward Center */
+/* OBTER A LISTA DE PLAYERS FORWARD CENTER */
 drop function IF EXISTS NBA.obterPlayerForwardCenter;
 go
 create function NBA.obterPlayerForwardCenter() returns table
@@ -106,7 +114,7 @@ as
             where Position = 'Forward-Center')  
 go
 
-/* OBTER A LISTA DE Guard Forward */
+/* OBTER A LISTA DE PLAYERS GUARD FORWARD */
 drop function IF EXISTS NBA.obterPlayerGuardForward;
 go
 create function NBA.obterPlayerGuardForward() returns table
@@ -117,7 +125,7 @@ as
             where Position = 'Guard-Forward') 
 go
 
-/* OBTER A LISTA DE Center */
+/* OBTER A LISTA DE PLAYERS CENTER */
 drop function IF EXISTS NBA.obterPlayerCenter;
 go
 create function NBA.obterPlayerCenter() returns table
@@ -128,7 +136,7 @@ as
             where Position = 'Center') 
 go
 
-/* OBTER A LISTA DE Center Forward */
+/* OBTER A LISTA DE PLAYERS CENTER FORWARD */
 drop function IF EXISTS NBA.obterPlayerCenterForward;
 go
 create function NBA.obterPlayerCenterForward() returns table
@@ -139,7 +147,7 @@ as
             where Position = 'Center-Forward') 
 go
 
--- Criação da função com os filtro de equipa e contrato dos jogadores
+-- Função com os filtro de equipa, contrato e posição dos jogadores
 drop function IF EXISTS NBA.filtrarJogadoresPorEquipaEContratoEPosicao;
 go
 create function NBA.filtrarJogadoresPorEquipaEContratoEPosicao(@equipa varchar(50), @contrato bit, @posicao varchar(30)) returns table
@@ -159,9 +167,9 @@ return (
 go
 
 -- Função para barra de pesquuisa de nome de jogadores
-drop function IF EXISTS NBA.filtrarJogadoresPorNome;
+drop function IF EXISTS NBA.pesquisarJogadoresPorNome;
 go
-create function NBA.filtrarJogadoresPorNome(@nome varchar(50)) returns table
+create function NBA.pesquisarJogadoresPorNome(@nome varchar(50)) returns table
 as
 return (
     select *
@@ -274,6 +282,32 @@ as
     end;
 go
 
+-- Função para retornar a tabela de jogos de uma dada equipa
+drop function IF EXISTS NBA.GetTeamGames
+go
+create function NBA.GetTeamGames (@TeamID int) returns table
+as
+    RETURN
+    (
+        select G.ID AS GameID, G.[Time], G.[Date], G.Home_Score, G.Away_Score
+        FROM (NBA.Game G inner join NBA.Team T on T.ID = G.Home_Team_ID or T.ID = G.Away_Team_ID)
+        where T.ID = @TeamID
+    )
+go
+
+-- Função para retornar os bilhetes de um dado jogo
+drop function IF EXISTS NBA.GetGameTickets
+go
+create function GetGameTickets (@GameID int) returns table
+as
+return
+(
+    select [Type], Price, Restantes
+    from NBA.Ticket
+    where Game_ID = @GameID
+)
+go
+
 
 -- Verificar se o CC já existe
 drop function IF EXISTS NBA.checkCCNumber
@@ -312,5 +346,17 @@ as
         from NBA.[Contract] as C where C.ID=@ID
         return @counter
     end
+go
+
+/* Verificar o último ID de jogo adicionado */
+drop function Mercado.nextIDJogo
+go
+create function Mercado.nextIDJogo() returns int
+as
+	begin
+		declare @ID as int;
+		select @ID = max(ID) + 1 from NBA.Game;
+		return @ID;
+	end
 go
 
