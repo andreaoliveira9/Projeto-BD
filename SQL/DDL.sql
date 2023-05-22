@@ -9,6 +9,7 @@ alter table NBA.Ticket drop constraint GameFK;
 alter table NBA.Ticket drop constraint TeamFK2;
 alter table NBA.Stadium drop constraint TeamFK1;
 alter table NBA.Team drop constraint CoachFK;
+alter table NBA.Team drop constraint OwnerFK;
 alter table NBA.Game drop constraint HomeTeamFK;
 alter table NBA.Game drop constraint AwayTeamFK;
 alter table NBA.Game drop constraint StadiumFK;
@@ -133,6 +134,8 @@ alter table NBA.Coach add constraint CoachIDFK foreign key (CCNumber) references
 
 
 alter table NBA.Team add constraint CoachFK foreign key (Coach_CCNumber) references NBA.Coach(CCNumber)
+    on update cascade on delete set null;
+alter table NBA.Team add constraint OwnerFK foreign key (Owner_CCNumber) references NBA.Person(CCNumber)
     on update cascade on delete set null;
 
 
