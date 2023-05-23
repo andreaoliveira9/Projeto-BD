@@ -30,3 +30,14 @@ Y:/2º Semestre Duarte/BD/Aulas Práticas/Projeto/Projeto/obj/Debug/Projeto.pdb
 \\Mac\OneDrive-UniversidadedeAveiro\2º Semestre Duarte\BD\Aulas Práticas\Projeto\Projeto\obj\Debug\Projeto.csproj.CoreCompileInputs.cache
 \\Mac\OneDrive-UniversidadedeAveiro\2º Semestre Duarte\BD\Aulas Práticas\Projeto\Projeto\obj\Debug\Projeto.exe
 \\Mac\OneDrive-UniversidadedeAveiro\2º Semestre Duarte\BD\Aulas Práticas\Projeto\Projeto\obj\Debug\Projeto.pdb
+\\Mac\Home\Documents\GitHub\Projeto-BD\Projeto\obj\Debug\Projeto.csproj.AssemblyReference.cache
+\\Mac\Home\Documents\GitHub\Projeto-BD\Projeto\obj\Debug\Projeto.csproj.SuggestedBindingRedirects.cache
+\\Mac\Home\Documents\GitHub\Projeto-BD\Projeto\obj\Debug\Projeto.Form1.resources
+\\Mac\Home\Documents\GitHub\Projeto-BD\Projeto\obj\Debug\Projeto.Properties.Resources.resources
+\\Mac\Home\Documents\GitHub\Projeto-BD\Projeto\obj\Debug\Projeto.csproj.GenerateResource.cache
+\\Mac\Home\Documents\GitHub\Projeto-BD\Projeto\obj\Debug\Projeto.csproj.CoreCompileInputs.cache
+\\Mac\Home\Documents\GitHub\Projeto-BD\Projeto\obj\Debug\Projeto.exe
+\\Mac\Home\Documents\GitHub\Projeto-BD\Projeto\obj\Debug\Projeto.pdb
+\\Mac\Home\Documents\GitHub\Projeto-BD\Projeto\bin\Debug\Projeto.exe.config
+\\Mac\Home\Documents\GitHub\Projeto-BD\Projeto\bin\Debug\Projeto.exe
+\\Mac\Home\Documents\GitHub\Projeto-BD\Projeto\bin\Debug\Projeto.pdb

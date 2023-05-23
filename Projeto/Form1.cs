@@ -20,12 +20,13 @@ namespace Projeto
         public Form1()
         {
             InitializeComponent();
+            verifySGBDConnection();
+            InitializeComboBox1();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            verifySGBDConnection();
-            InitializeComboBox1();
+
         }
 
         private SqlConnection getSGBDConnection()
@@ -217,65 +218,7 @@ namespace Projeto
 
         private void updateListJogadores()
         {
-            totalItems = 0;
-            if (!verifySGBDConnection())
-            {
-                return;
-            }
 
-            Lista_Jogadores.Items.Clear();
-            SqlCommand cmd = new SqlCommand("select * from NBA.obterJogadores()", cn);
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                Player player = new Player();
-                player.Nome = reader["Nome"].ToString();
-                player.Id = reader["ID"].ToString();
-                player.Email = reader["Email"].ToString();
-                player.Telemovel = reader["Telemovel"].ToString();
-                player.SSN = reader["SSN"].ToString();
-                player.NIF = reader["NIF"].ToString();
-                player.Morada = reader["Morada"].ToString();
-
-                totalItems++;
-                Lista_Jogadores.Items.Add(player);
-
-            }
-            total_items_label.Text = "Total de funcionários:";
-            total_items_textbox.Text = totalItems.ToString();
-            reader.Close();
-            cn.Close();
-            totalItems = 0;
-            try
-            {
-                this.Func_list.SelectedIndexChanged -= new EventHandler(Prod_list_SelectedIndexChanged);
-            }
-            catch { }
-            try
-            {
-                this.Func_list.SelectedIndexChanged -=
-                    new System.EventHandler(Func_list_SelectedIndexChanged);
-            }
-            catch { }
-
-            this.Func_list.SelectedIndexChanged +=
-                new System.EventHandler(Func_list_SelectedIndexChanged);
-            if (!verifySGBDConnection())
-            {
-                return;
-            }
-            SqlCommand cmd2 = new SqlCommand("select * from Mercado.obterFuncionariosAtuais()", cn);
-            SqlDataReader reader2 = cmd2.ExecuteReader();
-            reader2.Read();
-            while (reader2.Read())
-            {
-                totalItems++;
-            }
-            total_items_Atuais_label.Text = "Total de funcionários Atuais:";
-            Func_atuais_textBox.Text = totalItems.ToString();
-
-            reader2.Close();
-            cn.Close();
         }
 
         private void label19_Click(object sender, EventArgs e)
