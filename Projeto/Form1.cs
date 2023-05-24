@@ -585,8 +585,8 @@ namespace Projeto
                 }
                 reader.Close();
 
-                button9.Visible = true;
-                button10.Visible = true;
+                button5.Visible = true;
+                button6.Visible = true;
             }
         }
 
@@ -705,6 +705,36 @@ namespace Projeto
         private void comboBox6_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            button2.Visible = true;
+            button4.Visible = true;
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            button2.Visible = false;
+            button4.Visible = false;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            button2.Visible = false;
+            button4.Visible = false;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            button2.Visible = true;
+            button4.Visible = true;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            button2.Visible = true;
+            button4.Visible = true;
         }
     }
 }
