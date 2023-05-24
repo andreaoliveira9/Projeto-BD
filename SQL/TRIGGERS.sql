@@ -64,7 +64,7 @@ as
             end;
         
         -- Verifica que o estádio é o mesmo que o da equipa da casa
-        if (@StadiumID != (select Stadium_ID from NBA.Team where ID = @HomeTeamID))
+        if (@HomeTeamID != (select Team_ID from NBA.Stadium where Team_ID = @HomeTeamID))
             begin
                 raiserror('Stadium must be the same as the home team', 16, 1);
                 rollback transaction;
@@ -95,7 +95,6 @@ as
         declare @Weight as float;
         declare @Position as varchar(20);
         declare @TeamID as int;
-        select @Name = [Name] from inserted;
         select @Number = [Number] from inserted;
         select @Height = Height from inserted;
         select @Weight = [Weight] from inserted;

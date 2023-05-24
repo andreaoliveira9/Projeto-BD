@@ -1,11 +1,27 @@
 use p4g1;
 
+-- Pessoa e jogador
+drop view IF EXISTS NBA.PersonPlayer
+go 
+create view NBA.PersonPlayer as 
+	select Pe.CCNumber, Pe.[Name], Pe.Age, Pe.Contract_ID, Pl.[Number], Pl.Height, Pl.[Weight], Pl.Position, Pl.Team_ID
+	from (NBA.Player as Pl join NBA.Person as Pe on Pl.CCNumber = Pe.CCNumber);
+go
+
+-- Pessoa e treinador
+drop view IF EXISTS NBA.PersonCoach
+go 
+create view NBA.PersonCoach as 
+	select Pe.CCNumber, Pe.[Name], Pe.Age, Pe.Contract_ID 
+	from (NBA.Coach as Co join NBA.Person as Pe on Co.CCNumber = Pe.CCNumber);
+go
+
 -- Jogadores com contrato
 drop view IF EXISTS NBA.PlayersWithContract
 go 
 create view NBA.PlayersWithContract as 
-	select *
-	from ((NBA.Player as Pl join NBA.Person as Pe on Pl.ID = Pe.ID) join NBA.[Contract] as C on Pe.Contract_ID = C.ID)
+	select Pl.CCNumber, Pl.[Name], Pl.Age, Pl.[Number], Pl.Height, Pl.[Weight], Pl.Position, Pl.Team_ID, C.ID, C.[Description], C.Salary,C.[Start_Date],C.End_Date
+	from (NBA.PersonPlayer as Pl join NBA.[Contract] as C on Pl.Contract_ID = C.ID)
 	where C.End_Date > getdate();
 go
 
@@ -13,8 +29,8 @@ go
 drop view IF EXISTS NBA.PlayersWithoutContract
 go 
 create view NBA.PlayersWithoutContract as 
-	select *
-	from ((NBA.Player as Pl join NBA.Person as Pe on Pl.ID = Pe.ID) join NBA.[Contract] as C on Pe.Contract_ID = C.ID)
+	select Pl.CCNumber, Pl.[Name], Pl.Age, Pl.[Number], Pl.Height, Pl.[Weight], Pl.Position, Pl.Team_ID, C.ID, C.[Description],C.Salary,C.[Start_Date],C.End_Date
+	from (NBA.PersonPlayer as Pl join NBA.[Contract] as C on Pl.Contract_ID = C.ID)
 	where C.End_Date < getdate();
 go
 
@@ -22,8 +38,8 @@ go
 drop view IF EXISTS NBA.CoachesWithContract
 go 
 create view NBA.CoachesWithContract as 
-	select *
-	from ((NBA.Coach as Pl join NBA.Person as Pe on Pl.ID = Pe.ID) join NBA.[Contract] as C on Pe.Contract_ID = C.ID)
+	select Co.CCNumber, Co.[Name], Co.Age, C.ID,C.[Description], C.Salary ,C.[Start_Date], C.End_Date
+	from (NBA.PersonCoach as Co join NBA.[Contract] as C on Co.Contract_ID = C.ID)
 	where C.End_Date > getdate();
 go
 
@@ -31,8 +47,8 @@ go
 drop view IF EXISTS NBA.CoachesWithoutContract
 go 
 create view NBA.CoachesWithoutContract as 
-	select *
-	from ((NBA.Coach as Pl join NBA.Person as Pe on Pl.ID = Pe.ID) join NBA.[Contract] as C on Pe.Contract_ID = C.ID)
+	select Co.CCNumber, Co.[Name], Co.Age, C.ID ,C.[Description], C.Salary ,C.[Start_Date], C.End_Date
+	from (NBA.PersonCoach as Co join NBA.[Contract] as C on Co.Contract_ID = C.ID)
 	where C.End_Date < getdate();
 go
 

@@ -5,7 +5,7 @@ drop function IF EXISTS NBA.obterJogadores;
 go
 create function NBA.obterJogadores() returns table 
 as 
-	return (select * from NBA.Player)
+	return (select * from NBA.PersonPlayer)
 go
 
 /* OBTER A LISTA DE JOGADORES COM CONTRATO */
@@ -29,7 +29,7 @@ drop function IF EXISTS NBA.obterTreinadores;
 go
 create function NBA.obterTreinadores() returns table 
 as 
-	return (select * from NBA.Coach)
+	return (select * from NBA.PersonCoach)
 go
 
 /* OBTER A LISTA DE TREINADORES COM CONTRATO */
@@ -154,12 +154,12 @@ create function NBA.filtrarJogadoresPorEquipaEContratoEPosicao(@equipa varchar(5
 as
 return (
     select *
-    from NBA.Players as P join NBA.Team as T on P.Team_ID = T.ID
+    from NBA.Player as P join NBA.Team as T on P.Team_ID = T.ID
     where 
         (T.Name = @equipa or @equipa is null) and (
-            (@contrato = 1 and P.ID in (select ID from NBA.obterPlayersWithContract()))
+            (@contrato = 1 and P.CCNumber in (select ID from NBA.obterPlayersWithContract()))
             OR
-            (@contrato = 0 and P.ID in (select ID from NBA.obterPlayersWithoutContract()))
+            (@contrato = 0 and P.CCNumber in (select ID from NBA.obterPlayersWithoutContract()))
             OR
             (@contrato is null) 
         ) and ( P.Position = @posicao or @posicao is null)
@@ -173,8 +173,8 @@ create function NBA.pesquisarJogadoresPorNome(@nome varchar(50)) returns table
 as
 return (
     select *
-    from NBA.Players
-    where Name like '%' + @nome + '%'
+    from NBA.PersonPlayer
+    where [Name] like '%' + @nome + '%'
 );
 go
 
@@ -230,10 +230,10 @@ as
                     WHERE T.[Name] = @TeamName;
 
                 insert into @TeamAverageStats (TeamName, AveragePoints, AverageAssists, AverageRebounds, AverageBlocks, AverageSteals, AverageFGP, Average3PTP)
-                    select @TeamName, avg(Points), avg(Assists), avg(Rebounds), avg(Blocks), avg(Steals), avg(FGPercentage), avg(ThreePTPercentage)
-                    from @PlayerStats;
+                    select @TeamName, avg(Points), avg(Assists), avg(Rebounds), avg(Blocks), avg(Steals), avg([FG%]), avg([3PT%])
+                    from @PlayersStats;
 
-                delete from @PlayerStats;
+                delete from @PlayersStats;
 
                 fetch next from teamCursor into @TeamName;
             end;
@@ -251,33 +251,43 @@ go
 create function NBA.GetTeamStandings() returns @TeamStandings table (
     Team_ID int,
     Team_Name varchar(50),
+	GamesPlayed int,
     Wins int,
-    Losses int
+    Losses int,
+	[Win%] float
 )
 as
     begin
         -- Inserir os resultados dos jogos na tabela @GameWinners
         declare @GameWinners table (
             Game_ID int,
-            Winner_ID int
+            Winner_ID int,
+			Loser_ID int
         );
 
         -- Chamar a UDF anterior para obter os vencedores de cada jogo
-        insert into @GameWinners (Game_ID, Winner_ID)
-            select Game_ID,
+        insert into @GameWinners (Game_ID, Winner_ID, Loser_ID)
+            select ID,
                 (case 
                     when Home_Score > Away_Score then Home_Team_ID
                     when Home_Score < Away_Score then Away_Team_ID
-                end) as Winner_ID
-            from NBA.Game;
+                end) as Winner_ID,
+				(case 
+                    when Home_Score > Away_Score then Away_Team_ID
+                    when Home_Score < Away_Score then Home_Team_ID
+                end) as Loser_ID
+            from NBA.Game
+			where Home_Score is not null and Away_Score is not null;
 
         -- Calcular o número de vitórias e derrotas para cada equipe
-        insert into @TeamStandings (Team_ID, Team_Name, Wins, Losses)
-            select T.Team_ID, T.Team_Name,
-                sum(case when GW.Winner_ID = T.Team_ID then 1 else 0 end) as Wins,
-                sum(case when GW.Winner_ID <> T.Team_ID then 1 else 0 end) as Losses
-            from (NBA.Team as T left join @GameWinners as GW on T.Team_ID = GW.Winner_ID)
-            group by T.Team_ID, T.Team_Name;
+		insert into @TeamStandings (Team_ID, Team_Name, GamesPlayed, Wins, Losses, [Win%])
+			select T.ID, T.[Name],
+				sum(case when GW.Winner_ID = T.ID then 1 else 0 end)+sum(case when GW.Loser_ID = T.ID then 1 else 0 end) as GamesPlayed,
+				sum(case when GW.Winner_ID = T.ID then 1 else 0 end) as Wins,
+				sum(case when GW.Loser_ID = T.ID then 1 else 0 end) as Losses,
+				round((sum(case when GW.Winner_ID = T.ID then 1 else 0 end) * 100.0) / count(*) , 4) as [Win%]
+			from NBA.Team as T left join NBA.Winners as GW on T.ID = GW.Winner_ID OR T.ID = GW.Loser_ID
+			group by T.ID, T.[Name]
         return;
     end;
 go
@@ -298,7 +308,7 @@ go
 -- Função para retornar os bilhetes de um dado jogo
 drop function IF EXISTS NBA.GetGameTickets
 go
-create function GetGameTickets (@GameID int) returns table
+create function NBA.GetGameTickets (@GameID int) returns table
 as
 return
 (
@@ -349,9 +359,9 @@ as
 go
 
 /* Verificar o último ID de jogo adicionado */
-drop function Mercado.nextIDJogo
+drop function IF EXISTS NBA.nextIDJogo
 go
-create function Mercado.nextIDJogo() returns int
+create function NBA.nextIDJogo() returns int
 as
 	begin
 		declare @ID as int;
