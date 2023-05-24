@@ -1,168 +1,50 @@
 use p4g1;
 
-/* OBTER A LISTA DE JOGADORES */
-drop function IF EXISTS NBA.obterJogadores;
-go
-create function NBA.obterJogadores() returns table 
-as 
-	return (select * from NBA.PersonPlayer)
-go
-
-/* OBTER A LISTA DE JOGADORES COM CONTRATO */
-drop function IF EXISTS NBA.obterPlayersWithContract;
-go
-create function NBA.obterPlayersWithContract() returns table 
-as 
-	return (select * from NBA.PlayersWithContract)
-go
-
-/* OBTER A LISTA DE JOGADORES SEM CONTRATO */
-drop function IF EXISTS NBA.obterPlayersWithoutContract;
-go
-create function NBA.obterPlayersWithoutContract() returns table
-as 
-    return (select * from NBA.PlayersWithoutContract)
-go
-
-/* OBTER A LISTA DE TREINADORES */
-drop function IF EXISTS NBA.obterTreinadores;
-go
-create function NBA.obterTreinadores() returns table 
-as 
-	return (select * from NBA.PersonCoach)
-go
-
-/* OBTER A LISTA DE TREINADORES COM CONTRATO */
-drop function IF EXISTS NBA.obterCoachesWithContract;
-go
-create function NBA.obterCoachesWithContract() returns table 
-as 
-	return (select * from NBA.CoachesWithContract)
-go
-
-/* OBTER A LISTA DE TREINADORES SEM CONTRATO */
-drop function IF EXISTS NBA.obterCoachesWithoutContract;
-go
-create function NBA.obterCoachesWithoutContract() returns table
-as 
-    return (select * from NBA.CoachesWithoutContract)
-go
-
-/* OBTER A LISTA DE EQUIPAS */
-drop function IF EXISTS NBA.obterEquipas;
-go
-create function NBA.obterEquipas() returns table 
-as 
-	return (select * from NBA.Team)
-go
-
-/* OBTER A LISTA DE JOGOS */
-drop function IF EXISTS NBA.obterJogos;
-go
-create function NBA.obterJogos() returns table
-as 
-    return (select * from NBA.Game)
-go
-
-/* OBTER A LISTA DE JOGOS COM RESULTADO */
-drop function IF EXISTS NBA.obterGamesWithResult;
-go
-create function NBA.obterGamesWithResult() returns table
-as 
-    return (select * from NBA.GamesWithResult)
-go
-
-/* OBTER A LISTA DE JOGOS SEM RESULTADO */
-drop function IF EXISTS NBA.obterGamesWithoutResult;
-go
-create function NBA.obterGamesWithoutResult() returns table
-as 
-    return (select * from NBA.GamesWithoutResult)
-go
-
-/* OBTER A LISTA DE PLAYERS GUARD */
-drop function IF EXISTS NBA.obterPlayerGuard;
-go
-create function NBA.obterPlayerGuard() returns table
-as 
-	return (select * from NBA.PlayersWithContract
-            union 
-            select * from NBA.PlayersWithoutContract
-            where Position = 'Guard')
-go
-
-
-/* OBTER A LISTA DE PLAYERS FORWARD */
-drop function IF EXISTS NBA.obterPlayerForward;
-go
-create function NBA.obterPlayerForward() returns table
-as 
-    return (select * from NBA.PlayersWithContract
-            union 
-            select * from NBA.PlayersWithoutContract
-            where Position = 'Forward')
-go
-
-/* OBTER A LISTA DE PLAYERS FORWARD CENTER */
-drop function IF EXISTS NBA.obterPlayerForwardCenter;
-go
-create function NBA.obterPlayerForwardCenter() returns table
-as 
-    return (select * from NBA.PlayersWithContract
-            union 
-            select * from NBA.PlayersWithoutContract
-            where Position = 'Forward-Center')  
-go
-
-/* OBTER A LISTA DE PLAYERS GUARD FORWARD */
-drop function IF EXISTS NBA.obterPlayerGuardForward;
-go
-create function NBA.obterPlayerGuardForward() returns table
-as 
-    return (select * from NBA.PlayersWithContract
-            union 
-            select * from NBA.PlayersWithoutContract
-            where Position = 'Guard-Forward') 
-go
-
-/* OBTER A LISTA DE PLAYERS CENTER */
-drop function IF EXISTS NBA.obterPlayerCenter;
-go
-create function NBA.obterPlayerCenter() returns table
-as 
-    return (select * from NBA.PlayersWithContract
-            union 
-            select * from NBA.PlayersWithoutContract
-            where Position = 'Center') 
-go
-
-/* OBTER A LISTA DE PLAYERS CENTER FORWARD */
-drop function IF EXISTS NBA.obterPlayerCenterForward;
-go
-create function NBA.obterPlayerCenterForward() returns table
-as 
-    return (select * from NBA.PlayersWithContract
-            union 
-            select * from NBA.PlayersWithoutContract
-            where Position = 'Center-Forward') 
-go
-
 -- Função com os filtro de equipa, contrato e posição dos jogadores
 drop function IF EXISTS NBA.filtrarJogadoresPorEquipaEContratoEPosicao;
 go
-create function NBA.filtrarJogadoresPorEquipaEContratoEPosicao(@equipa varchar(50), @contrato bit, @posicao varchar(30)) returns table
+create function NBA.filtrarJogadoresPorEquipaEContratoEPosicao(@equipa varchar(50), @contrato varchar(3), @posicao varchar(30)) returns table
 as
 return (
-    select *
-    from NBA.Player as P join NBA.Team as T on P.Team_ID = T.ID
+    select P.CCNumber,P.[Name],P.Age,P.Contract_ID,P.Number,P.Height,P.[Weight],P.Position,P.Team_ID
+    from NBA.PersonPlayer as P join NBA.Team as T on P.Team_ID = T.ID
     where 
-        (T.Name = @equipa or @equipa is null) and (
-            (@contrato = 1 and P.CCNumber in (select ID from NBA.obterPlayersWithContract()))
+        (T.[Name] = @equipa or @equipa is null) and (
+            (@contrato = 'Sim' and P.CCNumber in (select CCNumber from NBA.PlayersWithContract))
             OR
-            (@contrato = 0 and P.CCNumber in (select ID from NBA.obterPlayersWithoutContract()))
+            (@contrato = 'Nao' and P.CCNumber in (select CCNumber from NBA.PlayersWithoutContract))
             OR
             (@contrato is null) 
         ) and ( P.Position = @posicao or @posicao is null)
+);
+go
+
+-- Função com filtro de contrato dos treinadores
+drop function IF EXISTS NBA.filtrarTreinadoresPorContrato;
+go
+create function NBA.filtrarTreinadoresPorContrato(@contrato varchar(3)) returns table
+as
+return (
+    select CCNumber, [Name], Age, Contract_ID
+    from NBA.PersonCoach
+    where 
+        (@contrato = 'Sim' and CCNumber in (select CCNumber from NBA.CoachesWithContract))
+        OR
+        (@contrato = 'Nao' and CCNumber in (select CCNumber from NBA.CoachesWithoutContract))
+        OR
+        (@contrato is null) 
+);
+go
+
+-- Função com o filtro de conferencia das equipas
+drop function IF EXISTS NBA.filtrarEquipasPorConferencia;
+go
+create function NBA.filtrarEquipasPorConferencia(@conferencia varchar(10)) returns table
+as
+return (
+    select *
+    from NBA.TeamCoachOwner
+    where (Conference = @conferencia or @conferencia is null)
 );
 go
 
@@ -175,6 +57,30 @@ return (
     select *
     from NBA.PersonPlayer
     where [Name] like '%' + @nome + '%'
+);
+go
+
+-- Função para barra de pesquuisa de nome de treinadores
+drop function IF EXISTS NBA.pesquisarTreinadoresPorNome;
+go
+create function NBA.pesquisarTreinadoresPorNome(@nome varchar(50)) returns table
+as
+return (
+    select *
+    from NBA.PersonCoach
+    where [Name] like '%' + @nome + '%'
+);
+go
+
+-- Função para barra de pesquuisa de nome de equipas
+drop function IF EXISTS NBA.pesquisarEquipasPorNome;
+go
+create function NBA.pesquisarEquipasPorNome(@nome varchar(50)) returns table
+as
+return (
+    select *
+    from NBA.TeamCoachOwner
+    where TeamName like '%' + @nome + '%'
 );
 go
 
@@ -193,7 +99,8 @@ go
 -- Função que retorna a média de estatísticas de uma equipa
 drop function IF EXISTS NBA.getTeamAverageStats
 go
-create function NBA.getTeamAverageStats() returns @TeamAverageStats table (
+create function NBA.getTeamAverageStats(@InputTeamID INT) returns @TeamAverageStats table (
+    TeamID INT,
     TeamName varchar(50),
     AveragePoints decimal(10, 2),
     AverageAssists decimal(10, 2),
@@ -205,6 +112,7 @@ create function NBA.getTeamAverageStats() returns @TeamAverageStats table (
 )
 as
     begin
+        declare @TeamID as int;
         declare @TeamName varchar(50);
         declare @PlayersStats table
         (
@@ -217,25 +125,25 @@ as
             [3PT%] float
         );
 
-        declare teamCursor cursor for select [Name] from NBA.Team;
+        declare teamCursor cursor for select ID, [Name] from NBA.Team where ID = @InputTeamID;
         open teamCursor;
 
-        fetch next from teamCursor into @TeamName;
+        fetch next from teamCursor into @TeamID, @TeamName;
 
         while @@FETCH_STATUS = 0
             begin
                 insert into @PlayersStats (Points, Assists, Rebounds, Blocks, Steals, [FG%], [3PT%])
                     select Points, Assists, Rebounds, Blocks, Steals, [FG%], [3PT%]
-                    from (((NBA.Average_Individual_Numbers as States inner join NBA.Player as Pl on States.Player_CCNumber = Pl.CCNumber) inner join NBA.Team as T on Pl.Team_ID = T.ID) INNER JOIN NBA.Person AS Pe ON Pl.CCNumber = Pe.CCNumber)
-                    WHERE T.[Name] = @TeamName;
+                    from NBA.Average_Individual_Numbers as Stats inner join NBA.Player as Pl on Stats.Player_CCNumber = Pl.CCNumber 
+                    where Pl.Team_ID = @TeamID;
 
-                insert into @TeamAverageStats (TeamName, AveragePoints, AverageAssists, AverageRebounds, AverageBlocks, AverageSteals, AverageFGP, Average3PTP)
-                    select @TeamName, avg(Points), avg(Assists), avg(Rebounds), avg(Blocks), avg(Steals), avg([FG%]), avg([3PT%])
+                insert into @TeamAverageStats (TeamID, TeamName, AveragePoints, AverageAssists, AverageRebounds, AverageBlocks, AverageSteals, AverageFGP, Average3PTP)
+                    select @TeamID, @TeamName, avg(Points), avg(Assists), avg(Rebounds), avg(Blocks), avg(Steals), avg([FG%]), avg([3PT%])
                     from @PlayersStats;
 
                 delete from @PlayersStats;
 
-                fetch next from teamCursor into @TeamName;
+                fetch next from teamCursor into @TeamID, @TeamName;
             end;
 
         close teamCursor;
@@ -244,6 +152,7 @@ as
         return;
     END;
 go
+
 
 -- Função para retornar a tabela de classificação
 drop function IF EXISTS NBA.GetTeamStandings;
@@ -297,10 +206,10 @@ drop function IF EXISTS NBA.GetTeamGames
 go
 create function NBA.GetTeamGames (@TeamID int) returns table
 as
-    RETURN
+    return
     (
-        select G.ID AS GameID, G.[Time], G.[Date], G.Home_Score, G.Away_Score
-        FROM (NBA.Game G inner join NBA.Team T on T.ID = G.Home_Team_ID or T.ID = G.Away_Team_ID)
+        select G.ID AS GameID, G.[Time], G.[Date], G.Home_Score, G.Away_Score, G.Home_Team_ID, G.Away_Team_ID
+        from (NBA.Game G inner join NBA.Team T on T.ID = G.Home_Team_ID or T.ID = G.Away_Team_ID)
         where T.ID = @TeamID
     )
 go

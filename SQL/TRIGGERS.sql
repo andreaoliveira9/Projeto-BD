@@ -157,7 +157,7 @@ as
     begin
         set nocount on;
         declare @Name as varchar(50);
-        declare @Age as date;
+        declare @Age as int;
         select @Name = [Name] from inserted;
         select @Age = Age from inserted;
 
