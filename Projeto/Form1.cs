@@ -25,8 +25,10 @@ namespace Projeto
             InitializeComboBox1();
             InitializeFiltroEquipa_JogadoresComboBox();
             InitializeComboBox2();
+            InitializeComboBox6();
 
             updateListaJogadores();
+            updateListaTreinadores();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -141,6 +143,30 @@ namespace Projeto
             filtroJogadores(selectedTeam, selectedContract, selectedPosition);
         }
 
+        private void InitializeComboBox6()
+        {
+            comboBox6.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox6.Items.Add("");
+            comboBox6.Items.Add("Sim");
+            comboBox6.Items.Add("Nao");
+
+            // Associate the event-handling method with the 
+            // SelectedIndexChanged event.
+            this.comboBox6.SelectedIndexChanged +=
+                new System.EventHandler(comboBox6_SelectedIndexChanged_1);
+        }
+
+        private void comboBox6_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            ComboBox comboBox = (ComboBox)sender;
+
+            // Save the selected employee's name, because we will remove
+            // the employee's name from the list.
+            string selectedContract = (string)comboBox6.SelectedItem;
+
+            filtroTreinadores(selectedContract);
+        }
+
         private void Jogadores_Click(object sender, EventArgs e)
         {
 
@@ -161,6 +187,9 @@ namespace Projeto
                 comboBox2.Enabled = false;
                 FiltroEquipa_Jogadores.Enabled = false;
                 comboBox1.Enabled = false;
+                comboBox2.SelectedIndex = -1;
+                FiltroEquipa_Jogadores.SelectedIndex = -1;
+                comboBox1.SelectedIndex = -1;
             } 
 
             Lista_Jogadores.Items.Clear();
@@ -193,6 +222,9 @@ namespace Projeto
             comboBox2.Enabled = true;
             FiltroEquipa_Jogadores.Enabled = true;
             comboBox1.Enabled = true;
+            comboBox2.SelectedIndex = -1;
+            FiltroEquipa_Jogadores.SelectedIndex = -1;
+            comboBox1.SelectedIndex = -1;
             updateListaJogadores();
         }
 
@@ -364,13 +396,9 @@ namespace Projeto
         private void updateListaJogadores()
         {
             totalItems = 0;
-            if (!verifySGBDConnection())
-            {
-                return;
-            }
 
             Lista_Jogadores.Items.Clear();
-            SqlCommand cmd = new SqlCommand("select * from NBA.obterJogadores()", cn);
+            SqlCommand cmd = new SqlCommand("select * from NBA.PersonPlayer", cn);
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -391,15 +419,9 @@ namespace Projeto
             }
             label23.Text = "Total de jogadores: " + totalItems.ToString();
             reader.Close();
-            cn.Close();
 
             this.Lista_Jogadores.SelectedIndexChanged +=
                 new System.EventHandler(Lista_Jogadores_SelectedIndexChanged_1);
-
-            if (!verifySGBDConnection())
-            {
-                return;
-            }
         }
 
         private void Lista_Jogadores_SelectedIndexChanged_1(object sender, System.EventArgs e)
@@ -510,6 +532,98 @@ namespace Projeto
             reader.Close();
         }
 
+        private void updateListaTreinadores()
+        {
+            totalItems = 0;
+
+            Lista_Treinadores.Items.Clear();
+            SqlCommand cmd = new SqlCommand("select * from NBA.PersonCoach", cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Coach coach = new Coach();
+                coach.CCNumber = reader["CCNumber"].ToString();
+                coach.Name = reader["Name"].ToString();
+                coach.Age = reader["Age"].ToString();
+                coach.ContractID = reader["Contract_ID"].ToString();
+
+                totalItems++;
+                Lista_Treinadores.Items.Add(coach);
+
+            }
+            label2.Text = "Total de treinadores: " + totalItems.ToString();
+            reader.Close();
+
+            this.Lista_Treinadores.SelectedIndexChanged +=
+                new System.EventHandler(Lista_Treinadores_SelectedIndexChanged);
+        }
+
+        private void Lista_Treinadores_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            ListBox ListBox = (ListBox)sender;
+
+            Coach selectedCoach = (Coach)Lista_Treinadores.SelectedItem;
+            //MessageBox.Show(selectedPlayer.Name);
+            if (selectedCoach != null)
+            {
+                textBox16.Text = selectedCoach.CCNumber;
+                textBox20.Text = selectedCoach.Name;
+                textBox14.Text = selectedCoach.Age;
+                textBox1.Text = selectedCoach.ContractID;
+
+                SqlCommand cmd = new SqlCommand("select * from NBA.[Contract] as C inner join NBA.Person as P on C.ID = P.Contract_ID where C.ID = " + selectedCoach.ContractID, cn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Contract contract = new Contract();
+                    contract.ID = reader["ID"].ToString();
+                    contract.Description = reader["Description"].ToString();
+                    contract.Salary = reader["Salary"].ToString();
+                    contract.StartDate = reader["Start_Date"].ToString();
+                    contract.EndDate = reader["End_Date"].ToString();
+                    richTextBox2.Text = contract.ToString();
+                }
+                reader.Close();
+
+                button9.Visible = true;
+                button10.Visible = true;
+            }
+        }
+
+        private void filtroTreinadores(string contrato)
+        {
+            string query = "select * from NBA.filtrarTreinadoresPorContrato(";
+
+            if (string.IsNullOrEmpty(contrato))
+            {
+                query += "null)";
+            }
+            else
+            {
+                query += "'" + contrato + "')";
+            }
+
+            Console.WriteLine(query);
+            SqlCommand cmd = new SqlCommand(query, cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            Lista_Treinadores.Items.Clear();
+            totalItems = 0;
+            while (reader.Read())
+            {
+                Coach coach = new Coach();
+                coach.CCNumber = reader["CCNumber"].ToString();
+                coach.Name = reader["Name"].ToString();
+                coach.Age = reader["Age"].ToString();
+                coach.ContractID = reader["Contract_ID"].ToString();
+
+                totalItems++;
+                Lista_Treinadores.Items.Add(coach);
+
+            }
+            label2.Text = "Total de treinadores: " + totalItems.ToString();
+            reader.Close();
+        }
+
         private void button8_Click(object sender, EventArgs e)
         {
             button11.Visible = true;
@@ -538,6 +652,59 @@ namespace Projeto
         {
             button11.Visible = false;
             button12.Visible = false;
+        }
+
+        private void Treinadores_Tab_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox16_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            string coachSearch = (string)textBox17.Text;
+            totalItems = 0;
+
+            if (!string.IsNullOrEmpty(coachSearch))
+            {
+                comboBox6.Enabled = false;
+                comboBox6.SelectedIndex = -1;
+            }
+
+            Lista_Treinadores.Items.Clear();
+            SqlCommand cmd = new SqlCommand("select * from NBA.pesquisarTreinadoresPorNome(" + "'" + coachSearch + "'" + ")", cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Coach coach = new Coach();
+                coach.CCNumber = reader["CCNumber"].ToString();
+                coach.Name = reader["Name"].ToString();
+                coach.Age = reader["Age"].ToString();
+                coach.ContractID = reader["Contract_ID"].ToString();
+
+                totalItems++;
+                Lista_Treinadores.Items.Add(coach);
+
+            }
+            label2.Text = "Total de jogadores: " + totalItems.ToString();
+            reader.Close();
+        }
+
+        private void button25_Click(object sender, EventArgs e)
+        {
+            textBox17.Text = "";
+            comboBox6.Enabled = false;
+            comboBox6.SelectedIndex = -1;
+            updateListaTreinadores();
+        }
+
+        private void comboBox6_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

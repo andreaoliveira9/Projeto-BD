@@ -85,6 +85,11 @@
             this.button18 = new System.Windows.Forms.Button();
             this.Lista_Equipas = new System.Windows.Forms.ListBox();
             this.Treinadores_Tab = new System.Windows.Forms.TabPage();
+            this.label42 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button25 = new System.Windows.Forms.Button();
+            this.comboBox6 = new System.Windows.Forms.ComboBox();
+            this.label41 = new System.Windows.Forms.Label();
             this.textBox20 = new System.Windows.Forms.TextBox();
             this.label27 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -104,6 +109,7 @@
             this.button13 = new System.Windows.Forms.Button();
             this.Lista_Treinadores = new System.Windows.Forms.ListBox();
             this.Jogadores_Tab = new System.Windows.Forms.TabPage();
+            this.button24 = new System.Windows.Forms.Button();
             this.Idade_Jogadores = new System.Windows.Forms.TextBox();
             this.label25 = new System.Windows.Forms.Label();
             this.Name_Jogadores = new System.Windows.Forms.TextBox();
@@ -141,7 +147,6 @@
             this.Lista_Jogadores = new System.Windows.Forms.ListBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.button24 = new System.Windows.Forms.Button();
             this.tabPage1.SuspendLayout();
             this.Equipas_Tab.SuspendLayout();
             this.Treinadores_Tab.SuspendLayout();
@@ -777,6 +782,11 @@
             // 
             // Treinadores_Tab
             // 
+            this.Treinadores_Tab.Controls.Add(this.label42);
+            this.Treinadores_Tab.Controls.Add(this.textBox1);
+            this.Treinadores_Tab.Controls.Add(this.button25);
+            this.Treinadores_Tab.Controls.Add(this.comboBox6);
+            this.Treinadores_Tab.Controls.Add(this.label41);
             this.Treinadores_Tab.Controls.Add(this.textBox20);
             this.Treinadores_Tab.Controls.Add(this.label27);
             this.Treinadores_Tab.Controls.Add(this.label2);
@@ -803,6 +813,58 @@
             this.Treinadores_Tab.TabIndex = 1;
             this.Treinadores_Tab.Text = "Treinadores";
             this.Treinadores_Tab.UseVisualStyleBackColor = true;
+            this.Treinadores_Tab.Click += new System.EventHandler(this.Treinadores_Tab_Click);
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(514, 197);
+            this.label42.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(78, 13);
+            this.label42.TabIndex = 78;
+            this.label42.Text = "ID do contrato:";
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.textBox1.Enabled = false;
+            this.textBox1.Location = new System.Drawing.Point(517, 212);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(150, 20);
+            this.textBox1.TabIndex = 77;
+            // 
+            // button25
+            // 
+            this.button25.Location = new System.Drawing.Point(309, 29);
+            this.button25.Margin = new System.Windows.Forms.Padding(2);
+            this.button25.Name = "button25";
+            this.button25.Size = new System.Drawing.Size(61, 24);
+            this.button25.TabIndex = 76;
+            this.button25.Text = "Limpar";
+            this.button25.UseVisualStyleBackColor = true;
+            this.button25.Click += new System.EventHandler(this.button25_Click);
+            // 
+            // comboBox6
+            // 
+            this.comboBox6.FormattingEnabled = true;
+            this.comboBox6.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.comboBox6.Location = new System.Drawing.Point(8, 454);
+            this.comboBox6.Name = "comboBox6";
+            this.comboBox6.Size = new System.Drawing.Size(148, 21);
+            this.comboBox6.TabIndex = 75;
+            this.comboBox6.SelectedIndexChanged += new System.EventHandler(this.comboBox6_SelectedIndexChanged);
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Location = new System.Drawing.Point(7, 438);
+            this.label41.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(124, 13);
+            this.label41.TabIndex = 74;
+            this.label41.Text = "Contrato ativo (Sim/Não)";
             // 
             // textBox20
             // 
@@ -937,6 +999,7 @@
             this.textBox16.Name = "textBox16";
             this.textBox16.Size = new System.Drawing.Size(320, 20);
             this.textBox16.TabIndex = 43;
+            this.textBox16.TextChanged += new System.EventHandler(this.textBox16_TextChanged);
             // 
             // textBox17
             // 
@@ -975,6 +1038,7 @@
             this.button13.TabIndex = 42;
             this.button13.Text = "Pesquisar";
             this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
             // 
             // Lista_Treinadores
             // 
@@ -984,6 +1048,7 @@
             this.Lista_Treinadores.Name = "Lista_Treinadores";
             this.Lista_Treinadores.Size = new System.Drawing.Size(237, 316);
             this.Lista_Treinadores.TabIndex = 40;
+            this.Lista_Treinadores.SelectedIndexChanged += new System.EventHandler(this.Lista_Treinadores_SelectedIndexChanged);
             // 
             // Jogadores_Tab
             // 
@@ -1033,6 +1098,17 @@
             this.Jogadores_Tab.Text = "Jogadores";
             this.Jogadores_Tab.UseVisualStyleBackColor = true;
             this.Jogadores_Tab.Click += new System.EventHandler(this.Jogadores_Click);
+            // 
+            // button24
+            // 
+            this.button24.Location = new System.Drawing.Point(309, 27);
+            this.button24.Margin = new System.Windows.Forms.Padding(2);
+            this.button24.Name = "button24";
+            this.button24.Size = new System.Drawing.Size(61, 24);
+            this.button24.TabIndex = 44;
+            this.button24.Text = "Limpar";
+            this.button24.UseVisualStyleBackColor = true;
+            this.button24.Click += new System.EventHandler(this.button24_Click);
             // 
             // Idade_Jogadores
             // 
@@ -1159,14 +1235,13 @@
             // 
             // comboBox2
             // 
-            this.comboBox2.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.comboBox2.BackColor = System.Drawing.SystemColors.Window;
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.comboBox2.Location = new System.Drawing.Point(8, 453);
             this.comboBox2.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(150, 21);
-            this.comboBox2.Sorted = true;
             this.comboBox2.TabIndex = 28;
             // 
             // label21
@@ -1324,7 +1399,7 @@
             // 
             // FiltroEquipa_Jogadores
             // 
-            this.FiltroEquipa_Jogadores.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.FiltroEquipa_Jogadores.BackColor = System.Drawing.SystemColors.Window;
             this.FiltroEquipa_Jogadores.FormattingEnabled = true;
             this.FiltroEquipa_Jogadores.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.FiltroEquipa_Jogadores.Location = new System.Drawing.Point(189, 453);
@@ -1408,7 +1483,7 @@
             // 
             // comboBox1
             // 
-            this.comboBox1.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.comboBox1.BackColor = System.Drawing.SystemColors.Window;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.comboBox1.Location = new System.Drawing.Point(369, 453);
@@ -1431,17 +1506,6 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1008, 606);
             this.tabControl1.TabIndex = 0;
-            // 
-            // button24
-            // 
-            this.button24.Location = new System.Drawing.Point(309, 27);
-            this.button24.Margin = new System.Windows.Forms.Padding(2);
-            this.button24.Name = "button24";
-            this.button24.Size = new System.Drawing.Size(61, 24);
-            this.button24.TabIndex = 44;
-            this.button24.Text = "Limpar";
-            this.button24.UseVisualStyleBackColor = true;
-            this.button24.Click += new System.EventHandler(this.button24_Click);
             // 
             // Form1
             // 
@@ -1581,6 +1645,11 @@
         private System.Windows.Forms.TextBox IDContrato_Jogadores;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button button24;
+        private System.Windows.Forms.ComboBox comboBox6;
+        private System.Windows.Forms.Label label41;
+        private System.Windows.Forms.Button button25;
+        private System.Windows.Forms.Label label42;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 
