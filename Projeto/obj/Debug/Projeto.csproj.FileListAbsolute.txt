@@ -41,3 +41,14 @@ Y:/2º Semestre Duarte/BD/Aulas Práticas/Projeto/Projeto/obj/Debug/Projeto.pdb
 \\Mac\Home\Documents\GitHub\Projeto-BD\Projeto\bin\Debug\Projeto.exe.config
 \\Mac\Home\Documents\GitHub\Projeto-BD\Projeto\bin\Debug\Projeto.exe
 \\Mac\Home\Documents\GitHub\Projeto-BD\Projeto\bin\Debug\Projeto.pdb
+C:\Users\andre\OneDrive\Documents\GitHub\Projeto-BD\Projeto\bin\Debug\Projeto.exe.config
+C:\Users\andre\OneDrive\Documents\GitHub\Projeto-BD\Projeto\bin\Debug\Projeto.exe
+C:\Users\andre\OneDrive\Documents\GitHub\Projeto-BD\Projeto\bin\Debug\Projeto.pdb
+C:\Users\andre\OneDrive\Documents\GitHub\Projeto-BD\Projeto\obj\Debug\Projeto.csproj.AssemblyReference.cache
+C:\Users\andre\OneDrive\Documents\GitHub\Projeto-BD\Projeto\obj\Debug\Projeto.csproj.SuggestedBindingRedirects.cache
+C:\Users\andre\OneDrive\Documents\GitHub\Projeto-BD\Projeto\obj\Debug\Projeto.Form1.resources
+C:\Users\andre\OneDrive\Documents\GitHub\Projeto-BD\Projeto\obj\Debug\Projeto.Properties.Resources.resources
+C:\Users\andre\OneDrive\Documents\GitHub\Projeto-BD\Projeto\obj\Debug\Projeto.csproj.GenerateResource.cache
+C:\Users\andre\OneDrive\Documents\GitHub\Projeto-BD\Projeto\obj\Debug\Projeto.csproj.CoreCompileInputs.cache
+C:\Users\andre\OneDrive\Documents\GitHub\Projeto-BD\Projeto\obj\Debug\Projeto.exe
+C:\Users\andre\OneDrive\Documents\GitHub\Projeto-BD\Projeto\obj\Debug\Projeto.pdb
