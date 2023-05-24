@@ -26,9 +26,11 @@ namespace Projeto
             InitializeFiltroEquipa_JogadoresComboBox();
             InitializeComboBox2();
             InitializeComboBox6();
+            InitializeComboBox7();
 
             updateListaJogadores();
             updateListaTreinadores();
+            updateListaEquipas();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -165,6 +167,30 @@ namespace Projeto
             string selectedContract = (string)comboBox6.SelectedItem;
 
             filtroTreinadores(selectedContract);
+        }
+
+        private void InitializeComboBox7()
+        {
+            comboBox7.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox7.Items.Add("");
+            comboBox7.Items.Add("Western");
+            comboBox7.Items.Add("Eastern");
+
+            // Associate the event-handling method with the 
+            // SelectedIndexChanged event.
+            this.comboBox7.SelectedIndexChanged +=
+                new System.EventHandler(comboBox7_SelectedIndexChanged_1);
+        }
+
+        private void comboBox7_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            ComboBox comboBox = (ComboBox)sender;
+
+            // Save the selected employee's name, because we will remove
+            // the employee's name from the list.
+            string selectedConference = (string)comboBox7.SelectedItem;
+
+            filtroEquipas(selectedConference);
         }
 
         private void Jogadores_Click(object sender, EventArgs e)
@@ -624,6 +650,131 @@ namespace Projeto
             reader.Close();
         }
 
+        private void updateListaEquipas()
+        {
+            totalItems = 0;
+
+            Lista_Equipas.Items.Clear();
+            SqlCommand cmd = new SqlCommand("select * from NBA.TeamCoachOwner", cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Team team = new Team();
+                team.ID = reader["ID"].ToString();
+                team.TeamName = reader["TeamName"].ToString();
+                team.City = reader["City"].ToString();
+                team.Conference = reader["Conference"].ToString();
+                team.FoundYear = reader["Found_Year"].ToString();
+                team.CoachName = reader["CoachName"].ToString();
+                team.OwnerName = reader["OwnerName"].ToString();
+
+                totalItems++;
+                Lista_Equipas.Items.Add(team);
+
+            }
+            label11.Text = "Total de equipas: " + totalItems.ToString();
+            reader.Close();
+
+            this.Lista_Equipas.SelectedIndexChanged +=
+                new System.EventHandler(Lista_Equipas_SelectedIndexChanged);
+        }
+
+        private void Lista_Equipas_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            ListBox ListBox = (ListBox)sender;
+
+            Team selectedTeam = (Team)Lista_Equipas.SelectedItem;
+            //MessageBox.Show(selectedPlayer.Name);
+            if (selectedTeam != null)
+            {
+                textBox9.Text = selectedTeam.TeamName;
+                textBox2.Text = selectedTeam.OwnerName;
+                textBox4.Text = selectedTeam.CoachName;
+                textBox8.Text = selectedTeam.City;
+                textBox5.Text = selectedTeam.Conference;
+                textBox7.Text = selectedTeam.FoundYear;
+
+                Lista_Jogos_Equipa.Items.Clear();
+                //Console.WriteLine("select * from NBA.GetTeamGames(" + "'" + selectedTeam.ID + "')");
+                SqlCommand cmd = new SqlCommand("select * from NBA.GetTeamGames(" + "'" + selectedTeam.ID + "')", cn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Game game = new Game();
+                    game.ID = reader["GameID"].ToString();
+                    game.Time = reader["Time"].ToString();
+                    game.Date = reader["Date"].ToString();
+                    game.HomeScore = reader["Home_Score"].ToString();
+                    game.AwayScore = reader["Away_Score"].ToString();
+                    game.HomeID = reader["Home_Team_ID"].ToString();
+                    game.AwayID = reader["Away_Team_ID"].ToString();
+                    Lista_Jogos_Equipa.Items.Add(game.ToString());
+                }
+                reader.Close();
+
+                SqlCommand cmd1 = new SqlCommand("select * from NBA.GetTeamAverageStats(" + selectedTeam.ID + ")", cn);
+                SqlDataReader reader1 = cmd1.ExecuteReader();
+                while (reader1.Read())
+                {
+                    TeamStats teamStats = new TeamStats();
+                    teamStats.Points = reader1["AveragePoints"].ToString();
+                    teamStats.Assists = reader1["AverageAssists"].ToString();
+                    teamStats.Rebounds = reader1["AverageRebounds"].ToString();
+                    teamStats.Blocks = reader1["AverageBlocks"].ToString();
+                    teamStats.Steals = reader1["AverageSteals"].ToString();
+                    teamStats.FG = reader1["AverageFGP"].ToString();
+                    teamStats.PT3 = reader1["Average3PTP"].ToString();
+                    richTextBox3.Text = teamStats.ToString();
+                }
+                reader1.Close();
+
+                button15.Visible = true;
+                button16.Visible = true;
+            }
+        }
+
+        private void Lista_Jogos_Equipa_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void filtroEquipas(string conferencia)
+        {
+            string query = "select * from NBA.filtrarEquipasPorConferencia(";
+
+            if (string.IsNullOrEmpty(conferencia))
+            {
+                query += "null)";
+            }
+            else
+            {
+                query += "'" + conferencia + "')";
+            }
+
+            Console.WriteLine(query);
+            SqlCommand cmd = new SqlCommand(query, cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            Lista_Equipas.Items.Clear();
+            totalItems = 0;
+            while (reader.Read())
+            {
+                Team team = new Team();
+                team.ID = reader["ID"].ToString();
+                team.TeamName = reader["TeamName"].ToString();
+                team.City = reader["City"].ToString();
+                team.Conference = reader["Conference"].ToString();
+                team.FoundYear = reader["Found_Year"].ToString();
+                team.CoachName = reader["CoachName"].ToString();
+                team.OwnerName = reader["OwnerName"].ToString();
+
+                totalItems++;
+                Lista_Equipas.Items.Add(team);
+
+            }
+            label11.Text = "Total de equipass: " + totalItems.ToString();
+            reader.Close();
+        }
+
         private void button8_Click(object sender, EventArgs e)
         {
             button11.Visible = true;
@@ -694,6 +845,40 @@ namespace Projeto
             reader.Close();
         }
 
+        private void button18_Click(object sender, EventArgs e)
+        {
+            string teamSearch = (string)textBox10.Text;
+            totalItems = 0;
+
+            if (!string.IsNullOrEmpty(teamSearch))
+            {
+                comboBox7.Enabled = false;
+                comboBox7.SelectedIndex = -1;
+            }
+
+            Lista_Equipas.Items.Clear();
+            //Console.WriteLine("select * from NBA.pesquisarJogadoresPorNome(" + "'" + teamSearch + "'" + ")");
+            SqlCommand cmd = new SqlCommand("select * from NBA.pesquisarEquipasPorNome(" + "'" + teamSearch + "'" + ")", cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Team team = new Team();
+                team.ID = reader["ID"].ToString();
+                team.TeamName = reader["TeamName"].ToString();
+                team.City = reader["City"].ToString();
+                team.Conference = reader["Conference"].ToString();
+                team.FoundYear = reader["Found_Year"].ToString();
+                team.CoachName = reader["CoachName"].ToString();
+                team.OwnerName = reader["OwnerName"].ToString();
+
+                totalItems++;
+                Lista_Equipas.Items.Add(team);
+
+            }
+            label11.Text = "Total de equipas: " + totalItems.ToString();
+            reader.Close();
+        }
+
         private void button25_Click(object sender, EventArgs e)
         {
             textBox17.Text = "";
@@ -735,6 +920,24 @@ namespace Projeto
         {
             button2.Visible = true;
             button4.Visible = true;
+        }
+
+        private void richTextBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Lista_Equipas_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button26_Click(object sender, EventArgs e)
+        {
+            textBox10.Text = "";
+            comboBox7.Enabled = true;
+            comboBox7.SelectedIndex = -1;
+            updateListaEquipas();
         }
     }
 }
