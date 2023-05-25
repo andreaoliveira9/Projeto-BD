@@ -48,42 +48,6 @@ return (
 );
 go
 
--- Função para barra de pesquuisa de nome de jogadores
-drop function IF EXISTS NBA.pesquisarJogadoresPorNome;
-go
-create function NBA.pesquisarJogadoresPorNome(@nome varchar(50)) returns table
-as
-return (
-    select *
-    from NBA.PersonPlayer
-    where [Name] like '%' + @nome + '%'
-);
-go
-
--- Função para barra de pesquuisa de nome de treinadores
-drop function IF EXISTS NBA.pesquisarTreinadoresPorNome;
-go
-create function NBA.pesquisarTreinadoresPorNome(@nome varchar(50)) returns table
-as
-return (
-    select *
-    from NBA.PersonCoach
-    where [Name] like '%' + @nome + '%'
-);
-go
-
--- Função para barra de pesquuisa de nome de equipas
-drop function IF EXISTS NBA.pesquisarEquipasPorNome;
-go
-create function NBA.pesquisarEquipasPorNome(@nome varchar(50)) returns table
-as
-return (
-    select *
-    from NBA.TeamCoachOwner
-    where TeamName like '%' + @nome + '%'
-);
-go
-
 -- Função que retorna a média de estatísticaa de um dado jogador
 drop function IF EXISTS NBA.GetPlayerStats
 go
