@@ -56,24 +56,14 @@ go
 drop view IF EXISTS NBA.TeamCoachOwner
 go 
 create view NBA.TeamCoachOwner as 
-	select T.ID, T.[Name], T.City, T.Conference, T.Found_Year, C.[Name] as CoachName, P.[Name] as OwnerName
+	select T.ID, T.[Name] as TeamName, T.City, T.Conference, T.Found_Year, C.[Name] as CoachName, P.[Name] as OwnerName
 	from ((NBA.Team as T join NBA.PersonCoach as C on T.Coach_CCNumber = C.CCNumber) join NBA.Person as P on T.Owner_CCNumber = P.CCNumber);
 go
 
--- Jogos com resultado
-drop view IF EXISTS NBA.GamesWithResult
+-- Jogos com nome das equipas e pavlhão
+drop view IF EXISTS NBA.GamesTeamsStadium
 go 
-create view NBA.GamesWithResult as 
-	select *
-	from NBA.Game as G
-    where G.Home_Score is not null and G.Away_Score is not null;
-go
-
--- Jogos sem resultado
-drop view IF EXISTS NBA.GamesWithoutResult
-go 
-create view NBA.GamesWithoutResult as 
-	select *
-    from NBA.Game as G
-    where G.Home_Score is null and G.Away_Score is null;
+create view NBA.GamesTeamsStadium as 
+	select G.ID, G.[Time], G.[Date], G.Home_Score, G.Away_Score, T1.[Name] as HomeTeamName, T2.[Name] as AwayTeamName, S.[Name] as StadiumName
+	from ((NBA.Game as G inner join NBA.Team as T1 on G.Home_Team_ID = T1.ID) inner join NBA.Team as T2 on G.Away_Team_ID = T2.ID) inner join NBA.Stadium as S on G.Stadium_ID = S.ID
 go
