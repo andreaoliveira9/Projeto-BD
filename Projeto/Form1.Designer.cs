@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.Tabela_Classificativa = new System.Windows.Forms.ListBox();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.textBox21 = new System.Windows.Forms.TextBox();
             this.label37 = new System.Windows.Forms.Label();
@@ -57,6 +56,9 @@
             this.label40 = new System.Windows.Forms.Label();
             this.Lista_Jogos = new System.Windows.Forms.ListBox();
             this.Equipas_Tab = new System.Windows.Forms.TabPage();
+            this.comboBox7 = new System.Windows.Forms.ComboBox();
+            this.label43 = new System.Windows.Forms.Label();
+            this.button26 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.richTextBox3 = new System.Windows.Forms.RichTextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
@@ -145,9 +147,8 @@
             this.Lista_Jogadores = new System.Windows.Forms.ListBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.button26 = new System.Windows.Forms.Button();
-            this.label43 = new System.Windows.Forms.Label();
-            this.comboBox7 = new System.Windows.Forms.ComboBox();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.label28 = new System.Windows.Forms.Label();
             this.tabPage1.SuspendLayout();
             this.Equipas_Tab.SuspendLayout();
             this.Treinadores_Tab.SuspendLayout();
@@ -157,7 +158,8 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.Tabela_Classificativa);
+            this.tabPage1.Controls.Add(this.label28);
+            this.tabPage1.Controls.Add(this.richTextBox1);
             this.tabPage1.Controls.Add(this.dateTimePicker1);
             this.tabPage1.Controls.Add(this.textBox21);
             this.tabPage1.Controls.Add(this.label37);
@@ -192,15 +194,6 @@
             this.tabPage1.TabIndex = 3;
             this.tabPage1.Text = "Jogos";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // Tabela_Classificativa
-            // 
-            this.Tabela_Classificativa.FormattingEnabled = true;
-            this.Tabela_Classificativa.Location = new System.Drawing.Point(715, 261);
-            this.Tabela_Classificativa.Margin = new System.Windows.Forms.Padding(2);
-            this.Tabela_Classificativa.Name = "Tabela_Classificativa";
-            this.Tabela_Classificativa.Size = new System.Drawing.Size(237, 134);
-            this.Tabela_Classificativa.TabIndex = 121;
             // 
             // dateTimePicker1
             // 
@@ -509,6 +502,39 @@
             this.Equipas_Tab.TabIndex = 2;
             this.Equipas_Tab.Text = "Equipas";
             this.Equipas_Tab.UseVisualStyleBackColor = true;
+            // 
+            // comboBox7
+            // 
+            this.comboBox7.BackColor = System.Drawing.SystemColors.Window;
+            this.comboBox7.FormattingEnabled = true;
+            this.comboBox7.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.comboBox7.Location = new System.Drawing.Point(9, 452);
+            this.comboBox7.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBox7.Name = "comboBox7";
+            this.comboBox7.Size = new System.Drawing.Size(150, 21);
+            this.comboBox7.Sorted = true;
+            this.comboBox7.TabIndex = 87;
+            // 
+            // label43
+            // 
+            this.label43.AutoSize = true;
+            this.label43.Location = new System.Drawing.Point(7, 435);
+            this.label43.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(112, 13);
+            this.label43.TabIndex = 86;
+            this.label43.Text = "Filtrar por conferência:";
+            // 
+            // button26
+            // 
+            this.button26.Location = new System.Drawing.Point(309, 26);
+            this.button26.Margin = new System.Windows.Forms.Padding(2);
+            this.button26.Name = "button26";
+            this.button26.Size = new System.Drawing.Size(61, 24);
+            this.button26.TabIndex = 85;
+            this.button26.Text = "Limpar";
+            this.button26.UseVisualStyleBackColor = true;
+            this.button26.Click += new System.EventHandler(this.button26_Click);
             // 
             // label9
             // 
@@ -1495,38 +1521,22 @@
             this.tabControl1.Size = new System.Drawing.Size(1008, 606);
             this.tabControl1.TabIndex = 0;
             // 
-            // button26
+            // richTextBox1
             // 
-            this.button26.Location = new System.Drawing.Point(309, 26);
-            this.button26.Margin = new System.Windows.Forms.Padding(2);
-            this.button26.Name = "button26";
-            this.button26.Size = new System.Drawing.Size(61, 24);
-            this.button26.TabIndex = 85;
-            this.button26.Text = "Limpar";
-            this.button26.UseVisualStyleBackColor = true;
-            this.button26.Click += new System.EventHandler(this.button26_Click);
+            this.richTextBox1.Location = new System.Drawing.Point(716, 261);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(236, 134);
+            this.richTextBox1.TabIndex = 122;
+            this.richTextBox1.Text = "";
             // 
-            // label43
+            // label28
             // 
-            this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(7, 435);
-            this.label43.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(112, 13);
-            this.label43.TabIndex = 86;
-            this.label43.Text = "Filtrar por conferência:";
-            // 
-            // comboBox7
-            // 
-            this.comboBox7.BackColor = System.Drawing.SystemColors.Window;
-            this.comboBox7.FormattingEnabled = true;
-            this.comboBox7.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.comboBox7.Location = new System.Drawing.Point(9, 452);
-            this.comboBox7.Margin = new System.Windows.Forms.Padding(2);
-            this.comboBox7.Name = "comboBox7";
-            this.comboBox7.Size = new System.Drawing.Size(150, 21);
-            this.comboBox7.Sorted = true;
-            this.comboBox7.TabIndex = 87;
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(713, 245);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(104, 13);
+            this.label28.TabIndex = 123;
+            this.label28.Text = "Tabela Classificativa";
             // 
             // Form1
             // 
@@ -1660,7 +1670,6 @@
         private System.Windows.Forms.ListBox Lista_Equipas;
         private System.Windows.Forms.TextBox textBox20;
         private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.ListBox Tabela_Classificativa;
         private System.Windows.Forms.TextBox IDContrato_Jogadores;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button button24;
@@ -1672,6 +1681,8 @@
         private System.Windows.Forms.Button button26;
         private System.Windows.Forms.ComboBox comboBox7;
         private System.Windows.Forms.Label label43;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 

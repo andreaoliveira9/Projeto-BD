@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
@@ -27,10 +28,12 @@ namespace Projeto
             InitializeComboBox2();
             InitializeComboBox6();
             InitializeComboBox7();
+            InitializeTabela_Classificativa();
 
             updateListaJogadores();
             updateListaTreinadores();
             updateListaEquipas();
+            updateListaJogos();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -65,8 +68,6 @@ namespace Projeto
             comboBox1.Items.Add("Center");
             comboBox1.Items.Add("Center-Forward");
 
-            // Associate the event-handling method with the 
-            // SelectedIndexChanged event.
             this.comboBox1.SelectedIndexChanged +=
                 new System.EventHandler(comboBox1_SelectedIndexChanged_1);
         }
@@ -75,13 +76,11 @@ namespace Projeto
         {
             ComboBox comboBox = (ComboBox)sender;
 
-            // Save the selected employee's name, because we will remove
-            // the employee's name from the list.
             string selectedTeam = (string)FiltroEquipa_Jogadores.SelectedItem;
             string selectedContract = (string)comboBox2.SelectedItem;
             string selectedPosition = (string)comboBox1.SelectedItem;
-            //MessageBox.Show(selectedEmployee);
 
+            clear("jogadores", "filtro");
             filtroJogadores(selectedTeam, selectedContract, selectedPosition);
         }
 
@@ -100,8 +99,6 @@ namespace Projeto
             FiltroEquipa_Jogadores.Items.Add("Houston Rockets");
             FiltroEquipa_Jogadores.Items.Add("Portland Trail Blazers");
 
-            // Associate the event-handling method with the 
-            // SelectedIndexChanged event.
             this.FiltroEquipa_Jogadores.SelectedIndexChanged +=
                 new System.EventHandler(FiltroEquipa_JogadoresComboBox_SelectedIndexChanged_1);
         }
@@ -110,12 +107,11 @@ namespace Projeto
         {
             ComboBox comboBox = (ComboBox)sender;
 
-            // Save the selected employee's name, because we will remove
-            // the employee's name from the list.
             string selectedTeam = (string)FiltroEquipa_Jogadores.SelectedItem;
             string selectedContract = (string)comboBox2.SelectedItem;
             string selectedPosition = (string)comboBox1.SelectedItem;
 
+            clear("jogadores", "filtro");
             filtroJogadores(selectedTeam, selectedContract, selectedPosition);
         }
 
@@ -126,8 +122,6 @@ namespace Projeto
             comboBox2.Items.Add("Sim");
             comboBox2.Items.Add("Nao");
 
-            // Associate the event-handling method with the 
-            // SelectedIndexChanged event.
             this.comboBox2.SelectedIndexChanged +=
                 new System.EventHandler(comboBox2_SelectedIndexChanged_1);
         }
@@ -136,12 +130,11 @@ namespace Projeto
         {
             ComboBox comboBox = (ComboBox)sender;
 
-            // Save the selected employee's name, because we will remove
-            // the employee's name from the list.
             string selectedTeam = (string)FiltroEquipa_Jogadores.SelectedItem;
             string selectedContract = (string)comboBox2.SelectedItem;
             string selectedPosition = (string)comboBox1.SelectedItem;
 
+            clear("jogadores", "filtro");
             filtroJogadores(selectedTeam, selectedContract, selectedPosition);
         }
 
@@ -152,8 +145,6 @@ namespace Projeto
             comboBox6.Items.Add("Sim");
             comboBox6.Items.Add("Nao");
 
-            // Associate the event-handling method with the 
-            // SelectedIndexChanged event.
             this.comboBox6.SelectedIndexChanged +=
                 new System.EventHandler(comboBox6_SelectedIndexChanged_1);
         }
@@ -162,10 +153,9 @@ namespace Projeto
         {
             ComboBox comboBox = (ComboBox)sender;
 
-            // Save the selected employee's name, because we will remove
-            // the employee's name from the list.
             string selectedContract = (string)comboBox6.SelectedItem;
 
+            clear("treinadores", "filtro");
             filtroTreinadores(selectedContract);
         }
 
@@ -176,8 +166,6 @@ namespace Projeto
             comboBox7.Items.Add("Western");
             comboBox7.Items.Add("Eastern");
 
-            // Associate the event-handling method with the 
-            // SelectedIndexChanged event.
             this.comboBox7.SelectedIndexChanged +=
                 new System.EventHandler(comboBox7_SelectedIndexChanged_1);
         }
@@ -186,41 +174,343 @@ namespace Projeto
         {
             ComboBox comboBox = (ComboBox)sender;
 
-            // Save the selected employee's name, because we will remove
-            // the employee's name from the list.
             string selectedConference = (string)comboBox7.SelectedItem;
 
+            clear("equipas", "filtro");
             filtroEquipas(selectedConference);
         }
 
-        private void Jogadores_Click(object sender, EventArgs e)
+        private void InitializeTabela_Classificativa()
         {
+            SqlCommand cmd = new SqlCommand("select * from NBA.GetTeamStandings() order by [Win%] desc", cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            totalItems = 0;
+            while (reader.Read())
+            {
+                Standing standing = new Standing();
+                standing.TeamName = reader["Team_Name"].ToString();
+                standing.GamesPlayed = reader["GamesPlayed"].ToString();
+                standing.Wins = reader["Wins"].ToString();
+                standing.Losses = reader["Losses"].ToString();
+                standing.WinP = reader["Win%"].ToString();
 
+                totalItems++;
+                richTextBox1.Text += string.Format("Lugar {0,-5}  {1}\n", totalItems, standing);
+            }
+            reader.Close();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void updateListaJogadores()
         {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            string playerSearch = (string)Search_Jogadores.Text;
             totalItems = 0;
 
-            if (!string.IsNullOrEmpty(playerSearch))
-            {
-                comboBox2.Enabled = false;
-                FiltroEquipa_Jogadores.Enabled = false;
-                comboBox1.Enabled = false;
-                comboBox2.SelectedIndex = -1;
-                FiltroEquipa_Jogadores.SelectedIndex = -1;
-                comboBox1.SelectedIndex = -1;
-            } 
-
             Lista_Jogadores.Items.Clear();
-            SqlCommand cmd = new SqlCommand("select * from NBA.pesquisarJogadoresPorNome(" + "'" + playerSearch + "'" + ")", cn);
+            SqlCommand cmd = new SqlCommand("select * from NBA.PersonPlayer", cn);
             SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Player player = new Player();
+                player.CCNumber = reader["CCNumber"].ToString();
+                player.Name = reader["Name"].ToString();
+                player.Age = reader["Age"].ToString();
+                player.ContractID = reader["Contract_ID"].ToString();
+                player.Number = reader["Number"].ToString();
+                player.Height = reader["Height"].ToString();
+                player.Weight = reader["Weight"].ToString();
+                player.Position = reader["Position"].ToString();
+                player.TeamID = reader["Team_ID"].ToString();
+
+                totalItems++;
+                Lista_Jogadores.Items.Add(player);
+
+            }
+            label23.Text = "Total de jogadores: " + totalItems.ToString();
+            reader.Close();
+
+            this.Lista_Jogadores.SelectedIndexChanged +=
+                new System.EventHandler(Lista_Jogadores_SelectedIndexChanged_1);
+        }
+
+        private void Lista_Jogadores_SelectedIndexChanged_1(object sender, System.EventArgs e)
+        {
+            ListBox ListBox = (ListBox)sender;
+
+            Player selectedPlayer = (Player)Lista_Jogadores.SelectedItem;
+            //MessageBox.Show(selectedPlayer.Name);
+            if (selectedPlayer != null)
+            {
+                NumeroCC_Jogadores.Text = selectedPlayer.CCNumber;
+                Name_Jogadores.Text = selectedPlayer.Name;
+                Altura_Jogadores.Text = selectedPlayer.Height;
+                Peso_Jogadores.Text = selectedPlayer.Weight;
+                Posicao_Jogadores.Text = selectedPlayer.Position;
+                Idade_Jogadores.Text = selectedPlayer.Age;
+                IDEquipa_Jogadores.Text = selectedPlayer.TeamID;
+                IDContrato_Jogadores.Text = selectedPlayer.ContractID;
+
+                SqlCommand cmd = new SqlCommand("select * from NBA.[Contract] as C inner join NBA.Person as P on C.ID = P.Contract_ID where C.ID = " + selectedPlayer.ContractID, cn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Contract contract = new Contract();
+                    contract.ID = reader["ID"].ToString();
+                    contract.Description = reader["Description"].ToString();
+                    contract.Salary = reader["Salary"].ToString();
+                    contract.StartDate = reader["Start_Date"].ToString();
+                    contract.EndDate = reader["End_Date"].ToString();
+                    Contrato_Jogador.Text = contract.ToString();
+                }
+                reader.Close();
+
+                SqlCommand cmd1 = new SqlCommand("select * from NBA.GetPlayerStats(" + selectedPlayer.CCNumber + ")", cn);
+                SqlDataReader reader1 = cmd1.ExecuteReader();
+                while (reader1.Read())
+                {
+                    PlayerStats playerStats = new PlayerStats();
+                    playerStats.Points = reader1["Points"].ToString();
+                    playerStats.Assists = reader1["Assists"].ToString();
+                    playerStats.Rebounds = reader1["Rebounds"].ToString();
+                    playerStats.Blocks = reader1["Blocks"].ToString();
+                    playerStats.Steals = reader1["Steals"].ToString();
+                    playerStats.FG = reader1["FG%"].ToString();
+                    playerStats.PT3 = reader1["3PT%"].ToString();
+                    Estatistica_Jogador.Text = playerStats.ToString();
+                } 
+                reader1.Close();
+
+                button9.Visible = true;
+                button10.Visible = true;
+            }
+        }
+
+        private void updateListaTreinadores()
+        {
+            totalItems = 0;
+
+            Lista_Treinadores.Items.Clear();
+            SqlCommand cmd = new SqlCommand("select * from NBA.PersonCoach", cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Coach coach = new Coach();
+                coach.CCNumber = reader["CCNumber"].ToString();
+                coach.Name = reader["Name"].ToString();
+                coach.Age = reader["Age"].ToString();
+                coach.ContractID = reader["Contract_ID"].ToString();
+
+                totalItems++;
+                Lista_Treinadores.Items.Add(coach);
+
+            }
+            label2.Text = "Total de treinadores: " + totalItems.ToString();
+            reader.Close();
+
+            this.Lista_Treinadores.SelectedIndexChanged +=
+                new System.EventHandler(Lista_Treinadores_SelectedIndexChanged);
+        }
+
+        private void Lista_Treinadores_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            ListBox ListBox = (ListBox)sender;
+
+            Coach selectedCoach = (Coach)Lista_Treinadores.SelectedItem;
+            //MessageBox.Show(selectedPlayer.Name);
+            if (selectedCoach != null)
+            {
+                textBox16.Text = selectedCoach.CCNumber;
+                textBox20.Text = selectedCoach.Name;
+                textBox14.Text = selectedCoach.Age;
+                textBox1.Text = selectedCoach.ContractID;
+
+                SqlCommand cmd = new SqlCommand("select * from NBA.[Contract] as C inner join NBA.Person as P on C.ID = P.Contract_ID where C.ID = " + selectedCoach.ContractID, cn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Contract contract = new Contract();
+                    contract.ID = reader["ID"].ToString();
+                    contract.Description = reader["Description"].ToString();
+                    contract.Salary = reader["Salary"].ToString();
+                    contract.StartDate = reader["Start_Date"].ToString();
+                    contract.EndDate = reader["End_Date"].ToString();
+                    richTextBox2.Text = contract.ToString();
+                }
+                reader.Close();
+
+                button5.Visible = true;
+                button6.Visible = true;
+            }
+        }
+
+        private void updateListaEquipas()
+        {
+            totalItems = 0;
+
+            Console.WriteLine("oi");
+
+            Lista_Equipas.Items.Clear();
+            SqlCommand cmd = new SqlCommand("select * from NBA.TeamCoachOwner", cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Team team = new Team();
+                team.ID = reader["ID"].ToString();
+                team.TeamName = reader["TeamName"].ToString();
+                team.City = reader["City"].ToString();
+                team.Conference = reader["Conference"].ToString();
+                team.FoundYear = reader["Found_Year"].ToString();
+                team.CoachName = reader["CoachName"].ToString();
+                team.OwnerName = reader["OwnerName"].ToString();
+
+                totalItems++;
+                Console.WriteLine(team);
+                Lista_Equipas.Items.Add(team);
+
+            }
+            label11.Text = "Total de equipas: " + totalItems.ToString();
+            reader.Close();
+
+            this.Lista_Equipas.SelectedIndexChanged +=
+                new System.EventHandler(Lista_Equipas_SelectedIndexChanged);
+        }
+
+        private void Lista_Equipas_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            ListBox ListBox = (ListBox)sender;
+
+            Team selectedTeam = (Team)Lista_Equipas.SelectedItem;
+            //MessageBox.Show(selectedPlayer.Name);
+            if (selectedTeam != null)
+            {
+                textBox9.Text = selectedTeam.TeamName;
+                textBox2.Text = selectedTeam.OwnerName;
+                textBox4.Text = selectedTeam.CoachName;
+                textBox8.Text = selectedTeam.City;
+                textBox5.Text = selectedTeam.Conference;
+                textBox7.Text = selectedTeam.FoundYear;
+
+                Lista_Jogos_Equipa.Items.Clear();
+                //Console.WriteLine("select * from NBA.GetTeamGames(" + "'" + selectedTeam.ID + "')");
+                SqlCommand cmd = new SqlCommand("select * from NBA.GetTeamGames(" + "'" + selectedTeam.ID + "')", cn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Game game = new Game();
+                    game.ID = reader["GameID"].ToString();
+                    game.Time = reader["Time"].ToString();
+                    game.Date = reader["Date"].ToString();
+                    game.HomeScore = reader["Home_Score"].ToString();
+                    game.AwayScore = reader["Away_Score"].ToString();
+                    game.HomeID = reader["Home_Team_ID"].ToString();
+                    game.AwayID = reader["Away_Team_ID"].ToString();
+                    Lista_Jogos_Equipa.Items.Add(game.ToString());
+                }
+                reader.Close();
+
+                SqlCommand cmd1 = new SqlCommand("select * from NBA.GetTeamAverageStats(" + selectedTeam.ID + ")", cn);
+                SqlDataReader reader1 = cmd1.ExecuteReader();
+                while (reader1.Read())
+                {
+                    TeamStats teamStats = new TeamStats();
+                    teamStats.Points = reader1["AveragePoints"].ToString();
+                    teamStats.Assists = reader1["AverageAssists"].ToString();
+                    teamStats.Rebounds = reader1["AverageRebounds"].ToString();
+                    teamStats.Blocks = reader1["AverageBlocks"].ToString();
+                    teamStats.Steals = reader1["AverageSteals"].ToString();
+                    teamStats.FG = reader1["AverageFGP"].ToString();
+                    teamStats.PT3 = reader1["Average3PTP"].ToString();
+                    richTextBox3.Text = teamStats.ToString();
+                }
+                reader1.Close();
+
+                button15.Visible = true;
+                button16.Visible = true;
+            }
+        }
+
+        private void updateListaJogos()
+        {
+            totalItems = 0;
+
+            Lista_Equipas.Items.Clear();
+            SqlCommand cmd = new SqlCommand("select * from NBA.GamesTeamsStadium", cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Game1 game = new Game1();
+                game.ID = reader["ID"].ToString();
+                game.Time = reader["Time"].ToString();
+                game.Date = reader["Date"].ToString();
+                game.HomeScore = reader["Home_Score"].ToString();
+                game.AwayScore = reader["Away_Score"].ToString();
+                game.HomeTeamName = reader["HomeTeamName"].ToString();
+                game.AwayTeamName = reader["AwayTeamName"].ToString();
+                game.StadiumName = reader["StadiumName"].ToString();
+
+                Lista_Jogos.Items.Add(game);
+                totalItems++;
+            }
+            label26.Text = "Total de jogos: " + totalItems.ToString();
+            reader.Close();
+
+            this.Lista_Equipas.SelectedIndexChanged +=
+                new System.EventHandler(Lista_Jogos_SelectedIndexChanged);
+        }
+
+        private void Lista_Jogos_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            ListBox ListBox = (ListBox)sender;
+
+            Game1 selectedGame = (Game1)Lista_Jogos.SelectedItem;
+            //MessageBox.Show(selectedGame.ID);
+            if (selectedGame != null)
+            {
+                textBox15.Text = selectedGame.HomeTeamName;
+                textBox6.Text = selectedGame.AwayTeamName;
+                textBox21.Text = selectedGame.StadiumName;
+                textBox12.Text = selectedGame.Time;
+                textBox13.Text = selectedGame.HomeScore;
+                textBox11.Text = selectedGame.AwayScore;
+
+                DateTime data = new DateTime(int.Parse(selectedGame.Date.Substring(0,4)), int.Parse(selectedGame.Date.Substring(5, 2)), int.Parse(selectedGame.Date.Substring(8, 2)));
+                dateTimePicker1.Value = data;
+            }
+        }
+
+        private void filtroJogadores(string equipa, string contrato, string posicao)
+        {
+            string query = "select * from NBA.filtrarJogadoresPorEquipaEContratoEPosicao(";
+            if (string.IsNullOrEmpty(equipa))
+            {
+                query += "null,";
+            }
+            else
+            {
+                query += "'" + equipa + "',";
+            }
+
+            if (string.IsNullOrEmpty(contrato))
+            {
+                query += "null,";
+            }
+            else
+            {
+                query += "'" + contrato + "',";
+            }
+
+            if (string.IsNullOrEmpty(posicao))
+            {
+                query += "null)";
+            }
+            else
+            {
+                query += "'" + posicao + "')";
+            }
+
+            //Console.WriteLine(query);
+            SqlCommand cmd = new SqlCommand(query, cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            Lista_Jogadores.Items.Clear();
+            totalItems = 0;
             while (reader.Read())
             {
                 Player player = new Player();
@@ -242,21 +532,394 @@ namespace Projeto
             reader.Close();
         }
 
+        private void filtroTreinadores(string contrato)
+        {
+            string query = "select * from NBA.filtrarTreinadoresPorContrato(";
+
+            if (string.IsNullOrEmpty(contrato))
+            {
+                query += "null)";
+            }
+            else
+            {
+                query += "'" + contrato + "')";
+            }
+
+            Console.WriteLine(query);
+            SqlCommand cmd = new SqlCommand(query, cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            Lista_Treinadores.Items.Clear();
+            totalItems = 0;
+            while (reader.Read())
+            {
+                Coach coach = new Coach();
+                coach.CCNumber = reader["CCNumber"].ToString();
+                coach.Name = reader["Name"].ToString();
+                coach.Age = reader["Age"].ToString();
+                coach.ContractID = reader["Contract_ID"].ToString();
+
+                totalItems++;
+                Lista_Treinadores.Items.Add(coach);
+
+            }
+            label2.Text = "Total de treinadores: " + totalItems.ToString();
+            reader.Close();
+        }
+
+        private void filtroEquipas(string conferencia)
+        {
+            string query = "select * from NBA.filtrarEquipasPorConferencia(";
+
+            if (string.IsNullOrEmpty(conferencia))
+            {
+                query += "null)";
+            }
+            else
+            {
+                query += "'" + conferencia + "')";
+            }
+
+            Console.WriteLine(query);
+            SqlCommand cmd = new SqlCommand(query, cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            Lista_Equipas.Items.Clear();
+            totalItems = 0;
+            while (reader.Read())
+            {
+                Team team = new Team();
+                team.ID = reader["ID"].ToString();
+                team.TeamName = reader["Name"].ToString();
+                team.City = reader["City"].ToString();
+                team.Conference = reader["Conference"].ToString();
+                team.FoundYear = reader["Found_Year"].ToString();
+                team.CoachName = reader["CoachName"].ToString();
+                team.OwnerName = reader["OwnerName"].ToString();
+
+                totalItems++;
+                Lista_Equipas.Items.Add(team);
+
+            }
+            label11.Text = "Total de equipass: " + totalItems.ToString();
+            reader.Close();
+        }
+
+        private void barraPesquisa(string nome, string tabela)
+        {
+            //Console.WriteLine("exec NBA.pesquisarPorNome @nome = " + "'" + nome + "'" + ", @esquema = 'NBA', @tabela = " + "'" + tabela + "'");
+            SqlCommand cmd = new SqlCommand("exec NBA.pesquisarPorNome @nome = " + "'" + nome + "'" + ", @esquema = 'NBA', @tabela = " + "'" + tabela + "'", cn);
+
+            if (tabela == "PersonCoach")
+            {
+                totalItems = 0;
+
+                if (!string.IsNullOrEmpty(nome))
+                {
+                    comboBox6.Enabled = false;
+                    comboBox6.SelectedIndex = -1;
+                }
+
+                Lista_Treinadores.Items.Clear();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Coach coach = new Coach();
+                    coach.CCNumber = reader["CCNumber"].ToString();
+                    coach.Name = reader["Name"].ToString();
+                    coach.Age = reader["Age"].ToString();
+                    coach.ContractID = reader["Contract_ID"].ToString();
+
+                    totalItems++;
+                    Lista_Treinadores.Items.Add(coach);
+
+                }
+                label2.Text = "Total de jogadores: " + totalItems.ToString();
+                reader.Close();
+            } 
+            else if (tabela == "PersonPlayer")
+            {
+                totalItems= 0;
+                if (!string.IsNullOrEmpty(nome))
+                {
+                    comboBox2.Enabled = false;
+                    FiltroEquipa_Jogadores.Enabled = false;
+                    comboBox1.Enabled = false;
+                    comboBox2.SelectedIndex = -1;
+                    FiltroEquipa_Jogadores.SelectedIndex = -1;
+                    comboBox1.SelectedIndex = -1;
+                }
+
+                Lista_Jogadores.Items.Clear();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Player player = new Player();
+                    player.CCNumber = reader["CCNumber"].ToString();
+                    player.Name = reader["Name"].ToString();
+                    player.Age = reader["Age"].ToString();
+                    player.ContractID = reader["Contract_ID"].ToString();
+                    player.Number = reader["Number"].ToString();
+                    player.Height = reader["Height"].ToString();
+                    player.Weight = reader["Weight"].ToString();
+                    player.Position = reader["Position"].ToString();
+                    player.TeamID = reader["Team_ID"].ToString();
+
+                    totalItems++;
+                    Lista_Jogadores.Items.Add(player);
+
+                }
+                label23.Text = "Total de jogadores: " + totalItems.ToString();
+                reader.Close();
+            }
+            else
+            {
+                totalItems = 0;
+
+                if (!string.IsNullOrEmpty(nome))
+                {
+                    comboBox7.Enabled = false;
+                    comboBox7.SelectedIndex = -1;
+                }
+
+                Lista_Equipas.Items.Clear();
+                //Console.WriteLine("select * from NBA.pesquisarJogadoresPorNome(" + "'" + teamSearch + "'" + ")");
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Team team = new Team();
+                    team.ID = reader["ID"].ToString();
+                    team.TeamName = reader["TeamName"].ToString();
+                    team.City = reader["City"].ToString();
+                    team.Conference = reader["Conference"].ToString();
+                    team.FoundYear = reader["Found_Year"].ToString();
+                    team.CoachName = reader["CoachName"].ToString();
+                    team.OwnerName = reader["OwnerName"].ToString();
+
+                    totalItems++;
+                    Lista_Equipas.Items.Add(team);
+
+                }
+                label11.Text = "Total de equipas: " + totalItems.ToString();
+                reader.Close();
+            }
+        }
+
+        private void clear(string janela, string botao)
+        {
+            if (janela == "jogadores")
+            {
+                if (botao != "filtro")
+                {
+                    comboBox2.Enabled = true;
+                    comboBox2.SelectedIndex = -1;
+                    FiltroEquipa_Jogadores.Enabled = true;
+                    FiltroEquipa_Jogadores.SelectedIndex = -1;
+                    comboBox1.Enabled = true;
+                    comboBox1.SelectedIndex = -1;
+                }
+                
+                button9.Visible = false;
+                button10.Visible = false;
+
+                Search_Jogadores.Text = "";
+                NumeroCC_Jogadores.Text = "";
+                Name_Jogadores.Text = "";
+                Altura_Jogadores.Text = "";
+                Peso_Jogadores.Text = "";
+                Posicao_Jogadores.Text = "";
+                Idade_Jogadores.Text = "";
+                IDEquipa_Jogadores.Text = "";
+                IDContrato_Jogadores.Text = "";
+                Estatistica_Jogador.Text = "";
+                Contrato_Jogador.Text = "";
+
+                if (botao == "limpar")
+                {
+                    updateListaJogadores();
+                }
+            }
+            else if (janela == "treinadores")
+            {
+                if (botao != "filtro")
+                {
+                    comboBox6.Enabled = true;
+                    comboBox6.SelectedIndex = -1;
+                }
+                
+                button6.Visible = false;
+                button5.Visible = false;
+
+                textBox17.Text = "";
+                textBox16.Text = "";
+                textBox20.Text = "";
+                textBox14.Text = "";
+                textBox1.Text = "";
+                richTextBox2.Text = "";
+
+                if (botao == "limpar")
+                {
+                    updateListaTreinadores();
+                }
+            }
+            else if (janela == "equipas")
+            {
+                if (botao != "filtro")
+                {
+                    comboBox7.Enabled = true;
+                    comboBox7.SelectedIndex = -1;
+                }
+
+                button16.Visible = false;
+                button15.Visible = false;
+
+                textBox10.Text = "";
+                textBox9.Text = "";
+                textBox4.Text = "";
+                textBox2.Text = "";
+                textBox7.Text = "";
+                textBox8.Text = "";
+                textBox5.Text = "";
+                richTextBox3.Text = "";
+                Lista_Jogos_Equipa.Items.Clear();
+
+                if (botao == "limpar")
+                {
+                    updateListaEquipas();
+                }
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string playerSearch = (string)Search_Jogadores.Text;
+
+            clear("jogadores", "pesquisar");
+            barraPesquisa(playerSearch, "PersonPlayer");
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            string coachSearch = (string)textBox17.Text;
+
+            clear("treinadores", "pesquisar");
+            barraPesquisa(coachSearch, "PersonCoach");
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            string teamSearch = (string)textBox10.Text;
+
+            clear("equipas", "pesquisar");
+            barraPesquisa(teamSearch, "TeamCoachOwner");
+        }
+
+        private void button25_Click(object sender, EventArgs e)
+        {
+            clear("treinadores", "limpar");
+        }
+
+        private void button26_Click(object sender, EventArgs e)
+        {
+            clear("equipas", "limpar");
+        }
+
         private void button24_Click(object sender, EventArgs e)
         {
-            Search_Jogadores.Text = "";
-            comboBox2.Enabled = true;
-            FiltroEquipa_Jogadores.Enabled = true;
-            comboBox1.Enabled = true;
-            comboBox2.SelectedIndex = -1;
-            FiltroEquipa_Jogadores.SelectedIndex = -1;
-            comboBox1.SelectedIndex = -1;
-            updateListaJogadores();
+            clear("jogadores", "limpar");
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            button2.Visible = true;
+            button4.Visible = true;
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            button2.Visible = false;
+            button4.Visible = false;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            button2.Visible = false;
+            button4.Visible = false;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            button2.Visible = true;
+            button4.Visible = true;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            button2.Visible = true;
+            button4.Visible = true;
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            button11.Visible = true;
+            button12.Visible = true;
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            button11.Visible = true;
+            button12.Visible = true;
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            button11.Visible = true;
+            button12.Visible = true;
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            button11.Visible = false;
+            button12.Visible = false;
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            button11.Visible = false;
+            button12.Visible = false;
+        }
+
+        private void Treinadores_Tab_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox16_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox6_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Tabela_Classificativa_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void richTextBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Lista_Equipas_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
-      
+
         }
 
         private void button2_click(object sender, EventArgs e)
@@ -419,525 +1082,19 @@ namespace Projeto
 
         }
 
-        private void updateListaJogadores()
+        private void Jogadores_Click(object sender, EventArgs e)
         {
-            totalItems = 0;
 
-            Lista_Jogadores.Items.Clear();
-            SqlCommand cmd = new SqlCommand("select * from NBA.PersonPlayer", cn);
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                Player player = new Player();
-                player.CCNumber = reader["CCNumber"].ToString();
-                player.Name = reader["Name"].ToString();
-                player.Age = reader["Age"].ToString();
-                player.ContractID = reader["Contract_ID"].ToString();
-                player.Number = reader["Number"].ToString();
-                player.Height = reader["Height"].ToString();
-                player.Weight = reader["Weight"].ToString();
-                player.Position = reader["Position"].ToString();
-                player.TeamID = reader["Team_ID"].ToString();
-
-                totalItems++;
-                Lista_Jogadores.Items.Add(player);
-
-            }
-            label23.Text = "Total de jogadores: " + totalItems.ToString();
-            reader.Close();
-
-            this.Lista_Jogadores.SelectedIndexChanged +=
-                new System.EventHandler(Lista_Jogadores_SelectedIndexChanged_1);
         }
 
-        private void Lista_Jogadores_SelectedIndexChanged_1(object sender, System.EventArgs e)
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            ListBox ListBox = (ListBox)sender;
 
-            Player selectedPlayer = (Player)Lista_Jogadores.SelectedItem;
-            //MessageBox.Show(selectedPlayer.Name);
-            if (selectedPlayer != null)
-            {
-                NumeroCC_Jogadores.Text = selectedPlayer.CCNumber;
-                Name_Jogadores.Text = selectedPlayer.Name;
-                Altura_Jogadores.Text = selectedPlayer.Height;
-                Peso_Jogadores.Text = selectedPlayer.Weight;
-                Posicao_Jogadores.Text = selectedPlayer.Position;
-                Idade_Jogadores.Text = selectedPlayer.Age;
-                IDEquipa_Jogadores.Text = selectedPlayer.TeamID;
-                IDContrato_Jogadores.Text = selectedPlayer.ContractID;
-
-                SqlCommand cmd = new SqlCommand("select * from NBA.[Contract] as C inner join NBA.Person as P on C.ID = P.Contract_ID where C.ID = " + selectedPlayer.ContractID, cn);
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    Contract contract = new Contract();
-                    contract.ID = reader["ID"].ToString();
-                    contract.Description = reader["Description"].ToString();
-                    contract.Salary = reader["Salary"].ToString();
-                    contract.StartDate = reader["Start_Date"].ToString();
-                    contract.EndDate = reader["End_Date"].ToString();
-                    Contrato_Jogador.Text = contract.ToString();
-                }
-                reader.Close();
-
-                SqlCommand cmd1 = new SqlCommand("select * from NBA.GetPlayerStats(" + selectedPlayer.CCNumber + ")", cn);
-                SqlDataReader reader1 = cmd1.ExecuteReader();
-                while (reader1.Read())
-                {
-                    PlayerStats playerStats = new PlayerStats();
-                    playerStats.Points = reader1["Points"].ToString();
-                    playerStats.Assists = reader1["Assists"].ToString();
-                    playerStats.Rebounds = reader1["Rebounds"].ToString();
-                    playerStats.Blocks = reader1["Blocks"].ToString();
-                    playerStats.Steals = reader1["Steals"].ToString();
-                    playerStats.FG = reader1["FG%"].ToString();
-                    playerStats.PT3 = reader1["3PT%"].ToString();
-                    Estatistica_Jogador.Text = playerStats.ToString();
-                }
-                reader1.Close();
-
-                button9.Visible = true;
-                button10.Visible = true;
-            }
-        }
-
-        private void filtroJogadores(string equipa, string contrato, string posicao)
-        {
-            string query = "select * from NBA.filtrarJogadoresPorEquipaEContratoEPosicao(";
-            if (string.IsNullOrEmpty(equipa))
-            {
-                query += "null,";
-            }
-            else
-            {
-                query += "'" + equipa + "',";
-            }
-
-            if (string.IsNullOrEmpty(contrato))
-            {
-                query += "null,";
-            }
-            else
-            {
-                query += "'" + contrato + "',";
-            }
-
-            if (string.IsNullOrEmpty(posicao))
-            {
-                query += "null)";
-            }
-            else
-            {
-                query += "'" + posicao + "')";
-            }
-
-            //Console.WriteLine(query);
-            SqlCommand cmd = new SqlCommand(query, cn);
-            SqlDataReader reader = cmd.ExecuteReader();
-            Lista_Jogadores.Items.Clear();
-            totalItems = 0;
-            while (reader.Read())
-            {
-                Player player = new Player();
-                player.CCNumber = reader["CCNumber"].ToString();
-                player.Name = reader["Name"].ToString();
-                player.Age = reader["Age"].ToString();
-                player.ContractID = reader["Contract_ID"].ToString();
-                player.Number = reader["Number"].ToString();
-                player.Height = reader["Height"].ToString();
-                player.Weight = reader["Weight"].ToString();
-                player.Position = reader["Position"].ToString();
-                player.TeamID = reader["Team_ID"].ToString();
-
-                totalItems++;
-                Lista_Jogadores.Items.Add(player);
-
-            }
-            label23.Text = "Total de jogadores: " + totalItems.ToString();
-            reader.Close();
-        }
-
-        private void updateListaTreinadores()
-        {
-            totalItems = 0;
-
-            Lista_Treinadores.Items.Clear();
-            SqlCommand cmd = new SqlCommand("select * from NBA.PersonCoach", cn);
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                Coach coach = new Coach();
-                coach.CCNumber = reader["CCNumber"].ToString();
-                coach.Name = reader["Name"].ToString();
-                coach.Age = reader["Age"].ToString();
-                coach.ContractID = reader["Contract_ID"].ToString();
-
-                totalItems++;
-                Lista_Treinadores.Items.Add(coach);
-
-            }
-            label2.Text = "Total de treinadores: " + totalItems.ToString();
-            reader.Close();
-
-            this.Lista_Treinadores.SelectedIndexChanged +=
-                new System.EventHandler(Lista_Treinadores_SelectedIndexChanged);
-        }
-
-        private void Lista_Treinadores_SelectedIndexChanged(object sender, System.EventArgs e)
-        {
-            ListBox ListBox = (ListBox)sender;
-
-            Coach selectedCoach = (Coach)Lista_Treinadores.SelectedItem;
-            //MessageBox.Show(selectedPlayer.Name);
-            if (selectedCoach != null)
-            {
-                textBox16.Text = selectedCoach.CCNumber;
-                textBox20.Text = selectedCoach.Name;
-                textBox14.Text = selectedCoach.Age;
-                textBox1.Text = selectedCoach.ContractID;
-
-                SqlCommand cmd = new SqlCommand("select * from NBA.[Contract] as C inner join NBA.Person as P on C.ID = P.Contract_ID where C.ID = " + selectedCoach.ContractID, cn);
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    Contract contract = new Contract();
-                    contract.ID = reader["ID"].ToString();
-                    contract.Description = reader["Description"].ToString();
-                    contract.Salary = reader["Salary"].ToString();
-                    contract.StartDate = reader["Start_Date"].ToString();
-                    contract.EndDate = reader["End_Date"].ToString();
-                    richTextBox2.Text = contract.ToString();
-                }
-                reader.Close();
-
-                button5.Visible = true;
-                button6.Visible = true;
-            }
-        }
-
-        private void filtroTreinadores(string contrato)
-        {
-            string query = "select * from NBA.filtrarTreinadoresPorContrato(";
-
-            if (string.IsNullOrEmpty(contrato))
-            {
-                query += "null)";
-            }
-            else
-            {
-                query += "'" + contrato + "')";
-            }
-
-            Console.WriteLine(query);
-            SqlCommand cmd = new SqlCommand(query, cn);
-            SqlDataReader reader = cmd.ExecuteReader();
-            Lista_Treinadores.Items.Clear();
-            totalItems = 0;
-            while (reader.Read())
-            {
-                Coach coach = new Coach();
-                coach.CCNumber = reader["CCNumber"].ToString();
-                coach.Name = reader["Name"].ToString();
-                coach.Age = reader["Age"].ToString();
-                coach.ContractID = reader["Contract_ID"].ToString();
-
-                totalItems++;
-                Lista_Treinadores.Items.Add(coach);
-
-            }
-            label2.Text = "Total de treinadores: " + totalItems.ToString();
-            reader.Close();
-        }
-
-        private void updateListaEquipas()
-        {
-            totalItems = 0;
-
-            Lista_Equipas.Items.Clear();
-            SqlCommand cmd = new SqlCommand("select * from NBA.TeamCoachOwner", cn);
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                Team team = new Team();
-                team.ID = reader["ID"].ToString();
-                team.TeamName = reader["TeamName"].ToString();
-                team.City = reader["City"].ToString();
-                team.Conference = reader["Conference"].ToString();
-                team.FoundYear = reader["Found_Year"].ToString();
-                team.CoachName = reader["CoachName"].ToString();
-                team.OwnerName = reader["OwnerName"].ToString();
-
-                totalItems++;
-                Lista_Equipas.Items.Add(team);
-
-            }
-            label11.Text = "Total de equipas: " + totalItems.ToString();
-            reader.Close();
-
-            this.Lista_Equipas.SelectedIndexChanged +=
-                new System.EventHandler(Lista_Equipas_SelectedIndexChanged);
-        }
-
-        private void Lista_Equipas_SelectedIndexChanged(object sender, System.EventArgs e)
-        {
-            ListBox ListBox = (ListBox)sender;
-
-            Team selectedTeam = (Team)Lista_Equipas.SelectedItem;
-            //MessageBox.Show(selectedPlayer.Name);
-            if (selectedTeam != null)
-            {
-                textBox9.Text = selectedTeam.TeamName;
-                textBox2.Text = selectedTeam.OwnerName;
-                textBox4.Text = selectedTeam.CoachName;
-                textBox8.Text = selectedTeam.City;
-                textBox5.Text = selectedTeam.Conference;
-                textBox7.Text = selectedTeam.FoundYear;
-
-                Lista_Jogos_Equipa.Items.Clear();
-                //Console.WriteLine("select * from NBA.GetTeamGames(" + "'" + selectedTeam.ID + "')");
-                SqlCommand cmd = new SqlCommand("select * from NBA.GetTeamGames(" + "'" + selectedTeam.ID + "')", cn);
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    Game game = new Game();
-                    game.ID = reader["GameID"].ToString();
-                    game.Time = reader["Time"].ToString();
-                    game.Date = reader["Date"].ToString();
-                    game.HomeScore = reader["Home_Score"].ToString();
-                    game.AwayScore = reader["Away_Score"].ToString();
-                    game.HomeID = reader["Home_Team_ID"].ToString();
-                    game.AwayID = reader["Away_Team_ID"].ToString();
-                    Lista_Jogos_Equipa.Items.Add(game.ToString());
-                }
-                reader.Close();
-
-                SqlCommand cmd1 = new SqlCommand("select * from NBA.GetTeamAverageStats(" + selectedTeam.ID + ")", cn);
-                SqlDataReader reader1 = cmd1.ExecuteReader();
-                while (reader1.Read())
-                {
-                    TeamStats teamStats = new TeamStats();
-                    teamStats.Points = reader1["AveragePoints"].ToString();
-                    teamStats.Assists = reader1["AverageAssists"].ToString();
-                    teamStats.Rebounds = reader1["AverageRebounds"].ToString();
-                    teamStats.Blocks = reader1["AverageBlocks"].ToString();
-                    teamStats.Steals = reader1["AverageSteals"].ToString();
-                    teamStats.FG = reader1["AverageFGP"].ToString();
-                    teamStats.PT3 = reader1["Average3PTP"].ToString();
-                    richTextBox3.Text = teamStats.ToString();
-                }
-                reader1.Close();
-
-                button15.Visible = true;
-                button16.Visible = true;
-            }
         }
 
         private void Lista_Jogos_Equipa_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-        }
-
-        private void filtroEquipas(string conferencia)
-        {
-            string query = "select * from NBA.filtrarEquipasPorConferencia(";
-
-            if (string.IsNullOrEmpty(conferencia))
-            {
-                query += "null)";
-            }
-            else
-            {
-                query += "'" + conferencia + "')";
-            }
-
-            Console.WriteLine(query);
-            SqlCommand cmd = new SqlCommand(query, cn);
-            SqlDataReader reader = cmd.ExecuteReader();
-            Lista_Equipas.Items.Clear();
-            totalItems = 0;
-            while (reader.Read())
-            {
-                Team team = new Team();
-                team.ID = reader["ID"].ToString();
-                team.TeamName = reader["TeamName"].ToString();
-                team.City = reader["City"].ToString();
-                team.Conference = reader["Conference"].ToString();
-                team.FoundYear = reader["Found_Year"].ToString();
-                team.CoachName = reader["CoachName"].ToString();
-                team.OwnerName = reader["OwnerName"].ToString();
-
-                totalItems++;
-                Lista_Equipas.Items.Add(team);
-
-            }
-            label11.Text = "Total de equipass: " + totalItems.ToString();
-            reader.Close();
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            button11.Visible = true;
-            button12.Visible = true;
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            button11.Visible = true;
-            button12.Visible = true;
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            button11.Visible = true;
-            button12.Visible = true;
-        }
-
-        private void button12_Click(object sender, EventArgs e)
-        {
-            button11.Visible = false;
-            button12.Visible = false;
-        }
-
-        private void button11_Click(object sender, EventArgs e)
-        {
-            button11.Visible = false;
-            button12.Visible = false;
-        }
-
-        private void Treinadores_Tab_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox16_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button13_Click(object sender, EventArgs e)
-        {
-            string coachSearch = (string)textBox17.Text;
-            totalItems = 0;
-
-            if (!string.IsNullOrEmpty(coachSearch))
-            {
-                comboBox6.Enabled = false;
-                comboBox6.SelectedIndex = -1;
-            }
-
-            Lista_Treinadores.Items.Clear();
-            SqlCommand cmd = new SqlCommand("select * from NBA.pesquisarTreinadoresPorNome(" + "'" + coachSearch + "'" + ")", cn);
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                Coach coach = new Coach();
-                coach.CCNumber = reader["CCNumber"].ToString();
-                coach.Name = reader["Name"].ToString();
-                coach.Age = reader["Age"].ToString();
-                coach.ContractID = reader["Contract_ID"].ToString();
-
-                totalItems++;
-                Lista_Treinadores.Items.Add(coach);
-
-            }
-            label2.Text = "Total de jogadores: " + totalItems.ToString();
-            reader.Close();
-        }
-
-        private void button18_Click(object sender, EventArgs e)
-        {
-            string teamSearch = (string)textBox10.Text;
-            totalItems = 0;
-
-            if (!string.IsNullOrEmpty(teamSearch))
-            {
-                comboBox7.Enabled = false;
-                comboBox7.SelectedIndex = -1;
-            }
-
-            Lista_Equipas.Items.Clear();
-            //Console.WriteLine("select * from NBA.pesquisarJogadoresPorNome(" + "'" + teamSearch + "'" + ")");
-            SqlCommand cmd = new SqlCommand("select * from NBA.pesquisarEquipasPorNome(" + "'" + teamSearch + "'" + ")", cn);
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                Team team = new Team();
-                team.ID = reader["ID"].ToString();
-                team.TeamName = reader["TeamName"].ToString();
-                team.City = reader["City"].ToString();
-                team.Conference = reader["Conference"].ToString();
-                team.FoundYear = reader["Found_Year"].ToString();
-                team.CoachName = reader["CoachName"].ToString();
-                team.OwnerName = reader["OwnerName"].ToString();
-
-                totalItems++;
-                Lista_Equipas.Items.Add(team);
-
-            }
-            label11.Text = "Total de equipas: " + totalItems.ToString();
-            reader.Close();
-        }
-
-        private void button25_Click(object sender, EventArgs e)
-        {
-            textBox17.Text = "";
-            comboBox6.Enabled = false;
-            comboBox6.SelectedIndex = -1;
-            updateListaTreinadores();
-        }
-
-        private void comboBox6_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            button2.Visible = true;
-            button4.Visible = true;
-        }
-
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-            button2.Visible = false;
-            button4.Visible = false;
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            button2.Visible = false;
-            button4.Visible = false;
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            button2.Visible = true;
-            button4.Visible = true;
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            button2.Visible = true;
-            button4.Visible = true;
-        }
-
-        private void richTextBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Lista_Equipas_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button26_Click(object sender, EventArgs e)
-        {
-            textBox10.Text = "";
-            comboBox7.Enabled = true;
-            comboBox7.SelectedIndex = -1;
-            updateListaEquipas();
         }
     }
 }
