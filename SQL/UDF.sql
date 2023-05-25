@@ -80,7 +80,7 @@ as
 return (
     select *
     from NBA.TeamCoachOwner
-    where TeamName like '%' + @nome + '%'
+    where [Name] like '%' + @nome + '%'
 );
 go
 
