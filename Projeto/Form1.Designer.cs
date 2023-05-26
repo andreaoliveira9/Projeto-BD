@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label28 = new System.Windows.Forms.Label();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.textBox21 = new System.Windows.Forms.TextBox();
             this.label37 = new System.Windows.Forms.Label();
@@ -147,8 +149,6 @@
             this.Lista_Jogadores = new System.Windows.Forms.ListBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.label28 = new System.Windows.Forms.Label();
             this.tabPage1.SuspendLayout();
             this.Equipas_Tab.SuspendLayout();
             this.Treinadores_Tab.SuspendLayout();
@@ -195,11 +195,28 @@
             this.tabPage1.Text = "Jogos";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(713, 245);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(104, 13);
+            this.label28.TabIndex = 123;
+            this.label28.Text = "Tabela Classificativa";
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(716, 261);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(236, 134);
+            this.richTextBox1.TabIndex = 122;
+            this.richTextBox1.Text = "";
+            // 
             // dateTimePicker1
             // 
             this.dateTimePicker1.Enabled = false;
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(491, 268);
+            this.dateTimePicker1.Location = new System.Drawing.Point(519, 268);
             this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(2);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(150, 20);
@@ -211,7 +228,7 @@
             // 
             this.textBox21.BackColor = System.Drawing.Color.LightSteelBlue;
             this.textBox21.Enabled = false;
-            this.textBox21.Location = new System.Drawing.Point(322, 210);
+            this.textBox21.Location = new System.Drawing.Point(350, 210);
             this.textBox21.Margin = new System.Windows.Forms.Padding(2);
             this.textBox21.Name = "textBox21";
             this.textBox21.Size = new System.Drawing.Size(320, 20);
@@ -220,7 +237,7 @@
             // label37
             // 
             this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(320, 195);
+            this.label37.Location = new System.Drawing.Point(348, 195);
             this.label37.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(38, 13);
@@ -231,7 +248,7 @@
             // 
             this.textBox12.BackColor = System.Drawing.Color.LightSteelBlue;
             this.textBox12.Enabled = false;
-            this.textBox12.Location = new System.Drawing.Point(322, 268);
+            this.textBox12.Location = new System.Drawing.Point(350, 268);
             this.textBox12.Margin = new System.Windows.Forms.Padding(2);
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(150, 20);
@@ -240,7 +257,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(489, 253);
+            this.label14.Location = new System.Drawing.Point(517, 253);
             this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(33, 13);
@@ -250,7 +267,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(320, 254);
+            this.label16.Location = new System.Drawing.Point(348, 254);
             this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(33, 13);
@@ -260,7 +277,7 @@
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(320, 392);
+            this.label29.Location = new System.Drawing.Point(6, 442);
             this.label29.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(96, 13);
@@ -269,10 +286,10 @@
             // 
             // comboBox5
             // 
-            this.comboBox5.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.comboBox5.BackColor = System.Drawing.SystemColors.Window;
             this.comboBox5.FormattingEnabled = true;
             this.comboBox5.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.comboBox5.Location = new System.Drawing.Point(322, 406);
+            this.comboBox5.Location = new System.Drawing.Point(9, 457);
             this.comboBox5.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox5.Name = "comboBox5";
             this.comboBox5.Size = new System.Drawing.Size(150, 21);
@@ -292,7 +309,7 @@
             // 
             this.textBox6.BackColor = System.Drawing.Color.LightSteelBlue;
             this.textBox6.Enabled = false;
-            this.textBox6.Location = new System.Drawing.Point(322, 144);
+            this.textBox6.Location = new System.Drawing.Point(350, 144);
             this.textBox6.Margin = new System.Windows.Forms.Padding(2);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(320, 20);
@@ -301,7 +318,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(320, 129);
+            this.label17.Location = new System.Drawing.Point(348, 129);
             this.label17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(64, 13);
@@ -377,7 +394,7 @@
             // 
             this.textBox11.BackColor = System.Drawing.Color.LightSteelBlue;
             this.textBox11.Enabled = false;
-            this.textBox11.Location = new System.Drawing.Point(491, 337);
+            this.textBox11.Location = new System.Drawing.Point(519, 337);
             this.textBox11.Margin = new System.Windows.Forms.Padding(2);
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(150, 20);
@@ -387,7 +404,7 @@
             // 
             this.textBox13.BackColor = System.Drawing.Color.LightSteelBlue;
             this.textBox13.Enabled = false;
-            this.textBox13.Location = new System.Drawing.Point(322, 337);
+            this.textBox13.Location = new System.Drawing.Point(350, 337);
             this.textBox13.Margin = new System.Windows.Forms.Padding(2);
             this.textBox13.Name = "textBox13";
             this.textBox13.Size = new System.Drawing.Size(150, 20);
@@ -397,7 +414,7 @@
             // 
             this.textBox15.BackColor = System.Drawing.Color.LightSteelBlue;
             this.textBox15.Enabled = false;
-            this.textBox15.Location = new System.Drawing.Point(322, 79);
+            this.textBox15.Location = new System.Drawing.Point(350, 79);
             this.textBox15.Margin = new System.Windows.Forms.Padding(2);
             this.textBox15.Name = "textBox15";
             this.textBox15.Size = new System.Drawing.Size(320, 20);
@@ -406,7 +423,7 @@
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(489, 392);
+            this.label36.Location = new System.Drawing.Point(184, 442);
             this.label36.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(91, 13);
@@ -415,10 +432,10 @@
             // 
             // comboBox3
             // 
-            this.comboBox3.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.comboBox3.BackColor = System.Drawing.SystemColors.Window;
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.comboBox3.Location = new System.Drawing.Point(491, 406);
+            this.comboBox3.Location = new System.Drawing.Point(187, 457);
             this.comboBox3.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(150, 21);
@@ -428,7 +445,7 @@
             // label38
             // 
             this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(489, 323);
+            this.label38.Location = new System.Drawing.Point(517, 323);
             this.label38.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label38.Name = "label38";
             this.label38.Size = new System.Drawing.Size(83, 13);
@@ -438,7 +455,7 @@
             // label39
             // 
             this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(320, 323);
+            this.label39.Location = new System.Drawing.Point(348, 323);
             this.label39.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label39.Name = "label39";
             this.label39.Size = new System.Drawing.Size(88, 13);
@@ -448,7 +465,7 @@
             // label40
             // 
             this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(320, 64);
+            this.label40.Location = new System.Drawing.Point(348, 64);
             this.label40.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label40.Name = "label40";
             this.label40.Size = new System.Drawing.Size(69, 13);
@@ -461,7 +478,7 @@
             this.Lista_Jogos.Location = new System.Drawing.Point(5, 79);
             this.Lista_Jogos.Margin = new System.Windows.Forms.Padding(2);
             this.Lista_Jogos.Name = "Lista_Jogos";
-            this.Lista_Jogos.Size = new System.Drawing.Size(237, 316);
+            this.Lista_Jogos.Size = new System.Drawing.Size(298, 316);
             this.Lista_Jogos.TabIndex = 85;
             // 
             // Equipas_Tab
@@ -1520,23 +1537,6 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1008, 606);
             this.tabControl1.TabIndex = 0;
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Location = new System.Drawing.Point(716, 261);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(236, 134);
-            this.richTextBox1.TabIndex = 122;
-            this.richTextBox1.Text = "";
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(713, 245);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(104, 13);
-            this.label28.TabIndex = 123;
-            this.label28.Text = "Tabela Classificativa";
             // 
             // Form1
             // 

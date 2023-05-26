@@ -48,6 +48,18 @@ return (
 );
 go
 
+-- Função com o filtro de equipa da casa e equipa visitante
+drop function IF EXISTS NBA.filtrarJogosPorEquipaCasaEquipaFora
+go
+create function NBA.filtrarJogosPorEquipaCasaEquipaFora(@equipaCasa varchar(30), @equipaFora varchar(30)) returns table
+as
+return (
+    select *
+    from NBA.GamesTeamsStadium
+    where (HomeTeamName = @equipaCasa or @equipaCasa is null) and (AwayTeamName = @equipaFora or @equipaFora is null)
+);
+go
+
 -- Função que retorna a média de estatísticaa de um dado jogador
 drop function IF EXISTS NBA.GetPlayerStats
 go
@@ -116,7 +128,6 @@ as
         return;
     END;
 go
-
 
 -- Função para retornar a tabela de classificação
 drop function IF EXISTS NBA.GetTeamStandings;

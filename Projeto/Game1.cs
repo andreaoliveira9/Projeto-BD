@@ -22,7 +22,7 @@ namespace Projeto
 
         public override string ToString()
         {
-            return string.Format("ID: {0,-4} {1}    -    {2}", _ID, _HomeTeamName, _AwayTeamName);
+            return string.Format("ID: {0,-4} {1}    VS    {2}", _ID, _HomeTeamName, _AwayTeamName);
         }
     }
 }
