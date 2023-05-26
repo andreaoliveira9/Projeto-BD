@@ -550,8 +550,9 @@ namespace Projeto
                 textBox12.Text = selectedGame.Time;
                 textBox13.Text = selectedGame.HomeScore;
                 textBox11.Text = selectedGame.AwayScore;
-                //DateTime data = new DateTime(int.Parse(selectedGame.Date.Substring(0,4)), int.Parse(selectedGame.Date.Substring(5, 2)), int.Parse(selectedGame.Date.Substring(8, 2)));
-                //dateTimePicker1.Value = data;
+
+                DateTime data = new DateTime(int.Parse(selectedGame.Date.Substring(6,4)), int.Parse(selectedGame.Date.Substring(3, 2)), int.Parse(selectedGame.Date.Substring(0, 2)));
+                dateTimePicker1.Value = data;
 
                 if (selectedGame.HomeScore != "")
                 {
@@ -1009,6 +1010,149 @@ namespace Projeto
             }
         }
 
+        //Jogadores
+        private void button8_Click(object sender, EventArgs e)
+        {
+            button11.Visible = true;
+            button12.Visible = true;
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            button11.Visible = true;
+            button12.Visible = true;
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            button11.Visible = true;
+            button12.Visible = true;
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            button11.Visible = false;
+            button12.Visible = false;
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            button11.Visible = false;
+            button12.Visible = false;
+        }
+
+        //Treinadores
+        private void button7_Click(object sender, EventArgs e)
+        {
+            button2.Visible = true;
+            button4.Visible = true;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            button2.Visible = true;
+            button4.Visible = true;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            button2.Visible = true;
+            button4.Visible = true;
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            button2.Visible = false;
+            button4.Visible = false;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            button2.Visible = false;
+            button4.Visible = false;
+        }
+
+        //Equipas
+        private void button17_Click(object sender, EventArgs e)
+        {
+            button14.Visible = true;
+            button3.Visible = true;
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            button14.Visible = true;
+            button3.Visible = true;
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            button14.Visible = true;
+            button3.Visible = true;
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            button14.Visible = false;
+            button3.Visible = false;
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            button14.Visible = false;
+            button3.Visible = false;
+        }
+
+        //Jogos
+        private void button23_Click(object sender, EventArgs e)
+        {
+            button19.Visible = true;
+            button20.Visible = true;
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            button19.Visible = true;
+            button20.Visible = true;
+        }
+
+        private void button22_Click(object sender, EventArgs e)
+        {
+            button19.Visible = true;
+            button20.Visible = true;
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            button19.Visible = false;
+            button20.Visible = false;
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            button19.Visible = false;
+            button20.Visible = false;
+        }
+
+        //Compra bilhetes
+        private void button28_Click(object sender, EventArgs e)
+        {
+            button29.Visible = true;
+            button30.Visible = true;
+        }
+
+        private void button29_Click(object sender, EventArgs e)
+        {
+            button29.Visible = false;
+            button30.Visible = false;
+        }
+
+        private void button30_Click(object sender, EventArgs e)
+        {
+            button29.Visible = false;
+            button30.Visible = false;
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             string playerSearch = (string)Search_Jogadores.Text;
@@ -1050,145 +1194,6 @@ namespace Projeto
         private void button27_Click(object sender, EventArgs e)
         {
             clear("jogos", "limpar");
-        }
-
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            button2.Visible = true;
-            button4.Visible = true;
-        }
-
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-            button2.Visible = false;
-            button4.Visible = false;
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            button2.Visible = false;
-            button4.Visible = false;
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            button2.Visible = true;
-            button4.Visible = true;
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            button2.Visible = true;
-            button4.Visible = true;
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            button11.Visible = true;
-            button12.Visible = true;
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            button11.Visible = true;
-            button12.Visible = true;
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            button11.Visible = true;
-            button12.Visible = true;
-        }
-
-        private void button12_Click(object sender, EventArgs e)
-        {
-            button11.Visible = false;
-            button12.Visible = false;
-        }
-
-        private void button11_Click(object sender, EventArgs e)
-        {
-            button11.Visible = false;
-            button12.Visible = false;
-        }
-
-        private void button17_Click(object sender, EventArgs e)
-        {
-            button14.Visible = true;
-            button3.Visible = true;
-        }
-
-        private void button14_Click(object sender, EventArgs e)
-        {
-            button14.Visible = false;
-            button3.Visible = false;
-        }
-
-        private void button3_Click_1(object sender, EventArgs e)
-        {
-            button14.Visible = false;
-            button3.Visible = false;
-        }
-
-        private void button16_Click(object sender, EventArgs e)
-        {
-            button14.Visible = true;
-            button3.Visible = true;
-        }
-
-        private void button15_Click(object sender, EventArgs e)
-        {
-            button14.Visible = true;
-            button3.Visible = true;
-        }
-
-        private void button23_Click(object sender, EventArgs e)
-        {
-            button19.Visible = true;
-            button20.Visible = true;
-        }
-
-        private void button21_Click(object sender, EventArgs e)
-        {
-            button19.Visible = true;
-            button20.Visible = true;
-        }
-
-        private void button22_Click(object sender, EventArgs e)
-        {
-            button19.Visible = true;
-            button20.Visible = true;
-        }
-
-        private void button19_Click(object sender, EventArgs e)
-        {
-            button19.Visible = false;
-            button20.Visible = false;
-        }
-
-        private void button20_Click(object sender, EventArgs e)
-        {
-            button19.Visible = false;
-            button20.Visible = false;
-        }
-
-        private void button28_Click(object sender, EventArgs e)
-        {
-            button29.Visible = true;
-            button30.Visible = true;
-        }
-
-        private void button29_Click(object sender, EventArgs e)
-        {
-            button29.Visible = false;
-            button30.Visible = false;
-        }
-
-        private void button30_Click(object sender, EventArgs e)
-        {
-            button29.Visible = false;
-            button30.Visible = false;
         }
 
         private void Treinadores_Tab_Click(object sender, EventArgs e)
