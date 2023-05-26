@@ -56,7 +56,7 @@ go
 drop view IF EXISTS NBA.TeamCoachOwner
 go 
 create view NBA.TeamCoachOwner as 
-	select T.ID, T.[Name] as TeamName, T.City, T.Conference, T.Found_Year, C.[Name] as CoachName, P.[Name] as OwnerName
+	select T.ID, T.[Name], T.City, T.Conference, T.Found_Year, C.[Name] as CoachName, P.[Name] as OwnerName
 	from ((NBA.Team as T join NBA.PersonCoach as C on T.Coach_CCNumber = C.CCNumber) join NBA.Person as P on T.Owner_CCNumber = P.CCNumber);
 go
 

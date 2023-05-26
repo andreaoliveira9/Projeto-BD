@@ -31,6 +31,7 @@ namespace Projeto
             InitializeComboBox5();
             InitializeComboBox3();
             InitializeTabela_Classificativa();
+            InitializeComboBox4();
 
             updateListaJogadores();
             updateListaTreinadores();
@@ -207,9 +208,10 @@ namespace Projeto
 
             string selectedHomeTeam = (string)comboBox5.SelectedItem;
             string selectedAwayTeam = (string)comboBox3.SelectedItem;
+            string selectedAconteceu = (string)comboBox4.SelectedItem;
 
             clear("jogos", "filtro");
-            filtroJogos(selectedHomeTeam, selectedAwayTeam);
+            filtroJogos(selectedHomeTeam, selectedAwayTeam, selectedAconteceu);
         }
 
         private void InitializeComboBox3()
@@ -237,9 +239,33 @@ namespace Projeto
 
             string selectedHomeTeam = (string)comboBox5.SelectedItem;
             string selectedAwayTeam = (string)comboBox3.SelectedItem;
+            string selectedAconteceu = (string)comboBox4.SelectedItem;
 
             clear("jogos", "filtro");
-            filtroJogos(selectedHomeTeam, selectedAwayTeam);
+            filtroJogos(selectedHomeTeam, selectedAwayTeam, selectedAconteceu);
+        }
+
+        private void InitializeComboBox4()
+        {
+            comboBox4.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox4.Items.Add("");
+            comboBox4.Items.Add("Sim");
+            comboBox4.Items.Add("Não");
+
+            this.comboBox3.SelectedIndexChanged +=
+                new System.EventHandler(comboBox4_SelectedIndexChanged_1);
+        }
+
+        private void comboBox4_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            ComboBox comboBox = (ComboBox)sender;
+
+            string selectedHomeTeam = (string)comboBox5.SelectedItem;
+            string selectedAwayTeam = (string)comboBox3.SelectedItem;
+            string selectedAconteceu = (string)comboBox4.SelectedItem;
+
+            clear("jogos", "filtro");
+            filtroJogos(selectedHomeTeam, selectedAwayTeam, selectedAconteceu);
         }
 
         private void InitializeTabela_Classificativa()
@@ -411,7 +437,7 @@ namespace Projeto
             {
                 Team team = new Team();
                 team.ID = reader["ID"].ToString();
-                team.TeamName = reader["TeamName"].ToString();
+                team.TeamName = reader["Name"].ToString();
                 team.City = reader["City"].ToString();
                 team.Conference = reader["Conference"].ToString();
                 team.FoundYear = reader["Found_Year"].ToString();
@@ -514,7 +540,7 @@ namespace Projeto
         private void Lista_Jogos_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             ListBox ListBox = (ListBox)sender;
-
+            Bilhetes_Jogo.Items.Clear();
             Game1 selectedGame = (Game1)Lista_Jogos.SelectedItem;
             if (selectedGame != null)
             {
@@ -524,9 +550,32 @@ namespace Projeto
                 textBox12.Text = selectedGame.Time;
                 textBox13.Text = selectedGame.HomeScore;
                 textBox11.Text = selectedGame.AwayScore;
-
                 //DateTime data = new DateTime(int.Parse(selectedGame.Date.Substring(0,4)), int.Parse(selectedGame.Date.Substring(5, 2)), int.Parse(selectedGame.Date.Substring(8, 2)));
                 //dateTimePicker1.Value = data;
+
+                if (selectedGame.HomeScore != "")
+                {
+                    Bilhetes_Jogo.Items.Add("Bilhetes indisponíveis, pois jogo já aconteceu");
+                }
+                else
+                {
+                    SqlCommand cmd = new SqlCommand("select * from NBA.GetGameTickets(" + "'" + selectedGame.ID + "')", cn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Ticket ticket = new Ticket();
+                        ticket.Type = reader["Type"].ToString();
+                        ticket.Price = reader["Price"].ToString();
+                        ticket.Restantes = reader["Restantes"].ToString();
+
+                        Bilhetes_Jogo.Items.Add(ticket);
+                        totalItems++;
+                    }
+                    reader.Close();
+                }
+
+                button21.Visible = true;
+                button22.Visible = true;
             }
         }
 
@@ -657,7 +706,7 @@ namespace Projeto
             reader.Close();
         }
 
-        private void filtroJogos(string casa, string fora)
+        private void filtroJogos(string casa, string fora, string aconteceu)
         {
             string query = "select * from NBA.filtrarJogosPorEquipaCasaEquipaFora(";
 
@@ -706,7 +755,7 @@ namespace Projeto
 
         private void barraPesquisa(string nome, string tabela)
         {
-            //Console.WriteLine("exec NBA.pesquisarPorNome @nome = " + "'" + nome + "'" + ", @esquema = 'NBA', @tabela = " + "'" + tabela + "'");
+            Console.WriteLine("exec NBA.pesquisarPorNome @nome = " + "'" + nome + "'" + ", @esquema = 'NBA', @tabela = " + "'" + tabela + "'");
             SqlCommand cmd = new SqlCommand("exec NBA.pesquisarPorNome @nome = " + "'" + nome + "'" + ", @esquema = 'NBA', @tabela = " + "'" + tabela + "'", cn);
 
             if (tabela == "PersonCoach")
@@ -782,7 +831,6 @@ namespace Projeto
                 }
 
                 Lista_Equipas.Items.Clear();
-                //Console.WriteLine("select * from NBA.pesquisarJogadoresPorNome(" + "'" + teamSearch + "'" + ")");
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
@@ -817,11 +865,15 @@ namespace Projeto
                     comboBox1.Enabled = true;
                     comboBox1.SelectedIndex = -1;
                 }
+
+                if (botao != "pesquisar")
+                {
+                    Search_Jogadores.Text = "";
+                }
                 
                 button9.Visible = false;
                 button10.Visible = false;
 
-                Search_Jogadores.Text = "";
                 NumeroCC_Jogadores.Text = "";
                 Name_Jogadores.Text = "";
                 Altura_Jogadores.Text = "";
@@ -845,7 +897,12 @@ namespace Projeto
                     comboBox6.Enabled = true;
                     comboBox6.SelectedIndex = -1;
                 }
-                
+
+                if (botao != "pesquisar")
+                {
+                    textBox17.Text = "";
+                }
+
                 button6.Visible = false;
                 button5.Visible = false;
 
@@ -869,6 +926,11 @@ namespace Projeto
                     comboBox7.SelectedIndex = -1;
                 }
 
+                if (botao != "pesquisar")
+                {
+                    textBox10.Text = "";
+                }
+
                 button16.Visible = false;
                 button15.Visible = false;
 
@@ -885,6 +947,31 @@ namespace Projeto
                 if (botao == "limpar")
                 {
                     updateListaEquipas();
+                }
+            } else if (janela == "jogos")
+            {
+                if (botao != "filtro")
+                {
+                    comboBox5.Enabled = true;
+                    comboBox5.SelectedIndex = -1;
+                    comboBox3.Enabled = true;
+                    comboBox3.SelectedIndex = -1;
+                }
+
+                button22.Visible = false;
+                button21.Visible = false;
+
+                textBox15.Text = "";
+                textBox6.Text = "";
+                textBox21.Text = "";
+                textBox12.Text = "";
+                textBox13.Text = "";
+                textBox11.Text = "";
+                Bilhetes_Jogo.Items.Clear();
+
+                if (botao == "limpar")
+                {
+                    updateListaJogos();
                 }
             }
         }
@@ -927,6 +1014,11 @@ namespace Projeto
         {
             clear("jogadores", "limpar");
         }
+        private void button27_Click(object sender, EventArgs e)
+        {
+            clear("jogos", "limpar");
+        }
+
 
         private void button7_Click(object sender, EventArgs e)
         {
@@ -986,6 +1078,66 @@ namespace Projeto
         {
             button11.Visible = false;
             button12.Visible = false;
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            button14.Visible = true;
+            button3.Visible = true;
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            button14.Visible = false;
+            button3.Visible = false;
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            button14.Visible = false;
+            button3.Visible = false;
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            button14.Visible = true;
+            button3.Visible = true;
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            button14.Visible = true;
+            button3.Visible = true;
+        }
+
+        private void button23_Click(object sender, EventArgs e)
+        {
+            button19.Visible = true;
+            button20.Visible = true;
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            button19.Visible = true;
+            button20.Visible = true;
+        }
+
+        private void button22_Click(object sender, EventArgs e)
+        {
+            button19.Visible = true;
+            button20.Visible = true;
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            button19.Visible = false;
+            button20.Visible = false;
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            button19.Visible = false;
+            button20.Visible = false;
         }
 
         private void Treinadores_Tab_Click(object sender, EventArgs e)
