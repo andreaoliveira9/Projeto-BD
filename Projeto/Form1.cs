@@ -250,9 +250,9 @@ namespace Projeto
             comboBox4.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox4.Items.Add("");
             comboBox4.Items.Add("Sim");
-            comboBox4.Items.Add("Não");
+            comboBox4.Items.Add("Nao");
 
-            this.comboBox3.SelectedIndexChanged +=
+            this.comboBox4.SelectedIndexChanged +=
                 new System.EventHandler(comboBox4_SelectedIndexChanged_1);
         }
 
@@ -572,10 +572,23 @@ namespace Projeto
                         totalItems++;
                     }
                     reader.Close();
+
+                    this.Bilhetes_Jogo.SelectedIndexChanged +=
+                        new System.EventHandler(Bilhetes_Jogo_SelectedIndexChanged);
                 }
 
                 button21.Visible = true;
                 button22.Visible = true;
+            }
+        }
+
+        private void Bilhetes_Jogo_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            ListBox ListBox = (ListBox)sender;
+            Ticket selectedTicket = (Ticket)Bilhetes_Jogo.SelectedItem;
+            if (selectedTicket != null)
+            {
+                button28.Visible = true;
             }
         }
 
@@ -708,7 +721,7 @@ namespace Projeto
 
         private void filtroJogos(string casa, string fora, string aconteceu)
         {
-            string query = "select * from NBA.filtrarJogosPorEquipaCasaEquipaFora(";
+            string query = "select * from NBA.filtrarJogosPorEquipaCasaEquipaForaESeAconteceu(";
 
             if (string.IsNullOrEmpty(casa))
             {
@@ -721,11 +734,20 @@ namespace Projeto
 
             if (string.IsNullOrEmpty(fora))
             {
+                query += "null,";
+            }
+            else
+            {
+                query += "'" + fora + "',";
+            }
+
+            if (string.IsNullOrEmpty(aconteceu))
+            {
                 query += "null)";
             }
             else
             {
-                query += "'" + fora + "')";
+                query += "'" + aconteceu + "')";
             }
 
             //Console.WriteLine(query);
@@ -755,7 +777,7 @@ namespace Projeto
 
         private void barraPesquisa(string nome, string tabela)
         {
-            Console.WriteLine("exec NBA.pesquisarPorNome @nome = " + "'" + nome + "'" + ", @esquema = 'NBA', @tabela = " + "'" + tabela + "'");
+            //Console.WriteLine("exec NBA.pesquisarPorNome @nome = " + "'" + nome + "'" + ", @esquema = 'NBA', @tabela = " + "'" + tabela + "'");
             SqlCommand cmd = new SqlCommand("exec NBA.pesquisarPorNome @nome = " + "'" + nome + "'" + ", @esquema = 'NBA', @tabela = " + "'" + tabela + "'", cn);
 
             if (tabela == "PersonCoach")
@@ -873,6 +895,8 @@ namespace Projeto
                 
                 button9.Visible = false;
                 button10.Visible = false;
+                button11.Visible = false;
+                button12.Visible = false;
 
                 NumeroCC_Jogadores.Text = "";
                 Name_Jogadores.Text = "";
@@ -905,6 +929,8 @@ namespace Projeto
 
                 button6.Visible = false;
                 button5.Visible = false;
+                button4.Visible = false;
+                button2.Visible = false;
 
                 textBox17.Text = "";
                 textBox16.Text = "";
@@ -933,6 +959,8 @@ namespace Projeto
 
                 button16.Visible = false;
                 button15.Visible = false;
+                button14.Visible = false;
+                button3.Visible = false;
 
                 textBox10.Text = "";
                 textBox9.Text = "";
@@ -956,10 +984,15 @@ namespace Projeto
                     comboBox5.SelectedIndex = -1;
                     comboBox3.Enabled = true;
                     comboBox3.SelectedIndex = -1;
+                    comboBox4.Enabled = true;
+                    comboBox4.SelectedIndex = -1;
                 }
 
                 button22.Visible = false;
                 button21.Visible = false;
+                button28.Visible = false;
+                button29.Visible = false;
+                button30.Visible = false;
 
                 textBox15.Text = "";
                 textBox6.Text = "";
@@ -1138,6 +1171,24 @@ namespace Projeto
         {
             button19.Visible = false;
             button20.Visible = false;
+        }
+
+        private void button28_Click(object sender, EventArgs e)
+        {
+            button29.Visible = true;
+            button30.Visible = true;
+        }
+
+        private void button29_Click(object sender, EventArgs e)
+        {
+            button29.Visible = false;
+            button30.Visible = false;
+        }
+
+        private void button30_Click(object sender, EventArgs e)
+        {
+            button29.Visible = false;
+            button30.Visible = false;
         }
 
         private void Treinadores_Tab_Click(object sender, EventArgs e)

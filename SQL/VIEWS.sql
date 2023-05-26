@@ -67,3 +67,21 @@ create view NBA.GamesTeamsStadium as
 	select G.ID, G.[Time], G.[Date], G.Home_Score, G.Away_Score, T1.[Name] as HomeTeamName, T2.[Name] as AwayTeamName, S.[Name] as StadiumName
 	from ((NBA.Game as G inner join NBA.Team as T1 on G.Home_Team_ID = T1.ID) inner join NBA.Team as T2 on G.Away_Team_ID = T2.ID) inner join NBA.Stadium as S on G.Stadium_ID = S.ID
 go
+
+-- Jogos com resultado
+drop view IF EXISTS NBA.GamesWithResult
+go 
+create view NBA.GamesWithResult as 
+	select G.ID, G.[Time], G.[Date], G.Home_Score, G.Away_Score, T1.[Name] as HomeTeamName, T2.[Name] as AwayTeamName, S.[Name] as StadiumName
+	from ((NBA.Game as G inner join NBA.Team as T1 on G.Home_Team_ID = T1.ID) inner join NBA.Team as T2 on G.Away_Team_ID = T2.ID) inner join NBA.Stadium as S on G.Stadium_ID = S.ID
+	where G.Home_Score is not null
+go
+
+-- Jogos com resultado
+drop view IF EXISTS NBA.GamesWithoutResult
+go 
+create view NBA.GamesWithoutResult as 
+	select G.ID, G.[Time], G.[Date], G.Home_Score, G.Away_Score, T1.[Name] as HomeTeamName, T2.[Name] as AwayTeamName, S.[Name] as StadiumName
+	from ((NBA.Game as G inner join NBA.Team as T1 on G.Home_Team_ID = T1.ID) inner join NBA.Team as T2 on G.Away_Team_ID = T2.ID) inner join NBA.Stadium as S on G.Stadium_ID = S.ID
+	where G.Home_Score is null
+go

@@ -158,6 +158,9 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.label50 = new System.Windows.Forms.Label();
+            this.button28 = new System.Windows.Forms.Button();
+            this.button29 = new System.Windows.Forms.Button();
+            this.button30 = new System.Windows.Forms.Button();
             this.tabPage1.SuspendLayout();
             this.Equipas_Tab.SuspendLayout();
             this.Treinadores_Tab.SuspendLayout();
@@ -167,6 +170,9 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.button30);
+            this.tabPage1.Controls.Add(this.button29);
+            this.tabPage1.Controls.Add(this.button28);
             this.tabPage1.Controls.Add(this.label50);
             this.tabPage1.Controls.Add(this.comboBox4);
             this.tabPage1.Controls.Add(this.button27);
@@ -1652,6 +1658,42 @@
             this.label50.TabIndex = 128;
             this.label50.Text = "Jogo já aconteceu (Sim/Não)";
             // 
+            // button28
+            // 
+            this.button28.Location = new System.Drawing.Point(731, 8);
+            this.button28.Margin = new System.Windows.Forms.Padding(2);
+            this.button28.Name = "button28";
+            this.button28.Size = new System.Drawing.Size(101, 44);
+            this.button28.TabIndex = 129;
+            this.button28.Text = "Comprar Bilhete";
+            this.button28.UseVisualStyleBackColor = true;
+            this.button28.Visible = false;
+            this.button28.Click += new System.EventHandler(this.button28_Click);
+            // 
+            // button29
+            // 
+            this.button29.Location = new System.Drawing.Point(836, 8);
+            this.button29.Margin = new System.Windows.Forms.Padding(2);
+            this.button29.Name = "button29";
+            this.button29.Size = new System.Drawing.Size(101, 20);
+            this.button29.TabIndex = 130;
+            this.button29.Text = "Confirmar";
+            this.button29.UseVisualStyleBackColor = true;
+            this.button29.Visible = false;
+            this.button29.Click += new System.EventHandler(this.button29_Click);
+            // 
+            // button30
+            // 
+            this.button30.Location = new System.Drawing.Point(836, 32);
+            this.button30.Margin = new System.Windows.Forms.Padding(2);
+            this.button30.Name = "button30";
+            this.button30.Size = new System.Drawing.Size(101, 20);
+            this.button30.TabIndex = 131;
+            this.button30.Text = "Cancelar";
+            this.button30.UseVisualStyleBackColor = true;
+            this.button30.Visible = false;
+            this.button30.Click += new System.EventHandler(this.button30_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1806,6 +1848,9 @@
         private System.Windows.Forms.Button button27;
         private System.Windows.Forms.Label label50;
         private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.Button button30;
+        private System.Windows.Forms.Button button29;
+        private System.Windows.Forms.Button button28;
     }
 }
 

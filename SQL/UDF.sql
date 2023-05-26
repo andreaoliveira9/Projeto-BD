@@ -51,12 +51,18 @@ go
 -- Função com o filtro de equipa da casa e equipa visitante
 drop function IF EXISTS NBA.filtrarJogosPorEquipaCasaEquipaForaESeAconteceu
 go
-create function NBA.filtrarJogosPorEquipaCasaEquipaForaESeAconteceu(@equipaCasa varchar(30), @equipaFora varchar(30)) returns table
+create function NBA.filtrarJogosPorEquipaCasaEquipaForaESeAconteceu(@equipaCasa varchar(30), @equipaFora varchar(30), @aconteceu varchar(3)) returns table
 as
 return (
     select *
-    from NBA.GamesTeamsStadium
-    where (HomeTeamName = @equipaCasa or @equipaCasa is null) and (AwayTeamName = @equipaFora or @equipaFora is null)
+    from NBA.GamesTeamsStadium as G
+    where (HomeTeamName = @equipaCasa or @equipaCasa is null) and (
+            (@aconteceu = 'Sim' and G.ID in (select ID from NBA.GamesWithResult))
+            OR
+            (@aconteceu = 'Nao' and G.ID in (select ID from NBA.GamesWithoutResult))
+            OR
+            (@aconteceu is null) 
+        ) and (AwayTeamName = @equipaFora or @equipaFora is null)
 );
 go
 
