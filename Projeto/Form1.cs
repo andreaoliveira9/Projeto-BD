@@ -1057,6 +1057,8 @@ namespace Projeto
             button11.Visible = true;
             button12.Visible = true;
 
+            Lista_Jogadores.Enabled = false;
+
             comandoConfirmar = "adicionar";
 
             // Searchbar
@@ -1125,6 +1127,8 @@ namespace Projeto
             button11.Visible = true;
             button12.Visible = true;
 
+            Lista_Jogadores.Enabled = false;
+
             guardarNumber = NumeroEquipamento_Jogadores.Text;
             guardarTeamID = IDEquipa_Jogadores.Text;
 
@@ -1179,6 +1183,8 @@ namespace Projeto
             button11.Visible = true;
             button12.Visible = true;
 
+            Lista_Jogadores.Enabled = false;
+
             comandoConfirmar = "apagar";
         }
 
@@ -1186,6 +1192,8 @@ namespace Projeto
         {
             button11.Visible = false;
             button12.Visible = false;
+
+            Lista_Jogadores.Enabled = true;
 
             resetJogadores();
             clear("jogadores", "cancelar");
@@ -1304,7 +1312,7 @@ namespace Projeto
                     MessageBox.Show("Erro ao alterar Jogador!");
                 }
             }
-            
+            Lista_Jogadores.Enabled = true;
         }
 
         private void resetJogadores()
