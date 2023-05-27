@@ -44,7 +44,13 @@ as
 			if (@Number is not null and exists(select 1 from (NBA.Team as T inner join NBA.Player as P on T.ID = P.Team_ID) where Team_ID = @Team_ID and Number = @Number))
 				begin
 					set @errorsCount = @errorsCount + 1;
-					raiserror('Não foi possível adicionar jogador! Já existe um jogador da mesma equipa com o mesmo número de equipamento.', 16, 1);
+					raiserror('Não foi possível adicionar/alterar jogador! Já existe um jogador da mesma equipa com o mesmo número de equipamento.', 16, 1);
+				end
+
+		if (@Position is not null and not exists(select 1 from NBA.Player where Position = @Position))
+				begin
+					set @errorsCount = @errorsCount + 1;
+					raiserror('Não foi possível adicionar/altera jogador! Posição inválida.', 16, 1);
 				end
 
 		if (@errorsCount = 0)
