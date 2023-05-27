@@ -11,6 +11,8 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using ComboBox = System.Windows.Forms.ComboBox;
 
 namespace Projeto
 {
@@ -18,6 +20,7 @@ namespace Projeto
     {
         private SqlConnection cn;
         private int totalItems;
+        private String comandoConfirmar;
 
         public Form1()
         {
@@ -301,6 +304,7 @@ namespace Projeto
                 player.CCNumber = reader["CCNumber"].ToString();
                 player.Name = reader["Name"].ToString();
                 player.Age = reader["Age"].ToString();
+                player.Number = reader["Number"].ToString();
                 player.ContractID = reader["Contract_ID"].ToString();
                 player.Number = reader["Number"].ToString();
                 player.Height = reader["Height"].ToString();
@@ -331,29 +335,40 @@ namespace Projeto
                 Altura_Jogadores.Text = selectedPlayer.Height;
                 Peso_Jogadores.Text = selectedPlayer.Weight;
                 Posicao_Jogadores.Text = selectedPlayer.Position;
+                NumeroEquipamento_Jogadores.Text = selectedPlayer.Number;
                 Idade_Jogadores.Text = selectedPlayer.Age;
                 IDEquipa_Jogadores.Text = selectedPlayer.TeamID;
                 IDContrato_Jogadores.Text = selectedPlayer.ContractID;
 
-                SqlCommand cmd = new SqlCommand("select * from NBA.[Contract] as C inner join NBA.Person as P on C.ID = P.Contract_ID where C.ID = " + selectedPlayer.ContractID, cn);
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                if (selectedPlayer.ContractID != "")
                 {
-                    Contract contract = new Contract();
-                    contract.ID = reader["ID"].ToString();
-                    contract.Description = reader["Description"].ToString();
-                    contract.Salary = reader["Salary"].ToString();
-                    contract.StartDate = reader["Start_Date"].ToString();
-                    contract.EndDate = reader["End_Date"].ToString();
-                    Contrato_Jogador.Text = contract.ToString();
+                    SqlCommand cmd = new SqlCommand("select * from NBA.[Contract] as C inner join NBA.Person as P on C.ID = P.Contract_ID where C.ID = " + selectedPlayer.ContractID, cn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Contract contract = new Contract();
+                        contract.ID = reader["ID"].ToString();
+                        contract.Description = reader["Description"].ToString();
+                        contract.Salary = reader["Salary"].ToString();
+                        contract.StartDate = reader["Start_Date"].ToString();
+                        contract.EndDate = reader["End_Date"].ToString();
+                        Contrato_Jogador.Text = contract.ToString();
+                    }
+                    reader.Close();
+                } 
+                else
+                {
+                    Contrato_Jogador.Text = "Jogador sem contrato";
                 }
-                reader.Close();
 
                 SqlCommand cmd1 = new SqlCommand("select * from NBA.GetPlayerStats(" + selectedPlayer.CCNumber + ")", cn);
                 SqlDataReader reader1 = cmd1.ExecuteReader();
+                int count = 0;
+                PlayerStats playerStats = null;
                 while (reader1.Read())
                 {
-                    PlayerStats playerStats = new PlayerStats();
+                    count++;
+                    playerStats = new PlayerStats();
                     playerStats.Points = reader1["Points"].ToString();
                     playerStats.Assists = reader1["Assists"].ToString();
                     playerStats.Rebounds = reader1["Rebounds"].ToString();
@@ -361,8 +376,16 @@ namespace Projeto
                     playerStats.Steals = reader1["Steals"].ToString();
                     playerStats.FG = reader1["FG%"].ToString();
                     playerStats.PT3 = reader1["3PT%"].ToString();
-                    Estatistica_Jogador.Text = playerStats.ToString();
+                    
                 } 
+                if (count == 0)
+                {
+                    Estatistica_Jogador.Text = "Sem estatística publicada";
+                }
+                else
+                {
+                    Estatistica_Jogador.Text = playerStats.ToString();
+                }
                 reader1.Close();
 
                 button9.Visible = true;
@@ -779,7 +802,11 @@ namespace Projeto
         private void barraPesquisa(string nome, string tabela)
         {
             //Console.WriteLine("exec NBA.pesquisarPorNome @nome = " + "'" + nome + "'" + ", @esquema = 'NBA', @tabela = " + "'" + tabela + "'");
-            SqlCommand cmd = new SqlCommand("exec NBA.pesquisarPorNome @nome = " + "'" + nome + "'" + ", @esquema = 'NBA', @tabela = " + "'" + tabela + "'", cn);
+            SqlCommand cmd = new SqlCommand("NBA.pesquisarPorNome", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@nome", nome));
+            cmd.Parameters.Add(new SqlParameter("@esquema", "NBA"));
+            cmd.Parameters.Add(new SqlParameter("@tabela", tabela));
 
             if (tabela == "PersonCoach")
             {
@@ -896,13 +923,18 @@ namespace Projeto
                 
                 button9.Visible = false;
                 button10.Visible = false;
-                button11.Visible = false;
-                button12.Visible = false;
+
+                if (botao != "adicionar")
+                {
+                    button11.Visible = false;
+                    button12.Visible = false;
+                }
 
                 NumeroCC_Jogadores.Text = "";
                 Name_Jogadores.Text = "";
                 Altura_Jogadores.Text = "";
                 Peso_Jogadores.Text = "";
+                NumeroEquipamento_Jogadores.Text = "";
                 Posicao_Jogadores.Text = "";
                 Idade_Jogadores.Text = "";
                 IDEquipa_Jogadores.Text = "";
@@ -1015,6 +1047,51 @@ namespace Projeto
         {
             button11.Visible = true;
             button12.Visible = true;
+
+            comandoConfirmar = "adicionar";
+
+            // Searchbar
+            label21.Visible = false;
+            Search_Jogadores.Visible = false;
+            button1.Visible = false;
+            button24.Visible = false;
+            // Filtros
+            label22.Visible = false;
+            comboBox2.Visible = false;
+            label7.Visible = false;
+            FiltroEquipa_Jogadores.Visible = false;
+            FiltroPosicao_Jogadores.Visible = false;
+            comboBox1.Visible = false;
+            label21.Visible = false;
+            label21.Visible = false;
+            // Estatistica
+            label19.Visible = false;
+            Estatistica_Jogador.Visible = false;
+            // Contrato
+            label20.Visible = false;
+            Contrato_Jogador.Visible = false;
+            // Campos preenchimento
+            NumeroCC_Jogadores.Enabled = true;
+            NumeroCC_Jogadores.BackColor = Color.White;
+            Name_Jogadores.Enabled = true;
+            Name_Jogadores.BackColor = Color.White;
+            Altura_Jogadores.Enabled = true;
+            Altura_Jogadores.BackColor = Color.White;
+            NumeroEquipamento_Jogadores.Enabled = true;
+            NumeroEquipamento_Jogadores.BackColor = Color.White;
+            Peso_Jogadores.Enabled = true;
+            Peso_Jogadores.BackColor = Color.White;
+            Posicao_Jogadores.Enabled = true;
+            Posicao_Jogadores.BackColor = Color.White;
+            Idade_Jogadores.Enabled = true;
+            Idade_Jogadores.BackColor = Color.White;
+            IDEquipa_Jogadores.Enabled = true;
+            IDEquipa_Jogadores.BackColor = Color.White;
+            IDContrato_Jogadores.Enabled = true;
+            IDContrato_Jogadores.BackColor = Color.White;
+
+            clear("jogadores", "adicionar");
+            updateListaJogadores();
         }
 
         private void button10_Click(object sender, EventArgs e)
@@ -1027,18 +1104,137 @@ namespace Projeto
         {
             button11.Visible = true;
             button12.Visible = true;
+
+            comandoConfirmar = "apagar";
         }
 
         private void button12_Click(object sender, EventArgs e)
         {
             button11.Visible = false;
             button12.Visible = false;
+
+            resetJogadores();
         }
 
         private void button11_Click(object sender, EventArgs e)
         {
-            button11.Visible = false;
-            button12.Visible = false;
+            if (comandoConfirmar == "adicionar")
+            {
+                try
+                {
+                    String numeroCC = NumeroCC_Jogadores.Text;
+                    String nome = Name_Jogadores.Text;
+                    String altura = Altura_Jogadores.Text;
+                    String numeroEquipamento = NumeroEquipamento_Jogadores.Text;
+                    String peso = Peso_Jogadores.Text;
+                    String posicao = Posicao_Jogadores.Text;
+                    String idade = Idade_Jogadores.Text;
+                    String IDEquipa = IDEquipa_Jogadores.Text;
+                    String IDContrato = IDContrato_Jogadores.Text;
+
+                    SqlCommand cmd = new SqlCommand("NBA.adicionarJogador", cn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@CCNumber", numeroCC));
+                    cmd.Parameters.Add(new SqlParameter("@Name", nome));
+                    cmd.Parameters.Add(new SqlParameter("@Age", idade));
+                    cmd.Parameters.Add(new SqlParameter("@Number", numeroEquipamento));
+                    cmd.Parameters.Add(new SqlParameter("@Height", altura));
+                    cmd.Parameters.Add(new SqlParameter("@Weight", peso));
+                    cmd.Parameters.Add(new SqlParameter("@Position", posicao));
+                    if (IDContrato != "")
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@Contract_ID", IDContrato));
+                    }
+                    if (IDContrato != "")
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@Team_ID", IDEquipa));
+                    }
+
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    MessageBox.Show("Jogador adicionado com sucesso!");
+                    reader.Close();
+                    updateListaJogadores();
+                    resetJogadores();
+                }
+                catch
+                {
+                    MessageBox.Show("Erro ao inserir jogador!");
+                }
+            }
+            else if (comandoConfirmar == "apagar")
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("NBA.apagarJogador", cn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@CCNumber", NumeroCC_Jogadores.Text));
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    reader.Close();
+                    MessageBox.Show("Jogador apagado com sucesso!");
+                    updateListaJogadores();
+                    resetJogadores();
+                }
+                catch
+                {
+                    MessageBox.Show("Erro ao apagar Jogador!");
+                }
+            }
+            else if (comandoConfirmar == "alterar")
+            {
+                try
+                {
+                    
+                }
+                catch
+                {
+
+                }
+            }
+            
+        }
+
+        private void resetJogadores()
+        {
+            // Searchbar
+            label21.Visible = true;
+            Search_Jogadores.Visible = true;
+            button1.Visible = true;
+            button24.Visible = true;
+            // Filtros
+            label22.Visible = true;
+            comboBox2.Visible = true;
+            label7.Visible = true;
+            FiltroEquipa_Jogadores.Visible = true;
+            FiltroPosicao_Jogadores.Visible = true;
+            comboBox1.Visible = true;
+            label21.Visible = true;
+            label21.Visible = true;
+            // Estatistica
+            label19.Visible = true;
+            Estatistica_Jogador.Visible = true;
+            // Contrato
+            label20.Visible = true;
+            Contrato_Jogador.Visible = true;
+            // Campos preenchimento
+            NumeroCC_Jogadores.Enabled = false;
+            NumeroCC_Jogadores.BackColor = Color.LightSteelBlue;
+            Name_Jogadores.Enabled = false;
+            Name_Jogadores.BackColor = Color.LightSteelBlue;
+            Altura_Jogadores.Enabled = false;
+            Altura_Jogadores.BackColor = Color.LightSteelBlue;
+            NumeroEquipamento_Jogadores.Enabled = false;
+            NumeroEquipamento_Jogadores.BackColor = Color.LightSteelBlue;
+            Peso_Jogadores.Enabled = false;
+            Peso_Jogadores.BackColor = Color.LightSteelBlue;
+            Posicao_Jogadores.Enabled = false;
+            Posicao_Jogadores.BackColor = Color.LightSteelBlue;
+            Idade_Jogadores.Enabled = false;
+            Idade_Jogadores.BackColor = Color.LightSteelBlue;
+            IDEquipa_Jogadores.Enabled = false;
+            IDEquipa_Jogadores.BackColor = Color.LightSteelBlue;
+            IDContrato_Jogadores.Enabled = false;
+            IDContrato_Jogadores.BackColor = Color.LightSteelBlue;
         }
 
         //Treinadores

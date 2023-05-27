@@ -29,6 +29,11 @@
         private void InitializeComponent()
         {
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button30 = new System.Windows.Forms.Button();
+            this.button29 = new System.Windows.Forms.Button();
+            this.button28 = new System.Windows.Forms.Button();
+            this.label50 = new System.Windows.Forms.Label();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.button27 = new System.Windows.Forms.Button();
             this.label49 = new System.Windows.Forms.Label();
             this.label48 = new System.Windows.Forms.Label();
@@ -156,11 +161,8 @@
             this.Lista_Jogadores = new System.Windows.Forms.ListBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
-            this.label50 = new System.Windows.Forms.Label();
-            this.button28 = new System.Windows.Forms.Button();
-            this.button29 = new System.Windows.Forms.Button();
-            this.button30 = new System.Windows.Forms.Button();
+            this.NumeroEquipamento_Jogadores = new System.Windows.Forms.TextBox();
+            this.label51 = new System.Windows.Forms.Label();
             this.tabPage1.SuspendLayout();
             this.Equipas_Tab.SuspendLayout();
             this.Treinadores_Tab.SuspendLayout();
@@ -214,6 +216,64 @@
             this.tabPage1.TabIndex = 3;
             this.tabPage1.Text = "Jogos";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button30
+            // 
+            this.button30.Location = new System.Drawing.Point(836, 32);
+            this.button30.Margin = new System.Windows.Forms.Padding(2);
+            this.button30.Name = "button30";
+            this.button30.Size = new System.Drawing.Size(101, 20);
+            this.button30.TabIndex = 131;
+            this.button30.Text = "Cancelar";
+            this.button30.UseVisualStyleBackColor = true;
+            this.button30.Visible = false;
+            this.button30.Click += new System.EventHandler(this.button30_Click);
+            // 
+            // button29
+            // 
+            this.button29.Location = new System.Drawing.Point(836, 8);
+            this.button29.Margin = new System.Windows.Forms.Padding(2);
+            this.button29.Name = "button29";
+            this.button29.Size = new System.Drawing.Size(101, 20);
+            this.button29.TabIndex = 130;
+            this.button29.Text = "Confirmar";
+            this.button29.UseVisualStyleBackColor = true;
+            this.button29.Visible = false;
+            this.button29.Click += new System.EventHandler(this.button29_Click);
+            // 
+            // button28
+            // 
+            this.button28.Location = new System.Drawing.Point(731, 8);
+            this.button28.Margin = new System.Windows.Forms.Padding(2);
+            this.button28.Name = "button28";
+            this.button28.Size = new System.Drawing.Size(101, 44);
+            this.button28.TabIndex = 129;
+            this.button28.Text = "Comprar Bilhete";
+            this.button28.UseVisualStyleBackColor = true;
+            this.button28.Visible = false;
+            this.button28.Click += new System.EventHandler(this.button28_Click);
+            // 
+            // label50
+            // 
+            this.label50.AutoSize = true;
+            this.label50.Location = new System.Drawing.Point(360, 442);
+            this.label50.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(146, 13);
+            this.label50.TabIndex = 128;
+            this.label50.Text = "Jogo já aconteceu (Sim/Não)";
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.BackColor = System.Drawing.SystemColors.Window;
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.comboBox4.Location = new System.Drawing.Point(363, 457);
+            this.comboBox4.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(150, 21);
+            this.comboBox4.Sorted = true;
+            this.comboBox4.TabIndex = 127;
             // 
             // button27
             // 
@@ -1171,6 +1231,8 @@
             // 
             // Jogadores_Tab
             // 
+            this.Jogadores_Tab.Controls.Add(this.label51);
+            this.Jogadores_Tab.Controls.Add(this.NumeroEquipamento_Jogadores);
             this.Jogadores_Tab.Controls.Add(this.label44);
             this.Jogadores_Tab.Controls.Add(this.button24);
             this.Jogadores_Tab.Controls.Add(this.Idade_Jogadores);
@@ -1265,7 +1327,7 @@
             // 
             this.Name_Jogadores.BackColor = System.Drawing.Color.LightSteelBlue;
             this.Name_Jogadores.Enabled = false;
-            this.Name_Jogadores.Location = new System.Drawing.Point(342, 140);
+            this.Name_Jogadores.Location = new System.Drawing.Point(342, 75);
             this.Name_Jogadores.Margin = new System.Windows.Forms.Padding(2);
             this.Name_Jogadores.Name = "Name_Jogadores";
             this.Name_Jogadores.Size = new System.Drawing.Size(320, 20);
@@ -1274,7 +1336,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(340, 125);
+            this.label15.Location = new System.Drawing.Point(340, 60);
             this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(38, 13);
@@ -1479,10 +1541,10 @@
             // 
             this.NumeroCC_Jogadores.BackColor = System.Drawing.Color.LightSteelBlue;
             this.NumeroCC_Jogadores.Enabled = false;
-            this.NumeroCC_Jogadores.Location = new System.Drawing.Point(342, 75);
+            this.NumeroCC_Jogadores.Location = new System.Drawing.Point(343, 140);
             this.NumeroCC_Jogadores.Margin = new System.Windows.Forms.Padding(2);
             this.NumeroCC_Jogadores.Name = "NumeroCC_Jogadores";
-            this.NumeroCC_Jogadores.Size = new System.Drawing.Size(320, 20);
+            this.NumeroCC_Jogadores.Size = new System.Drawing.Size(149, 20);
             this.NumeroCC_Jogadores.TabIndex = 3;
             this.NumeroCC_Jogadores.TextChanged += new System.EventHandler(this.NumeroCC_Jogadores_TextChanged);
             // 
@@ -1581,7 +1643,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(340, 60);
+            this.label1.Location = new System.Drawing.Point(340, 125);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(64, 13);
@@ -1636,63 +1698,25 @@
             this.tabControl1.Size = new System.Drawing.Size(961, 548);
             this.tabControl1.TabIndex = 0;
             // 
-            // comboBox4
+            // NumeroEquipamento_Jogadores
             // 
-            this.comboBox4.BackColor = System.Drawing.SystemColors.Window;
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.comboBox4.Location = new System.Drawing.Point(363, 457);
-            this.comboBox4.Margin = new System.Windows.Forms.Padding(2);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(150, 21);
-            this.comboBox4.Sorted = true;
-            this.comboBox4.TabIndex = 127;
+            this.NumeroEquipamento_Jogadores.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.NumeroEquipamento_Jogadores.Enabled = false;
+            this.NumeroEquipamento_Jogadores.Location = new System.Drawing.Point(512, 140);
+            this.NumeroEquipamento_Jogadores.Margin = new System.Windows.Forms.Padding(2);
+            this.NumeroEquipamento_Jogadores.Name = "NumeroEquipamento_Jogadores";
+            this.NumeroEquipamento_Jogadores.Size = new System.Drawing.Size(149, 20);
+            this.NumeroEquipamento_Jogadores.TabIndex = 46;
             // 
-            // label50
+            // label51
             // 
-            this.label50.AutoSize = true;
-            this.label50.Location = new System.Drawing.Point(360, 442);
-            this.label50.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(146, 13);
-            this.label50.TabIndex = 128;
-            this.label50.Text = "Jogo já aconteceu (Sim/Não)";
-            // 
-            // button28
-            // 
-            this.button28.Location = new System.Drawing.Point(731, 8);
-            this.button28.Margin = new System.Windows.Forms.Padding(2);
-            this.button28.Name = "button28";
-            this.button28.Size = new System.Drawing.Size(101, 44);
-            this.button28.TabIndex = 129;
-            this.button28.Text = "Comprar Bilhete";
-            this.button28.UseVisualStyleBackColor = true;
-            this.button28.Visible = false;
-            this.button28.Click += new System.EventHandler(this.button28_Click);
-            // 
-            // button29
-            // 
-            this.button29.Location = new System.Drawing.Point(836, 8);
-            this.button29.Margin = new System.Windows.Forms.Padding(2);
-            this.button29.Name = "button29";
-            this.button29.Size = new System.Drawing.Size(101, 20);
-            this.button29.TabIndex = 130;
-            this.button29.Text = "Confirmar";
-            this.button29.UseVisualStyleBackColor = true;
-            this.button29.Visible = false;
-            this.button29.Click += new System.EventHandler(this.button29_Click);
-            // 
-            // button30
-            // 
-            this.button30.Location = new System.Drawing.Point(836, 32);
-            this.button30.Margin = new System.Windows.Forms.Padding(2);
-            this.button30.Name = "button30";
-            this.button30.Size = new System.Drawing.Size(101, 20);
-            this.button30.TabIndex = 131;
-            this.button30.Text = "Cancelar";
-            this.button30.UseVisualStyleBackColor = true;
-            this.button30.Visible = false;
-            this.button30.Click += new System.EventHandler(this.button30_Click);
+            this.label51.AutoSize = true;
+            this.label51.Location = new System.Drawing.Point(509, 125);
+            this.label51.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(111, 13);
+            this.label51.TabIndex = 47;
+            this.label51.Text = "Número equipamento:";
             // 
             // Form1
             // 
@@ -1851,6 +1875,8 @@
         private System.Windows.Forms.Button button30;
         private System.Windows.Forms.Button button29;
         private System.Windows.Forms.Button button28;
+        private System.Windows.Forms.Label label51;
+        private System.Windows.Forms.TextBox NumeroEquipamento_Jogadores;
     }
 }
 

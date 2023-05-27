@@ -176,7 +176,7 @@ as
 				sum(case when GW.Winner_ID = T.ID then 1 else 0 end) as Wins,
 				sum(case when GW.Loser_ID = T.ID then 1 else 0 end) as Losses,
 				round((sum(case when GW.Winner_ID = T.ID then 1 else 0 end) * 100.0) / count(*) , 4) as [Win%]
-			from NBA.Team as T left join NBA.Winners as GW on T.ID = GW.Winner_ID OR T.ID = GW.Loser_ID
+			from NBA.Team as T left join @GameWinners as GW on T.ID = GW.Winner_ID OR T.ID = GW.Loser_ID
 			group by T.ID, T.[Name]
         return;
     end;
@@ -206,57 +206,5 @@ return
     from NBA.Ticket
     where Game_ID = @GameID
 )
-go
-
-
--- Verificar se o CC já existe
-drop function IF EXISTS NBA.checkCCNumber
-go
-create function NBA.checkCCNumber (@CC varchar(10)) returns int
-as
-	begin
-		declare @counter int
-		select @counter = COUNT(1) 
-        from NBA.Person as P where P.CCNumber=@CC
-		return @counter
-	end
-go
-
--- Verificar se o ID do jogo já existe
-drop function IF EXISTS NBA.checkGameID
-go
-create function NBA.checkGameID (@ID int) returns int
-as
-    begin
-        declare @counter int
-        select @counter = COUNT(1) 
-        from NBA.Game as G where G.ID=@ID
-        return @counter
-    end
-go
-
--- Verificar se o ID do contrato já existe
-drop function IF EXISTS NBA.checkContractID
-go
-create function NBA.checkContractID (@ID int) returns int
-as
-    begin
-        declare @counter int
-        select @counter = COUNT(1) 
-        from NBA.[Contract] as C where C.ID=@ID
-        return @counter
-    end
-go
-
-/* Verificar o último ID de jogo adicionado */
-drop function IF EXISTS NBA.nextIDJogo
-go
-create function NBA.nextIDJogo() returns int
-as
-	begin
-		declare @ID as int;
-		select @ID = max(ID) + 1 from NBA.Game;
-		return @ID;
-	end
 go
 
