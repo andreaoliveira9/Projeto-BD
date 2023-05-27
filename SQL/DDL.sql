@@ -39,7 +39,7 @@ create table NBA.[Contract] (
 );
 
 create table NBA.Person (
-    CCNumber                int                 not null,
+    CCNumber                int                 not null        check(len(CCNumber) = 8),
     [Name]                  varchar(50)         not null,
     Age                     int                 not null        check(Age > 0),
     Contract_ID             int,

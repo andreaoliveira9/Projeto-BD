@@ -9,10 +9,7 @@ as
 	begin
 		declare @query nvarchar(MAX);
 
-		set @query = '
-			select *
-			from ' + QUOTENAME(@esquema) + '.' + QUOTENAME(@tabela) +
-			' where [Name] like ''%' + REPLACE(@nome, '''', '''''') + '%''';
+		set @query = 'select * from ' + QUOTENAME(@esquema) + '.' + QUOTENAME(@tabela) + ' where [Name] like ''%' + REPLACE(@nome, '''', '''''') + '%''';
 
 		execute sp_executesql @query;
 	end;
@@ -21,45 +18,45 @@ go
 -- Procedure para adicionar jogador
 drop procedure IF EXISTS NBA.adicionarJogador;
 go
-CREATE PROCEDURE NBA.adicionarJogador
-    @CCNumber INT,
-    @Name VARCHAR(50),
-    @Age INT,
-    @Number INT,
-    @Height VARCHAR(5),
-    @Weight FLOAT,
-    @Position VARCHAR(20),
-    @Team_ID INT = NULL,
-    @Contract_ID INT = NULL
-AS
-BEGIN
-    MERGE NBA.Person AS Target
-    USING (SELECT @CCNumber, @Name, @Age, @Contract_ID) AS Source (CCNumber, [Name], Age, Contract_ID)
-    ON Target.CCNumber = Source.CCNumber
+create procedure NBA.adicionarJogador
+    @CCNumber int,
+    @Name varchar(50),
+    @Age int,
+    @Number int,
+    @Height varchar(5),
+    @Weight float,
+    @Position varchar(20),
+    @Team_ID int = null,
+    @Contract_ID int = null
+as
+	begin
+		declare @errorsCount as int = 0;
+		if (@CCNumber is not null and exists(select 1 from NBA.Person where CCNumber = @CCNumber))
+			begin
+				set @errorsCount = @errorsCount + 1;
+				raiserror('Não foi possível adicionar jogador! O número de cartão de cidadão inserido já se encontra registado.', 16, 1);
+			end
 
-    WHEN MATCHED THEN 
-        UPDATE SET [Name] = Source.[Name],
-                   Age = Source.Age,
-                   Contract_ID = Source.Contract_ID
-    WHEN NOT MATCHED THEN 
-        INSERT (CCNumber, [Name], Age, Contract_ID)
-        VALUES (Source.CCNumber, Source.[Name], Source.Age, Source.Contract_ID);
-
-    MERGE NBA.Player AS Target
-    USING (SELECT @CCNumber, @Number, @Height, @Weight, @Position, @Team_ID) AS Source (CCNumber, Number, Height, [Weight], Position, Team_ID)
-    ON Target.CCNumber = Source.CCNumber
-
-    WHEN MATCHED THEN 
-        UPDATE SET Number = Source.Number,
-                   Height = Source.Height,
-                   [Weight] = Source.[Weight],
-                   Position = Source.Position,
-                   Team_ID = Source.Team_ID
-    WHEN NOT MATCHED THEN 
-        INSERT (CCNumber, Number, Height, [Weight], Position, Team_ID)
-        VALUES (Source.CCNumber, Source.Number, Source.Height, Source.[Weight], Source.Position, Source.Team_ID);
-END;
-GO
+		if (@Number is not null and exists(select 1 from (NBA.Team as T inner join NBA.Player as P on T.ID = P.Team_ID) where Team_ID = @Team_ID and Number = @Number))
+			begin
+				set @errorsCount = @errorsCount + 1;
+				raiserror('Não foi possível adicionar jogador! Já existe um jogador da mesma equipa com o mesmo número de equipamento.', 16, 1);
+			end
+		if (@errorsCount = 0)
+			begin
+				begin try
+					begin tran
+						insert into NBA.Person values(@CCNumber, @Name, @Age, @Contract_ID);
+						insert into NBA.Player values(@CCNumber, @Number, @Height, @Weight, @Position, @Team_ID);
+					commit tran
+				end try
+				begin catch
+					rollback tran
+					raiserror('Jogador não inserido! Algum dado está incorreto', 16, 1);
+				end catch
+			end
+	end
+go
 
 -- Procedure para apagar jogador
 drop procedure IF EXISTS NBA.apagarJogador;

@@ -1145,7 +1145,7 @@ namespace Projeto
                     {
                         cmd.Parameters.Add(new SqlParameter("@Contract_ID", IDContrato));
                     }
-                    if (IDContrato != "")
+                    if (IDEquipa != "")
                     {
                         cmd.Parameters.Add(new SqlParameter("@Team_ID", IDEquipa));
                     }
@@ -1154,12 +1154,12 @@ namespace Projeto
                     SqlDataReader reader = cmd.ExecuteReader();
                     MessageBox.Show("Jogador adicionado com sucesso!");
                     reader.Close();
-                    updateListaJogadores();
+                    clear("jogadores", "limpar");
                     resetJogadores();
                 }
                 catch
                 {
-                    MessageBox.Show("Erro ao inserir jogador!");
+                    MessageBox.Show("Algum dado passado de forma incorreta!");
                 }
             }
             else if (comandoConfirmar == "apagar")
@@ -1172,7 +1172,7 @@ namespace Projeto
                     SqlDataReader reader = cmd.ExecuteReader();
                     reader.Close();
                     MessageBox.Show("Jogador apagado com sucesso!");
-                    updateListaJogadores();
+                    clear("jogadores", "limpar");
                     resetJogadores();
                 }
                 catch
