@@ -8,6 +8,7 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -311,6 +312,7 @@ namespace Projeto
                 player.Weight = reader["Weight"].ToString();
                 player.Position = reader["Position"].ToString();
                 player.TeamID = reader["Team_ID"].ToString();
+                player.TeamName = reader["TeamName"].ToString();
 
                 totalItems++;
                 Lista_Jogadores.Items.Add(player);
@@ -339,6 +341,7 @@ namespace Projeto
                 Idade_Jogadores.Text = selectedPlayer.Age;
                 IDEquipa_Jogadores.Text = selectedPlayer.TeamID;
                 IDContrato_Jogadores.Text = selectedPlayer.ContractID;
+                textBox3.Text = selectedPlayer.TeamName;
 
                 if (selectedPlayer.ContractID != "")
                 {
@@ -941,6 +944,7 @@ namespace Projeto
                 IDContrato_Jogadores.Text = "";
                 Estatistica_Jogador.Text = "";
                 Contrato_Jogador.Text = "";
+                textBox3.Text = "";
 
                 if (botao == "limpar")
                 {
@@ -1090,8 +1094,25 @@ namespace Projeto
             IDContrato_Jogadores.Enabled = true;
             IDContrato_Jogadores.BackColor = Color.White;
 
+            this.IDEquipa_Jogadores.TextChanged +=
+                new System.EventHandler(IDEquipa_Jogadores_TextChanged_1);
+
             clear("jogadores", "adicionar");
             updateListaJogadores();
+        }
+
+        
+
+        private void IDEquipa_Jogadores_TextChanged_1(object sender, EventArgs e)
+        {
+            String selectedTeamID = IDEquipa_Jogadores.Text;
+            SqlCommand cmd = new SqlCommand("select * from NBA.Team where ID = " + "'" + selectedTeamID + "'", cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                textBox3.Text = reader["Name"].ToString();
+            }
+            reader.Close();
         }
 
         private void button10_Click(object sender, EventArgs e)
@@ -1114,6 +1135,7 @@ namespace Projeto
             button12.Visible = false;
 
             resetJogadores();
+            clear("jogadores", "cancelar");
         }
 
         private void button11_Click(object sender, EventArgs e)
@@ -1141,16 +1163,12 @@ namespace Projeto
                     cmd.Parameters.Add(new SqlParameter("@Height", altura));
                     cmd.Parameters.Add(new SqlParameter("@Weight", peso));
                     cmd.Parameters.Add(new SqlParameter("@Position", posicao));
+                    cmd.Parameters.Add(new SqlParameter("@Team_ID", IDEquipa));
                     if (IDContrato != "")
                     {
                         cmd.Parameters.Add(new SqlParameter("@Contract_ID", IDContrato));
                     }
-                    if (IDEquipa != "")
-                    {
-                        cmd.Parameters.Add(new SqlParameter("@Team_ID", IDEquipa));
-                    }
-
-
+                        
                     SqlDataReader reader = cmd.ExecuteReader();
                     MessageBox.Show("Jogador adicionado com sucesso!");
                     reader.Close();
@@ -1598,6 +1616,10 @@ namespace Projeto
         }
 
         private void Lista_Jogos_Equipa_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void IDEquipa_Jogadores_TextChanged(object sender, EventArgs e)
         {
 
         }

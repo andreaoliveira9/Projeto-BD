@@ -5,7 +5,7 @@ drop view IF EXISTS NBA.PersonPlayer
 go 
 create view NBA.PersonPlayer as 
 	select Pe.CCNumber, Pe.[Name], Pe.Age, Pe.Contract_ID, Pl.[Number], Pl.Height, Pl.[Weight], Pl.Position, Pl.Team_ID
-	from (NBA.Player as Pl join NBA.Person as Pe on Pl.CCNumber = Pe.CCNumber);
+	from ((NBA.Player as Pl join NBA.Person as Pe on Pl.CCNumber = Pe.CCNumber) inner join NBA.Team as T on Pl.Team_ID = T.ID);
 go
 
 -- Pessoa e treinador

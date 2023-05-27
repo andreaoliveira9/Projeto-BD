@@ -22,11 +22,11 @@ create procedure NBA.adicionarJogador
     @CCNumber int,
     @Name varchar(50),
     @Age int,
-    @Number int,
+    @Number int = null,
     @Height varchar(5),
     @Weight float,
     @Position varchar(20),
-    @Team_ID int = null,
+    @Team_ID int,
     @Contract_ID int = null
 as
 	begin
@@ -42,6 +42,7 @@ as
 				set @errorsCount = @errorsCount + 1;
 				raiserror('Não foi possível adicionar jogador! Já existe um jogador da mesma equipa com o mesmo número de equipamento.', 16, 1);
 			end
+
 		if (@errorsCount = 0)
 			begin
 				begin try
