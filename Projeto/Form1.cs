@@ -385,7 +385,7 @@ namespace Projeto
                 } 
                 if (count == 0)
                 {
-                    Estatistica_Jogador.Text = "Sem estatística publicada";
+                    Estatistica_Jogador.Text = "Sem estatística adicionada\nAltere o jogador para adicionar";
                 }
                 else
                 {
@@ -733,7 +733,7 @@ namespace Projeto
             {
                 Team team = new Team();
                 team.ID = reader["ID"].ToString();
-                team.TeamName = reader["TeamName"].ToString();
+                team.TeamName = reader["Name"].ToString();
                 team.City = reader["City"].ToString();
                 team.Conference = reader["Conference"].ToString();
                 team.FoundYear = reader["Found_Year"].ToString();
@@ -905,6 +905,141 @@ namespace Projeto
                 label11.Text = "Total de equipas: " + totalItems.ToString();
                 reader.Close();
             }
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            if (comandoConfirmar == "adicionar")
+            {
+                try
+                {
+                    String numeroCC = NumeroCC_Jogadores.Text;
+                    String nome = Name_Jogadores.Text;
+                    String altura = Altura_Jogadores.Text;
+                    String numeroEquipamento = NumeroEquipamento_Jogadores.Text;
+                    String peso = Peso_Jogadores.Text;
+                    String posicao = Posicao_Jogadores.Text;
+                    String idade = Idade_Jogadores.Text;
+                    String IDEquipa = IDEquipa_Jogadores.Text;
+                    String IDContrato = IDContrato_Jogadores.Text;
+
+                    SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarJogador", cn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@CCNumber", numeroCC));
+                    cmd.Parameters.Add(new SqlParameter("@Name", nome));
+                    cmd.Parameters.Add(new SqlParameter("@Age", idade));
+                    cmd.Parameters.Add(new SqlParameter("@Number", numeroEquipamento));
+                    cmd.Parameters.Add(new SqlParameter("@Height", altura));
+                    cmd.Parameters.Add(new SqlParameter("@Weight", peso));
+                    cmd.Parameters.Add(new SqlParameter("@Position", posicao));
+                    cmd.Parameters.Add(new SqlParameter("@Team_ID", IDEquipa));
+                    cmd.Parameters.Add(new SqlParameter("@Command", "adicionar"));
+                    cmd.Parameters.Add(new SqlParameter("@NumberOrTeamIDChanged", "Sim"));
+                    if (IDContrato != "")
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@Contract_ID", IDContrato));
+                    }
+                    /*cmd.Parameters.Add(new SqlParameter("@Points", 0));
+                    cmd.Parameters.Add(new SqlParameter("@Assists", 0));
+                    cmd.Parameters.Add(new SqlParameter("@Rebounds", 0));
+                    cmd.Parameters.Add(new SqlParameter("@Blocks", 0));
+                    cmd.Parameters.Add(new SqlParameter("@Steals", 0));
+                    cmd.Parameters.Add(new SqlParameter("@FG", 0));
+                    cmd.Parameters.Add(new SqlParameter("@PT3", 0));*/
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    MessageBox.Show("Jogador adicionado com sucesso!");
+                    reader.Close();
+                    clear("jogadores", "limpar");
+                    resetJogadores();
+                }
+                catch
+                {
+                    MessageBox.Show("Erro ao adicionar jogador!");
+                }
+            }
+            else if (comandoConfirmar == "apagar")
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("NBA.apagarJogador", cn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@CCNumber", NumeroCC_Jogadores.Text));
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    reader.Close();
+                    MessageBox.Show("Jogador apagado com sucesso!");
+                    clear("jogadores", "limpar");
+                    resetJogadores();
+                }
+                catch
+                {
+                    MessageBox.Show("Erro ao apagar Jogador!");
+                }
+            }
+            else if (comandoConfirmar == "alterar")
+            {
+                try
+                {
+                    String numeroCC = NumeroCC_Jogadores.Text;
+                    String nome = Name_Jogadores.Text;
+                    String altura = Altura_Jogadores.Text;
+                    String numeroEquipamento = NumeroEquipamento_Jogadores.Text;
+                    String peso = Peso_Jogadores.Text;
+                    String posicao = Posicao_Jogadores.Text;
+                    String idade = Idade_Jogadores.Text;
+                    String IDEquipa = IDEquipa_Jogadores.Text;
+                    String IDContrato = IDContrato_Jogadores.Text;
+                    float points = float.Parse(textBox18.Text);
+                    float assists = float.Parse(textBox24.Text);
+                    float rebounds = float.Parse(textBox26.Text);
+                    float blocks = float.Parse(textBox23.Text);
+                    float steals = float.Parse(textBox25.Text);
+                    float fg = float.Parse(textBox22.Text);
+                    float pt3 = float.Parse(textBox19.Text);
+
+                    SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarJogador", cn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@CCNumber", numeroCC));
+                    cmd.Parameters.Add(new SqlParameter("@Name", nome));
+                    cmd.Parameters.Add(new SqlParameter("@Age", idade));
+                    cmd.Parameters.Add(new SqlParameter("@Number", numeroEquipamento));
+                    cmd.Parameters.Add(new SqlParameter("@Height", altura));
+                    cmd.Parameters.Add(new SqlParameter("@Weight", peso));
+                    cmd.Parameters.Add(new SqlParameter("@Position", posicao));
+                    cmd.Parameters.Add(new SqlParameter("@Team_ID", IDEquipa));
+                    cmd.Parameters.Add(new SqlParameter("@Command", "alterar"));
+                    if (numeroEquipamento != guardarNumber || IDEquipa != guardarTeamID)
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@NumberOrTeamIDChanged", "Sim"));
+                    }
+                    else
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@NumberOrTeamIDChanged", "Nao"));
+                    }
+                    if (IDContrato != "")
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@Contract_ID", IDContrato));
+                    }
+                    cmd.Parameters.Add(new SqlParameter("@Points", points));
+                    cmd.Parameters.Add(new SqlParameter("@Assists", assists));
+                    cmd.Parameters.Add(new SqlParameter("@Rebounds", rebounds));
+                    cmd.Parameters.Add(new SqlParameter("@Blocks", blocks));
+                    cmd.Parameters.Add(new SqlParameter("@Steals", steals));
+                    cmd.Parameters.Add(new SqlParameter("@FG", fg));
+                    cmd.Parameters.Add(new SqlParameter("@PT3", pt3));
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    MessageBox.Show("Jogador alterado com sucesso!");
+                    reader.Close();
+                    clear("jogadores", "limpar");
+                    resetJogadores();
+                }
+                catch
+                {
+                    MessageBox.Show("Erro ao alterar Jogador!");
+                }
+            }
+            Lista_Jogadores.Enabled = true;
         }
 
         private void clear(string janela, string botao)
@@ -1149,8 +1284,21 @@ namespace Projeto
             label21.Visible = false;
             label21.Visible = false;
             // Estatistica
-            label19.Visible = false;
             Estatistica_Jogador.Visible = false;
+            label53.Visible = true;
+            label54.Visible = true;
+            label55.Visible = true;
+            label56.Visible = true;
+            label57.Visible = true;
+            label58.Visible = true;
+            label59.Visible = true;
+            textBox18.Visible = true;
+            textBox24.Visible = true;
+            textBox26.Visible = true;
+            textBox23.Visible = true;
+            textBox25.Visible = true;
+            textBox22.Visible = true;
+            textBox19.Visible = true;
             // Contrato
             label20.Visible = false;
             Contrato_Jogador.Visible = false;
@@ -1199,122 +1347,6 @@ namespace Projeto
             clear("jogadores", "cancelar");
         }
 
-        private void button11_Click(object sender, EventArgs e)
-        {
-            if (comandoConfirmar == "adicionar")
-            {
-                try
-                {
-                    String numeroCC = NumeroCC_Jogadores.Text;
-                    String nome = Name_Jogadores.Text;
-                    String altura = Altura_Jogadores.Text;
-                    String numeroEquipamento = NumeroEquipamento_Jogadores.Text;
-                    String peso = Peso_Jogadores.Text;
-                    String posicao = Posicao_Jogadores.Text;
-                    String idade = Idade_Jogadores.Text;
-                    String IDEquipa = IDEquipa_Jogadores.Text;
-                    String IDContrato = IDContrato_Jogadores.Text;
-
-                    
-
-                    SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarJogador", cn);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@CCNumber", numeroCC));
-                    cmd.Parameters.Add(new SqlParameter("@Name", nome));
-                    cmd.Parameters.Add(new SqlParameter("@Age", idade));
-                    cmd.Parameters.Add(new SqlParameter("@Number", numeroEquipamento));
-                    cmd.Parameters.Add(new SqlParameter("@Height", altura));
-                    cmd.Parameters.Add(new SqlParameter("@Weight", peso));
-                    cmd.Parameters.Add(new SqlParameter("@Position", posicao));
-                    cmd.Parameters.Add(new SqlParameter("@Team_ID", IDEquipa));
-                    cmd.Parameters.Add(new SqlParameter("@Command", "adicionar"));
-                    cmd.Parameters.Add(new SqlParameter("@NumberOrTeamIDChanged", "Sim"));
-                    if (IDContrato != "")
-                    {
-                        cmd.Parameters.Add(new SqlParameter("@Contract_ID", IDContrato));
-                    }
-                        
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    MessageBox.Show("Jogador adicionado com sucesso!");
-                    reader.Close();
-                    clear("jogadores", "limpar");
-                    resetJogadores();
-                }
-                catch
-                {
-                    MessageBox.Show("Erro ao adicionar jogador!");
-                }
-            }
-            else if (comandoConfirmar == "apagar")
-            {
-                try
-                {
-                    SqlCommand cmd = new SqlCommand("NBA.apagarJogador", cn);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@CCNumber", NumeroCC_Jogadores.Text));
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    reader.Close();
-                    MessageBox.Show("Jogador apagado com sucesso!");
-                    clear("jogadores", "limpar");
-                    resetJogadores();
-                }
-                catch
-                {
-                    MessageBox.Show("Erro ao apagar Jogador!");
-                }
-            }
-            else if (comandoConfirmar == "alterar")
-            {
-                try
-                {
-                    String numeroCC = NumeroCC_Jogadores.Text;
-                    String nome = Name_Jogadores.Text;
-                    String altura = Altura_Jogadores.Text;
-                    String numeroEquipamento = NumeroEquipamento_Jogadores.Text;
-                    String peso = Peso_Jogadores.Text;
-                    String posicao = Posicao_Jogadores.Text;
-                    String idade = Idade_Jogadores.Text;
-                    String IDEquipa = IDEquipa_Jogadores.Text;
-                    String IDContrato = IDContrato_Jogadores.Text;
-
-                    SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarJogador", cn);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@CCNumber", numeroCC));
-                    cmd.Parameters.Add(new SqlParameter("@Name", nome));
-                    cmd.Parameters.Add(new SqlParameter("@Age", idade));
-                    cmd.Parameters.Add(new SqlParameter("@Number", numeroEquipamento));
-                    cmd.Parameters.Add(new SqlParameter("@Height", altura));
-                    cmd.Parameters.Add(new SqlParameter("@Weight", peso));
-                    cmd.Parameters.Add(new SqlParameter("@Position", posicao));
-                    cmd.Parameters.Add(new SqlParameter("@Team_ID", IDEquipa));
-                    cmd.Parameters.Add(new SqlParameter("@Command", "alterar"));
-                    if (numeroEquipamento != guardarNumber || IDEquipa != guardarTeamID)
-                    {
-                        cmd.Parameters.Add(new SqlParameter("@NumberOrTeamIDChanged", "Sim"));
-                    }
-                    else
-                    {
-                        cmd.Parameters.Add(new SqlParameter("@NumberOrTeamIDChanged", "Nao"));
-                    }
-                    if (IDContrato != "")
-                    {
-                        cmd.Parameters.Add(new SqlParameter("@Contract_ID", IDContrato));
-                    }
-
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    MessageBox.Show("Jogador alterado com sucesso!");
-                    reader.Close();
-                    clear("jogadores", "limpar");
-                    resetJogadores();
-                }
-                catch
-                {
-                    MessageBox.Show("Erro ao alterar Jogador!");
-                }
-            }
-            Lista_Jogadores.Enabled = true;
-        }
-
         private void resetJogadores()
         {
             // Searchbar
@@ -1334,6 +1366,20 @@ namespace Projeto
             // Estatistica
             label19.Visible = true;
             Estatistica_Jogador.Visible = true;
+            label53.Visible = false;
+            label54.Visible = false;
+            label55.Visible = false;
+            label56.Visible = false;
+            label57.Visible = false;
+            label58.Visible = false;
+            label59.Visible = false;
+            textBox18.Visible = false;
+            textBox24.Visible = false;
+            textBox26.Visible = false;
+            textBox23.Visible = false;
+            textBox25.Visible = false;
+            textBox22.Visible = false;
+            textBox19.Visible = false;
             // Contrato
             label20.Visible = true;
             Contrato_Jogador.Visible = true;

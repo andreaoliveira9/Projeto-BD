@@ -30,6 +30,13 @@ create procedure NBA.adicionarAlterarJogador
     @Contract_ID int = null,
 	@Command varchar(20),
 	@NumberOrTeamIDChanged varchar(3)
+	--@Points float,
+    --@Assists float,
+    --@Rebounds float,
+    --@Blocks float,
+    --@Steals float,
+    --@FG float,
+    --@PT3 float
 as
 	begin
 		declare @errorsCount as int = 0;
@@ -60,6 +67,7 @@ as
 						begin tran
 							insert into NBA.Person values(@CCNumber, @Name, @Age, @Contract_ID);
 							insert into NBA.Player values(@CCNumber, @Number, @Height, @Weight, @Position, @Team_ID);
+							--insert into NBA.Average_Individual_Numbers values (@Points, @Assists, @Rebounds, @Blocks, @Steals, @FG ,@PT3, @CCNumber);
 						commit tran
 					end try
 					begin catch
@@ -82,6 +90,17 @@ as
 						rollback tran
 						raiserror('Jogador não alterado! Algum dado está incorreto', 16, 1);
 					end catch
+					/*begin try
+						begin tran
+							update NBA.Average_Individual_Numbers
+							set Points = @Points, Assists = @Assists, Rebounds = @Rebounds, Blocks = @Blocks, Steals = @Steals, [FG%] = @FG, [3PT%] = @PT3
+							where Player_CCNumber = @CCNumber;
+						commit tran
+					end try
+					begin catch
+						rollback tran
+						raiserror('Estatística não alterado! Algum dado está incorreto', 16, 1);
+					end catch*/
 			end
 	end
 go
