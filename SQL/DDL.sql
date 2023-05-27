@@ -90,7 +90,7 @@ create table NBA.Coach (
 
 create table NBA.Player (
     CCNumber                int                 not null        check(len(CCNumber) = 8),
-    [Number]                int									check([Number] >= 0),
+    [Number]                int					not null		check([Number] >= 0),
     Height                  varchar(5)          not null        check(Height like '[0-9]-[0-9]'),
     [Weight]                float               not null        check([Weight] > 0),
     Position                varchar(20)         not null,

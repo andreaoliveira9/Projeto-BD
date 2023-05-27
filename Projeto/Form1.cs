@@ -22,6 +22,8 @@ namespace Projeto
         private SqlConnection cn;
         private int totalItems;
         private String comandoConfirmar;
+        private String guardarNumber;
+        private String guardarTeamID;
 
         public Form1()
         {
@@ -927,24 +929,27 @@ namespace Projeto
                 button9.Visible = false;
                 button10.Visible = false;
 
-                if (botao != "adicionar")
+                if (botao != "adicionar" && botao != "alterar")
                 {
                     button11.Visible = false;
                     button12.Visible = false;
                 }
 
-                NumeroCC_Jogadores.Text = "";
-                Name_Jogadores.Text = "";
-                Altura_Jogadores.Text = "";
-                Peso_Jogadores.Text = "";
-                NumeroEquipamento_Jogadores.Text = "";
-                Posicao_Jogadores.Text = "";
-                Idade_Jogadores.Text = "";
-                IDEquipa_Jogadores.Text = "";
-                IDContrato_Jogadores.Text = "";
-                Estatistica_Jogador.Text = "";
-                Contrato_Jogador.Text = "";
-                textBox3.Text = "";
+                if (botao != "alterar")
+                {
+                    NumeroCC_Jogadores.Text = "";
+                    Name_Jogadores.Text = "";
+                    Altura_Jogadores.Text = "";
+                    Peso_Jogadores.Text = "";
+                    NumeroEquipamento_Jogadores.Text = "";
+                    Posicao_Jogadores.Text = "";
+                    Idade_Jogadores.Text = "";
+                    IDEquipa_Jogadores.Text = "";
+                    IDContrato_Jogadores.Text = "";
+                    Estatistica_Jogador.Text = "";
+                    Contrato_Jogador.Text = "";
+                    textBox3.Text = "";
+                }
 
                 if (botao == "limpar")
                 {
@@ -1119,6 +1124,54 @@ namespace Projeto
         {
             button11.Visible = true;
             button12.Visible = true;
+
+            guardarNumber = NumeroEquipamento_Jogadores.Text;
+            guardarTeamID = IDEquipa_Jogadores.Text;
+
+            comandoConfirmar = "alterar";
+
+            // Searchbar
+            label21.Visible = false;
+            Search_Jogadores.Visible = false;
+            button1.Visible = false;
+            button24.Visible = false;
+            // Filtros
+            label22.Visible = false;
+            comboBox2.Visible = false;
+            label7.Visible = false;
+            FiltroEquipa_Jogadores.Visible = false;
+            FiltroPosicao_Jogadores.Visible = false;
+            comboBox1.Visible = false;
+            label21.Visible = false;
+            label21.Visible = false;
+            // Estatistica
+            label19.Visible = false;
+            Estatistica_Jogador.Visible = false;
+            // Contrato
+            label20.Visible = false;
+            Contrato_Jogador.Visible = false;
+            // Campos preenchimento
+            Name_Jogadores.Enabled = true;
+            Name_Jogadores.BackColor = Color.White;
+            Altura_Jogadores.Enabled = true;
+            Altura_Jogadores.BackColor = Color.White;
+            NumeroEquipamento_Jogadores.Enabled = true;
+            NumeroEquipamento_Jogadores.BackColor = Color.White;
+            Peso_Jogadores.Enabled = true;
+            Peso_Jogadores.BackColor = Color.White;
+            Posicao_Jogadores.Enabled = true;
+            Posicao_Jogadores.BackColor = Color.White;
+            Idade_Jogadores.Enabled = true;
+            Idade_Jogadores.BackColor = Color.White;
+            IDEquipa_Jogadores.Enabled = true;
+            IDEquipa_Jogadores.BackColor = Color.White;
+            IDContrato_Jogadores.Enabled = true;
+            IDContrato_Jogadores.BackColor = Color.White;
+
+            this.IDEquipa_Jogadores.TextChanged +=
+                new System.EventHandler(IDEquipa_Jogadores_TextChanged_1);
+
+            clear("jogadores", "alterar");
         }
 
         private void button9_Click(object sender, EventArgs e)
@@ -1154,7 +1207,9 @@ namespace Projeto
                     String IDEquipa = IDEquipa_Jogadores.Text;
                     String IDContrato = IDContrato_Jogadores.Text;
 
-                    SqlCommand cmd = new SqlCommand("NBA.adicionarJogador", cn);
+                    
+
+                    SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarJogador", cn);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@CCNumber", numeroCC));
                     cmd.Parameters.Add(new SqlParameter("@Name", nome));
@@ -1164,6 +1219,8 @@ namespace Projeto
                     cmd.Parameters.Add(new SqlParameter("@Weight", peso));
                     cmd.Parameters.Add(new SqlParameter("@Position", posicao));
                     cmd.Parameters.Add(new SqlParameter("@Team_ID", IDEquipa));
+                    cmd.Parameters.Add(new SqlParameter("@Command", "adicionar"));
+                    cmd.Parameters.Add(new SqlParameter("@NumberOrTeamIDChanged", "Sim"));
                     if (IDContrato != "")
                     {
                         cmd.Parameters.Add(new SqlParameter("@Contract_ID", IDContrato));
@@ -1177,7 +1234,7 @@ namespace Projeto
                 }
                 catch
                 {
-                    MessageBox.Show("Algum dado passado de forma incorreta!");
+                    MessageBox.Show("Erro ao adicionar jogador!");
                 }
             }
             else if (comandoConfirmar == "apagar")
@@ -1202,11 +1259,49 @@ namespace Projeto
             {
                 try
                 {
-                    
+                    String numeroCC = NumeroCC_Jogadores.Text;
+                    String nome = Name_Jogadores.Text;
+                    String altura = Altura_Jogadores.Text;
+                    String numeroEquipamento = NumeroEquipamento_Jogadores.Text;
+                    String peso = Peso_Jogadores.Text;
+                    String posicao = Posicao_Jogadores.Text;
+                    String idade = Idade_Jogadores.Text;
+                    String IDEquipa = IDEquipa_Jogadores.Text;
+                    String IDContrato = IDContrato_Jogadores.Text;
+
+                    SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarJogador", cn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@CCNumber", numeroCC));
+                    cmd.Parameters.Add(new SqlParameter("@Name", nome));
+                    cmd.Parameters.Add(new SqlParameter("@Age", idade));
+                    cmd.Parameters.Add(new SqlParameter("@Number", numeroEquipamento));
+                    cmd.Parameters.Add(new SqlParameter("@Height", altura));
+                    cmd.Parameters.Add(new SqlParameter("@Weight", peso));
+                    cmd.Parameters.Add(new SqlParameter("@Position", posicao));
+                    cmd.Parameters.Add(new SqlParameter("@Team_ID", IDEquipa));
+                    cmd.Parameters.Add(new SqlParameter("@Command", "alterar"));
+                    if (numeroEquipamento != guardarNumber || IDEquipa != guardarTeamID)
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@NumberOrTeamIDChanged", "Sim"));
+                    }
+                    else
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@NumberOrTeamIDChanged", "Nao"));
+                    }
+                    if (IDContrato != "")
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@Contract_ID", IDContrato));
+                    }
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    MessageBox.Show("Jogador alterado com sucesso!");
+                    reader.Close();
+                    clear("jogadores", "limpar");
+                    resetJogadores();
                 }
                 catch
                 {
-
+                    MessageBox.Show("Erro ao alterar Jogador!");
                 }
             }
             

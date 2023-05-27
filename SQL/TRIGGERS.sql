@@ -3,7 +3,7 @@ use p4g1;
 -- Trigger para adição de pessoas
 drop trigger IF EXISTS NBA.CheckPersonInsertOrUpdate;
 go
-create trigger NBA.CheckPersonInsertOrUpdate on NBA.Person after insert, update
+create trigger NBA.CheckPersonInsertOrUpdate on NBA.Person after insert
 as
 	begin
 		declare @InsertedContractID int;
