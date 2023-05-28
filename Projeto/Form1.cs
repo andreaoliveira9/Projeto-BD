@@ -1671,13 +1671,14 @@ namespace Projeto
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+                    Console.WriteLine(reader["Name"].ToString());
                     textBox15.Text = reader["Name"].ToString();
                 }
                 reader.Close();
             }
             else
             {
-                textBox15.Text = "";
+                textBox15.Text = "Equipa inexistente";
             }
         }
 
@@ -1696,7 +1697,7 @@ namespace Projeto
             }
             else
             {
-                textBox6.Text = "";
+                textBox6.Text = "Equipa inexistente";
             }
         }
 
@@ -1715,7 +1716,7 @@ namespace Projeto
             }
             else
             {
-                textBox21.Text = "";
+                textBox21.Text = "Equipa inexistente";
             }
         }
 
