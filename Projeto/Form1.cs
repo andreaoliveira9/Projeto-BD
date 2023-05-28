@@ -25,6 +25,7 @@ namespace Projeto
         private String guardarNumber;
         private String guardarTeamID;
         private String guardarTeamID1;
+        private String guardarGameID;
 
         public Form1()
         {
@@ -620,6 +621,7 @@ namespace Projeto
                 textBox12.Text = selectedGame.Time;
                 textBox13.Text = selectedGame.HomeScore;
                 textBox11.Text = selectedGame.AwayScore;
+                guardarGameID = selectedGame.ID;
 
                 DateTime data = new DateTime(int.Parse(selectedGame.Date.Substring(6,4)), int.Parse(selectedGame.Date.Substring(3, 2)), int.Parse(selectedGame.Date.Substring(0, 2)));
                 dateTimePicker1.Value = data;
@@ -1272,7 +1274,7 @@ namespace Projeto
         // Adicionar/Alterar/Apagar jogo
         private void button20_Click(object sender, EventArgs e)
         {
-            /*if (comandoConfirmar == "adicionar")
+            if (comandoConfirmar == "adicionar")
             {
                 try
                 {
@@ -1310,15 +1312,16 @@ namespace Projeto
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("NBA.apagarEquipa", cn);
+                    SqlCommand cmd = new SqlCommand("NBA.apagarJogo", cn);
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@ID", guardarTeamID1));
+                    cmd.Parameters.Add(new SqlParameter("@ID", guardarGameID));
                     SqlDataReader reader = cmd.ExecuteReader();
-                    MessageBox.Show("Equipa apagada com sucesso!");
+                    MessageBox.Show("Jogo apagada com sucesso!");
                     reader.Close();
-                    clear("equipas", "limpar");
-                    resetEquipas();
-                    Lista_Equipas.Enabled = true;
+                    resetTabelaClassificativa();
+                    clear("jogos", "limpar");
+                    resetJogos();
+                    Lista_Jogos.Enabled = true;
                 }
                 catch
                 {
@@ -1358,7 +1361,7 @@ namespace Projeto
                 {
                     MessageBox.Show("Erro ao alterar equipa!");
                 }
-            }*/
+            }
         }
 
         // Botão Adicionar Jogadores
@@ -2149,6 +2152,12 @@ namespace Projeto
             textBox8.BackColor = Color.LightSteelBlue;
             comboBox9.Enabled = false;
             comboBox9.BackColor = Color.LightSteelBlue;
+        }
+
+        private void resetTabelaClassificativa()
+        {
+            richTextBox1.Text = "";
+            InitializeTabela_Classificativa();
         }
 
         private void clear(string janela, string botao)
