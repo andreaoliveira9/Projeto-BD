@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 using ComboBox = System.Windows.Forms.ComboBox;
 
 namespace Projeto
@@ -618,7 +619,7 @@ namespace Projeto
                 textBox29.Text = selectedGame.HomeID;
                 textBox30.Text = selectedGame.AwayID;
                 textBox5.Text = selectedGame.StadiumID;
-                textBox12.Text = selectedGame.Time;
+                textBox12.Text = (selectedGame.Time).Substring(0,5);
                 textBox13.Text = selectedGame.HomeScore;
                 textBox11.Text = selectedGame.AwayScore;
                 guardarGameID = selectedGame.ID;
@@ -1278,34 +1279,43 @@ namespace Projeto
             {
                 try
                 {
-                    String nome = textBox9.Text;
-                    String cidade = textBox8.Text;
-                    String conferencia = comboBox9.Text;
-                    String foundYear = textBox7.Text;
-                    String coachCCNumber = textBox28.Text;
-                    String ownerCCNumber = textBox27.Text;
+                    String time = textBox12.Text;
+                    String date = dateTimePicker1.Text;
+                    String date1 = date.Substring(6, 4) + "/" + date.Substring(3, 2) + "/" + date.Substring(0, 2);
+                    String homeScore = textBox13.Text;
+                    String awayScore = textBox11.Text;
+                    String homeTeamID = textBox29.Text;
+                    String awayTeamID = textBox30.Text;
+                    String stadiumID = textBox5.Text;
 
-                    SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarEquipa", cn);
+                    SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarJogo", cn);
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@Name", nome));
-                    cmd.Parameters.Add(new SqlParameter("@City", cidade));
-                    cmd.Parameters.Add(new SqlParameter("@Conference", conferencia));
-                    cmd.Parameters.Add(new SqlParameter("@FoundYear", foundYear));
-                    cmd.Parameters.Add(new SqlParameter("@CoachCCNumber", coachCCNumber));
-                    cmd.Parameters.Add(new SqlParameter("@OwnerCCNumber", ownerCCNumber));
+                    cmd.Parameters.Add(new SqlParameter("@Time", time));
+                    cmd.Parameters.Add(new SqlParameter("@Date", date1));
+                    if (homeScore != "")
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@HomeScore", homeScore));
+                    }
+                    if (awayScore != "")
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@AwayScore", awayScore));
+                    }
+                    cmd.Parameters.Add(new SqlParameter("@HomeTeamID", homeTeamID));
+                    cmd.Parameters.Add(new SqlParameter("@AwayTeamID", awayTeamID));
+                    cmd.Parameters.Add(new SqlParameter("@StadiumID", stadiumID));
                     cmd.Parameters.Add(new SqlParameter("@Command", "adicionar"));
-                    cmd.Parameters.Add(new SqlParameter("@CCNumbersChanged", "Sim"));
 
                     SqlDataReader reader = cmd.ExecuteReader();
-                    MessageBox.Show("Equipa adicionada com sucesso!");
+                    MessageBox.Show("Jogo adicionado com sucesso!");
                     reader.Close();
-                    clear("equipas", "limpar");
-                    resetEquipas();
-                    Lista_Equipas.Enabled = true;
+                    clear("jogos", "limpar");
+                    resetJogos();
+                    resetTabelaClassificativa();
+                    Lista_Jogos.Enabled = true;
                 }
                 catch
                 {
-                    MessageBox.Show("Erro ao adicionar equipa!");
+                    MessageBox.Show("Erro ao adicionar jogo!");
                 }
             }
             else if (comandoConfirmar == "apagar")
@@ -1316,50 +1326,62 @@ namespace Projeto
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@ID", guardarGameID));
                     SqlDataReader reader = cmd.ExecuteReader();
-                    MessageBox.Show("Jogo apagada com sucesso!");
+                    MessageBox.Show("Jogo apagado com sucesso!");
                     reader.Close();
                     resetTabelaClassificativa();
                     clear("jogos", "limpar");
                     resetJogos();
+                    resetTabelaClassificativa();
                     Lista_Jogos.Enabled = true;
                 }
                 catch
                 {
-                    MessageBox.Show("Erro ao apagar equipa!");
+                    MessageBox.Show("Erro ao apagar jogo!");
                 }
             }
             else if (comandoConfirmar == "alterar")
             {
                 try
                 {
-                    String nome = textBox9.Text;
-                    String cidade = textBox8.Text;
-                    String conferencia = comboBox9.Text;
-                    String foundYear = textBox7.Text;
-                    String coachCCNumber = textBox28.Text;
-                    String ownerCCNumber = textBox27.Text;
+                    String time = textBox12.Text;
+                    String date = dateTimePicker1.Text;
+                    String date1 = date.Substring(6, 4) + "/" + date.Substring(3, 2) + "/" + date.Substring(0, 2);
+                    String homeScore = textBox13.Text;
+                    String awayScore = textBox11.Text;
+                    String homeTeamID = textBox29.Text;
+                    String awayTeamID = textBox30.Text;
+                    String stadiumID = textBox5.Text;
 
-                    SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarEquipa", cn);
+                    SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarJogo", cn);
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@ID", guardarTeamID1));
-                    cmd.Parameters.Add(new SqlParameter("@Name", nome));
-                    cmd.Parameters.Add(new SqlParameter("@City", cidade));
-                    cmd.Parameters.Add(new SqlParameter("@Conference", conferencia));
-                    cmd.Parameters.Add(new SqlParameter("@FoundYear", foundYear));
-                    cmd.Parameters.Add(new SqlParameter("@CoachCCNumber", coachCCNumber));
-                    cmd.Parameters.Add(new SqlParameter("@OwnerCCNumber", ownerCCNumber));
+                    cmd.Parameters.Add(new SqlParameter("@ID", guardarGameID));
+                    cmd.Parameters.Add(new SqlParameter("@Time", time));
+                    cmd.Parameters.Add(new SqlParameter("@Date", date1));
+                    if (homeScore != "")
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@HomeScore", homeScore));
+                    }
+                    if (awayScore != "")
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@AwayScore", awayScore));
+                    }
+                    Console.WriteLine("\n");
+                    cmd.Parameters.Add(new SqlParameter("@HomeTeamID", homeTeamID));
+                    cmd.Parameters.Add(new SqlParameter("@AwayTeamID", awayTeamID));
+                    cmd.Parameters.Add(new SqlParameter("@StadiumID", stadiumID));
                     cmd.Parameters.Add(new SqlParameter("@Command", "alterar"));
 
                     SqlDataReader reader = cmd.ExecuteReader();
-                    MessageBox.Show("Equipa alterada com sucesso!");
+                    MessageBox.Show("Jogo alterado com sucesso!");
                     reader.Close();
-                    clear("equipas", "limpar");
-                    resetEquipas();
-                    Lista_Equipas.Enabled = true;
+                    clear("jogos", "limpar");
+                    resetJogos();
+                    resetTabelaClassificativa();
+                    Lista_Jogos.Enabled = true;
                 }
                 catch
                 {
-                    MessageBox.Show("Erro ao alterar equipa!");
+                    MessageBox.Show("Erro ao alterar jogo!");
                 }
             }
         }
@@ -1424,31 +1446,38 @@ namespace Projeto
         private void IDEquipa_Jogadores_TextChanged_1(object sender, EventArgs e)
         {
             String selectedTeamID = IDEquipa_Jogadores.Text;
+
+            int count = 0;
             if (selectedTeamID != "")
             {
                 SqlCommand cmd = new SqlCommand("select * from NBA.Team where ID = " + "'" + selectedTeamID + "'", cn);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+                    count++;
                     textBox3.Text = reader["Name"].ToString();
                 }
                 reader.Close();
             }
-            else
+
+            if (selectedTeamID == "" || count == 0)
             {
-                textBox3.Text = "";
+                textBox3.Text = "Equipa inexistente";
             }
         }
 
         private void IDContrato_Jogadores_TextChanged_1(object sender, EventArgs e)
         {
             String selectedContractID = IDContrato_Jogadores.Text;
+
+            int count = 0;
             if (selectedContractID != "")
             {
                 SqlCommand cmd = new SqlCommand("select * from NBA.[Contract] where ID = '" + selectedContractID + "'", cn);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+                    count++;
                     Contract contract = new Contract();
                     contract.ID = reader["ID"].ToString();
                     contract.Description = reader["Description"].ToString();
@@ -1459,9 +1488,10 @@ namespace Projeto
                 }
                 reader.Close();
             }
-            else
+
+            if (selectedContractID == "" || count == 0)
             {
-                Contrato_Jogador.Text = "";
+                Contrato_Jogador.Text = "Contrato inexistente";
             }
         }
 
@@ -1503,12 +1533,15 @@ namespace Projeto
         private void textBox1_TextChanged_1(object sender, EventArgs e)
         {
             String selectedContractID = textBox1.Text;
+
+            int count = 0;
             if (selectedContractID != "")
             {
                 SqlCommand cmd = new SqlCommand("select * from NBA.[Contract] where ID = '" + selectedContractID + "'", cn);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+                    count++;
                     Contract contract = new Contract();
                     contract.ID = reader["ID"].ToString();
                     contract.Description = reader["Description"].ToString();
@@ -1519,9 +1552,10 @@ namespace Projeto
                 }
                 reader.Close();
             }
-            else
+
+            if (selectedContractID == "" || count == 0)
             {
-                richTextBox2.Text = "";
+                richTextBox2.Text = "Contrato inexistente";
             }
         }
 
@@ -1576,38 +1610,46 @@ namespace Projeto
         private void textBox28_TextChanged_1(object sender, EventArgs e)
         {
             String selectedCoachCCNumber = textBox28.Text;
+
+            int count = 0;
             if (selectedCoachCCNumber != "")
             {
                 SqlCommand cmd = new SqlCommand("select * from NBA.Person where CCNumber = " + "'" + selectedCoachCCNumber + "'", cn);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+                    count++;
                     textBox4.Text = reader["Name"].ToString();
                 }
                 reader.Close();
             }
-            else
+
+            if (selectedCoachCCNumber == "" || count == 0)
             {
-                textBox4.Text = "";
+                textBox4.Text = "Treinador inexistente";
             }
         }
 
         private void textBox27_TextChanged_1(object sender, EventArgs e)
         {
             String selectedOwnerCCNumber = textBox27.Text;
+
+            int count = 0;
             if (selectedOwnerCCNumber != "")
             {
                 SqlCommand cmd = new SqlCommand("select * from NBA.Person where CCNumber = " + "'" + selectedOwnerCCNumber + "'", cn);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+                    count++;
                     textBox2.Text = reader["Name"].ToString();
                 }
                 reader.Close();
             }
-            else
+
+            if (selectedOwnerCCNumber == "" || count == 0)
             {
-                textBox2.Text = "";
+                textBox2.Text = "Presidente inexistente";
             }
         }
 
@@ -1665,18 +1707,21 @@ namespace Projeto
         private void textBox29_TextChanged_1(object sender, EventArgs e)
         {
             String selectedHomeTeam = textBox29.Text;
+
+            int count = 0;
             if (selectedHomeTeam != "")
             {
                 SqlCommand cmd = new SqlCommand("select * from NBA.Team where ID = " + "'" + selectedHomeTeam + "'", cn);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    Console.WriteLine(reader["Name"].ToString());
+                    count++;
                     textBox15.Text = reader["Name"].ToString();
                 }
                 reader.Close();
             }
-            else
+            
+            if (selectedHomeTeam == "" || count == 0)
             {
                 textBox15.Text = "Equipa inexistente";
             }
@@ -1685,17 +1730,21 @@ namespace Projeto
         private void textBox30_TextChanged_1(object sender, EventArgs e)
         {
             String selectedAwayTeam = textBox30.Text;
+
+            int count = 0;
             if (selectedAwayTeam != "")
             {
                 SqlCommand cmd = new SqlCommand("select * from NBA.Team where ID = " + "'" + selectedAwayTeam + "'", cn);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+                    count++;
                     textBox6.Text = reader["Name"].ToString();
                 }
                 reader.Close();
             }
-            else
+
+            if (selectedAwayTeam == "" || count == 0)
             {
                 textBox6.Text = "Equipa inexistente";
             }
@@ -1704,19 +1753,23 @@ namespace Projeto
         private void textBox5_TextChanged_1(object sender, EventArgs e)
         {
             String selectedStadium = textBox5.Text;
+
+            int count = 0;
             if (selectedStadium != "")
             {
                 SqlCommand cmd = new SqlCommand("select * from NBA.Stadium where ID = " + "'" + selectedStadium + "'", cn);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+                    count++;
                     textBox21.Text = reader["Name"].ToString();
                 }
                 reader.Close();
             }
-            else
+
+            if (selectedStadium == "" || count == 0)
             {
-                textBox21.Text = "Equipa inexistente";
+                textBox21.Text = "Arena inexistente";
             }
         }
 
@@ -2126,33 +2179,33 @@ namespace Projeto
 
         private void resetJogos()
         {
-            // Searchbar
-            label13.Visible = true;
-            textBox10.Visible = true;
-            button18.Visible = true;
-            button26.Visible = true;
+            // Limpar
+            button27.Visible = true;
             // Filtros
-            label43.Visible = true;
-            comboBox7.Visible = true;
-            // Jogos Equipa
-            label47.Visible = true;
-            Lista_Jogos_Equipa.Visible = true;
-            // Estatistica
-            label9.Visible = true;
-            richTextBox3.Visible = true;
+            label29.Visible = true;
+            comboBox5.Visible = true;
+            label36.Visible = true;
+            comboBox3.Visible = true;
+            label50.Visible = true;
+            comboBox4.Visible = true;
+            // Bilhetes Jogo
+            label49.Visible = true;
+            Bilhetes_Jogo.Visible = true;
             // Campos preenchimento
-            textBox9.Enabled = false;
-            textBox9.BackColor = Color.LightSteelBlue;
-            textBox7.Enabled = false;
-            textBox7.BackColor = Color.LightSteelBlue;
-            textBox28.Enabled = false;
-            textBox28.BackColor = Color.LightSteelBlue;
-            textBox27.Enabled = false;
-            textBox27.BackColor = Color.LightSteelBlue;
-            textBox8.Enabled = false;
-            textBox8.BackColor = Color.LightSteelBlue;
-            comboBox9.Enabled = false;
-            comboBox9.BackColor = Color.LightSteelBlue;
+            textBox29.Enabled = false;
+            textBox29.BackColor = Color.LightSteelBlue;
+            textBox30.Enabled = false;
+            textBox30.BackColor = Color.LightSteelBlue;
+            textBox5.Enabled = false;
+            textBox5.BackColor = Color.LightSteelBlue;
+            textBox12.Enabled = false;
+            textBox12.BackColor = Color.LightSteelBlue;
+            dateTimePicker1.Enabled = false;
+            dateTimePicker1.BackColor = Color.LightSteelBlue;
+            textBox13.Enabled = false;
+            textBox13.BackColor = Color.LightSteelBlue;
+            textBox11.Enabled = false;
+            textBox11.BackColor = Color.LightSteelBlue;
         }
 
         private void resetTabelaClassificativa()

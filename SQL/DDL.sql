@@ -120,7 +120,7 @@ create table NBA.Game (
     Away_Team_ID            int                 not null,
     Stadium_ID              int                 not null,
 
-	check (Home_Score!=Away_Score),
+	check(Home_Score != Away_Score),
     primary key (ID),
 );
 
