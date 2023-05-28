@@ -24,8 +24,8 @@ namespace Projeto
                 "Rebounds: " + _Rebounds + "\n" + 
                 "Blocks: " + _Blocks + "\n" + 
                 "Steals: " + _Steals + "\n" + 
-                "FG%: " + _FG + "\n" + 
-                "3PT%: " + _PT3;
+                "FG%: " + _FG + "%\n" + 
+                "3PT%: " + _PT3 + "%";
         }
     }
 }

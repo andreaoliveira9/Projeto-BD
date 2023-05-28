@@ -8,7 +8,7 @@ namespace Projeto
 {
     class Game1
     {
-        private String _ID, _Time, _Date, _HomeScore, _AwayScore, _HomeID, _AwayID, _HomeTeamName, _AwayTeamName, _StadiumName;
+        private String _ID, _Time, _Date, _HomeScore, _AwayScore, _HomeID, _AwayID, _HomeTeamName, _AwayTeamName, _StadiumName, _StadiumID;
         public String ID { get => _ID; set => _ID = value; }
         public String Time { get => _Time; set => _Time = value; }
         public String Date { get => _Date; set => _Date = value; }
@@ -19,6 +19,7 @@ namespace Projeto
         public String HomeTeamName { get => _HomeTeamName; set => _HomeTeamName = value; }
         public String AwayTeamName { get => _AwayTeamName; set => _AwayTeamName = value; }
         public String StadiumName { get => _StadiumName; set => _StadiumName = value; }
+        public String StadiumID { get => _StadiumID; set => _StadiumID = value; }
 
         public override string ToString()
         {

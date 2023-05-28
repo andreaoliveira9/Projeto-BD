@@ -66,6 +66,11 @@
             this.label40 = new System.Windows.Forms.Label();
             this.Lista_Jogos = new System.Windows.Forms.ListBox();
             this.Equipas_Tab = new System.Windows.Forms.TabPage();
+            this.comboBox9 = new System.Windows.Forms.ComboBox();
+            this.label61 = new System.Windows.Forms.Label();
+            this.label60 = new System.Windows.Forms.Label();
+            this.textBox28 = new System.Windows.Forms.TextBox();
+            this.textBox27 = new System.Windows.Forms.TextBox();
             this.label47 = new System.Windows.Forms.Label();
             this.label46 = new System.Windows.Forms.Label();
             this.comboBox7 = new System.Windows.Forms.ComboBox();
@@ -121,6 +126,21 @@
             this.button13 = new System.Windows.Forms.Button();
             this.Lista_Treinadores = new System.Windows.Forms.ListBox();
             this.Jogadores_Tab = new System.Windows.Forms.TabPage();
+            this.comboBox8 = new System.Windows.Forms.ComboBox();
+            this.label59 = new System.Windows.Forms.Label();
+            this.label58 = new System.Windows.Forms.Label();
+            this.label57 = new System.Windows.Forms.Label();
+            this.label56 = new System.Windows.Forms.Label();
+            this.label55 = new System.Windows.Forms.Label();
+            this.label54 = new System.Windows.Forms.Label();
+            this.label53 = new System.Windows.Forms.Label();
+            this.textBox26 = new System.Windows.Forms.TextBox();
+            this.textBox25 = new System.Windows.Forms.TextBox();
+            this.textBox24 = new System.Windows.Forms.TextBox();
+            this.textBox23 = new System.Windows.Forms.TextBox();
+            this.textBox22 = new System.Windows.Forms.TextBox();
+            this.textBox19 = new System.Windows.Forms.TextBox();
+            this.textBox18 = new System.Windows.Forms.TextBox();
             this.label52 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label51 = new System.Windows.Forms.Label();
@@ -163,26 +183,12 @@
             this.Lista_Jogadores = new System.Windows.Forms.ListBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.textBox18 = new System.Windows.Forms.TextBox();
-            this.textBox19 = new System.Windows.Forms.TextBox();
-            this.textBox22 = new System.Windows.Forms.TextBox();
-            this.textBox23 = new System.Windows.Forms.TextBox();
-            this.textBox24 = new System.Windows.Forms.TextBox();
-            this.textBox25 = new System.Windows.Forms.TextBox();
-            this.textBox26 = new System.Windows.Forms.TextBox();
-            this.label53 = new System.Windows.Forms.Label();
-            this.label54 = new System.Windows.Forms.Label();
-            this.label55 = new System.Windows.Forms.Label();
-            this.label56 = new System.Windows.Forms.Label();
-            this.label57 = new System.Windows.Forms.Label();
-            this.label58 = new System.Windows.Forms.Label();
-            this.label59 = new System.Windows.Forms.Label();
-            this.comboBox8 = new System.Windows.Forms.ComboBox();
-            this.textBox27 = new System.Windows.Forms.TextBox();
-            this.textBox28 = new System.Windows.Forms.TextBox();
-            this.label60 = new System.Windows.Forms.Label();
-            this.label61 = new System.Windows.Forms.Label();
-            this.comboBox9 = new System.Windows.Forms.ComboBox();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textBox29 = new System.Windows.Forms.TextBox();
+            this.label62 = new System.Windows.Forms.Label();
+            this.label63 = new System.Windows.Forms.Label();
+            this.textBox30 = new System.Windows.Forms.TextBox();
+            this.label64 = new System.Windows.Forms.Label();
             this.tabPage1.SuspendLayout();
             this.Equipas_Tab.SuspendLayout();
             this.Treinadores_Tab.SuspendLayout();
@@ -192,6 +198,12 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label64);
+            this.tabPage1.Controls.Add(this.textBox30);
+            this.tabPage1.Controls.Add(this.label63);
+            this.tabPage1.Controls.Add(this.label62);
+            this.tabPage1.Controls.Add(this.textBox29);
+            this.tabPage1.Controls.Add(this.textBox5);
             this.tabPage1.Controls.Add(this.button30);
             this.tabPage1.Controls.Add(this.button29);
             this.tabPage1.Controls.Add(this.button28);
@@ -276,7 +288,7 @@
             // label50
             // 
             this.label50.AutoSize = true;
-            this.label50.Location = new System.Drawing.Point(360, 442);
+            this.label50.Location = new System.Drawing.Point(360, 447);
             this.label50.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label50.Name = "label50";
             this.label50.Size = new System.Drawing.Size(146, 13);
@@ -288,7 +300,7 @@
             this.comboBox4.BackColor = System.Drawing.SystemColors.Window;
             this.comboBox4.FormattingEnabled = true;
             this.comboBox4.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.comboBox4.Location = new System.Drawing.Point(363, 457);
+            this.comboBox4.Location = new System.Drawing.Point(363, 462);
             this.comboBox4.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(150, 21);
@@ -335,6 +347,7 @@
             // 
             // richTextBox1
             // 
+            this.richTextBox1.Enabled = false;
             this.richTextBox1.Location = new System.Drawing.Point(716, 261);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(236, 134);
@@ -346,19 +359,19 @@
             this.dateTimePicker1.CalendarTitleForeColor = System.Drawing.Color.AliceBlue;
             this.dateTimePicker1.Enabled = false;
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(519, 268);
+            this.dateTimePicker1.Location = new System.Drawing.Point(519, 329);
             this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(2);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(150, 20);
+            this.dateTimePicker1.Size = new System.Drawing.Size(151, 20);
             this.dateTimePicker1.TabIndex = 120;
-            this.dateTimePicker1.Value = new System.DateTime(2023, 5, 22, 0, 0, 0, 0);
+            this.dateTimePicker1.Value = new System.DateTime(2023, 5, 28, 0, 0, 0, 0);
             this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
             // 
             // textBox21
             // 
             this.textBox21.BackColor = System.Drawing.Color.LightSteelBlue;
             this.textBox21.Enabled = false;
-            this.textBox21.Location = new System.Drawing.Point(350, 210);
+            this.textBox21.Location = new System.Drawing.Point(351, 206);
             this.textBox21.Margin = new System.Windows.Forms.Padding(2);
             this.textBox21.Name = "textBox21";
             this.textBox21.Size = new System.Drawing.Size(320, 20);
@@ -367,7 +380,7 @@
             // label37
             // 
             this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(348, 195);
+            this.label37.Location = new System.Drawing.Point(348, 191);
             this.label37.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(38, 13);
@@ -378,7 +391,7 @@
             // 
             this.textBox12.BackColor = System.Drawing.Color.LightSteelBlue;
             this.textBox12.Enabled = false;
-            this.textBox12.Location = new System.Drawing.Point(350, 268);
+            this.textBox12.Location = new System.Drawing.Point(350, 329);
             this.textBox12.Margin = new System.Windows.Forms.Padding(2);
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(150, 20);
@@ -387,7 +400,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(517, 253);
+            this.label14.Location = new System.Drawing.Point(517, 314);
             this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(33, 13);
@@ -397,7 +410,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(348, 254);
+            this.label16.Location = new System.Drawing.Point(348, 315);
             this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(33, 13);
@@ -407,7 +420,7 @@
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(6, 442);
+            this.label29.Location = new System.Drawing.Point(6, 447);
             this.label29.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(96, 13);
@@ -419,7 +432,7 @@
             this.comboBox5.BackColor = System.Drawing.SystemColors.Window;
             this.comboBox5.FormattingEnabled = true;
             this.comboBox5.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.comboBox5.Location = new System.Drawing.Point(9, 457);
+            this.comboBox5.Location = new System.Drawing.Point(9, 462);
             this.comboBox5.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox5.Name = "comboBox5";
             this.comboBox5.Size = new System.Drawing.Size(150, 21);
@@ -528,7 +541,7 @@
             // 
             this.textBox11.BackColor = System.Drawing.Color.LightSteelBlue;
             this.textBox11.Enabled = false;
-            this.textBox11.Location = new System.Drawing.Point(519, 337);
+            this.textBox11.Location = new System.Drawing.Point(519, 398);
             this.textBox11.Margin = new System.Windows.Forms.Padding(2);
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(150, 20);
@@ -538,7 +551,7 @@
             // 
             this.textBox13.BackColor = System.Drawing.Color.LightSteelBlue;
             this.textBox13.Enabled = false;
-            this.textBox13.Location = new System.Drawing.Point(350, 337);
+            this.textBox13.Location = new System.Drawing.Point(350, 398);
             this.textBox13.Margin = new System.Windows.Forms.Padding(2);
             this.textBox13.Name = "textBox13";
             this.textBox13.Size = new System.Drawing.Size(150, 20);
@@ -557,7 +570,7 @@
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(184, 442);
+            this.label36.Location = new System.Drawing.Point(184, 447);
             this.label36.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(91, 13);
@@ -569,7 +582,7 @@
             this.comboBox3.BackColor = System.Drawing.SystemColors.Window;
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.comboBox3.Location = new System.Drawing.Point(187, 457);
+            this.comboBox3.Location = new System.Drawing.Point(187, 462);
             this.comboBox3.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(150, 21);
@@ -579,7 +592,7 @@
             // label38
             // 
             this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(517, 323);
+            this.label38.Location = new System.Drawing.Point(517, 384);
             this.label38.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label38.Name = "label38";
             this.label38.Size = new System.Drawing.Size(83, 13);
@@ -589,7 +602,7 @@
             // label39
             // 
             this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(348, 323);
+            this.label39.Location = new System.Drawing.Point(348, 384);
             this.label39.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label39.Name = "label39";
             this.label39.Size = new System.Drawing.Size(88, 13);
@@ -659,6 +672,56 @@
             this.Equipas_Tab.TabIndex = 2;
             this.Equipas_Tab.Text = "Equipas";
             this.Equipas_Tab.UseVisualStyleBackColor = true;
+            // 
+            // comboBox9
+            // 
+            this.comboBox9.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.comboBox9.Enabled = false;
+            this.comboBox9.FormattingEnabled = true;
+            this.comboBox9.Location = new System.Drawing.Point(786, 122);
+            this.comboBox9.Name = "comboBox9";
+            this.comboBox9.Size = new System.Drawing.Size(150, 21);
+            this.comboBox9.TabIndex = 94;
+            // 
+            // label61
+            // 
+            this.label61.AutoSize = true;
+            this.label61.Location = new System.Drawing.Point(272, 106);
+            this.label61.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label61.Name = "label61";
+            this.label61.Size = new System.Drawing.Size(127, 13);
+            this.label61.TabIndex = 93;
+            this.label61.Text = "Número CC do Treinador:";
+            // 
+            // label60
+            // 
+            this.label60.AutoSize = true;
+            this.label60.Location = new System.Drawing.Point(442, 106);
+            this.label60.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label60.Name = "label60";
+            this.label60.Size = new System.Drawing.Size(132, 13);
+            this.label60.TabIndex = 92;
+            this.label60.Text = "Número CC do Presidente:";
+            // 
+            // textBox28
+            // 
+            this.textBox28.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.textBox28.Enabled = false;
+            this.textBox28.Location = new System.Drawing.Point(275, 121);
+            this.textBox28.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox28.Name = "textBox28";
+            this.textBox28.Size = new System.Drawing.Size(148, 20);
+            this.textBox28.TabIndex = 91;
+            // 
+            // textBox27
+            // 
+            this.textBox27.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.textBox27.Enabled = false;
+            this.textBox27.Location = new System.Drawing.Point(445, 121);
+            this.textBox27.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox27.Name = "textBox27";
+            this.textBox27.Size = new System.Drawing.Size(148, 20);
+            this.textBox27.TabIndex = 90;
             // 
             // label47
             // 
@@ -1311,6 +1374,145 @@
             this.Jogadores_Tab.UseVisualStyleBackColor = true;
             this.Jogadores_Tab.Click += new System.EventHandler(this.Jogadores_Click);
             // 
+            // comboBox8
+            // 
+            this.comboBox8.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.comboBox8.Enabled = false;
+            this.comboBox8.FormattingEnabled = true;
+            this.comboBox8.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.comboBox8.Location = new System.Drawing.Point(343, 281);
+            this.comboBox8.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBox8.Name = "comboBox8";
+            this.comboBox8.Size = new System.Drawing.Size(150, 21);
+            this.comboBox8.Sorted = true;
+            this.comboBox8.TabIndex = 64;
+            // 
+            // label59
+            // 
+            this.label59.AutoSize = true;
+            this.label59.Location = new System.Drawing.Point(734, 198);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(35, 13);
+            this.label59.TabIndex = 63;
+            this.label59.Text = "3PT%";
+            this.label59.Visible = false;
+            // 
+            // label58
+            // 
+            this.label58.AutoSize = true;
+            this.label58.Location = new System.Drawing.Point(734, 159);
+            this.label58.Name = "label58";
+            this.label58.Size = new System.Drawing.Size(36, 13);
+            this.label58.TabIndex = 62;
+            this.label58.Text = "Steals";
+            this.label58.Visible = false;
+            // 
+            // label57
+            // 
+            this.label57.AutoSize = true;
+            this.label57.Location = new System.Drawing.Point(847, 159);
+            this.label57.Name = "label57";
+            this.label57.Size = new System.Drawing.Size(29, 13);
+            this.label57.TabIndex = 61;
+            this.label57.Text = "FG%";
+            this.label57.Visible = false;
+            // 
+            // label56
+            // 
+            this.label56.AutoSize = true;
+            this.label56.Location = new System.Drawing.Point(847, 117);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(39, 13);
+            this.label56.TabIndex = 60;
+            this.label56.Text = "Blocks";
+            this.label56.Visible = false;
+            // 
+            // label55
+            // 
+            this.label55.AutoSize = true;
+            this.label55.Location = new System.Drawing.Point(734, 117);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(56, 13);
+            this.label55.TabIndex = 59;
+            this.label55.Text = "Rebounds";
+            this.label55.Visible = false;
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.Location = new System.Drawing.Point(734, 75);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(38, 13);
+            this.label54.TabIndex = 58;
+            this.label54.Text = "Poimts";
+            this.label54.Visible = false;
+            // 
+            // label53
+            // 
+            this.label53.AutoSize = true;
+            this.label53.Location = new System.Drawing.Point(847, 75);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(39, 13);
+            this.label53.TabIndex = 57;
+            this.label53.Text = "Assists";
+            this.label53.Visible = false;
+            // 
+            // textBox26
+            // 
+            this.textBox26.Location = new System.Drawing.Point(737, 133);
+            this.textBox26.Name = "textBox26";
+            this.textBox26.Size = new System.Drawing.Size(100, 20);
+            this.textBox26.TabIndex = 56;
+            this.textBox26.Visible = false;
+            // 
+            // textBox25
+            // 
+            this.textBox25.Location = new System.Drawing.Point(737, 175);
+            this.textBox25.Name = "textBox25";
+            this.textBox25.Size = new System.Drawing.Size(100, 20);
+            this.textBox25.TabIndex = 55;
+            this.textBox25.Visible = false;
+            // 
+            // textBox24
+            // 
+            this.textBox24.Location = new System.Drawing.Point(850, 92);
+            this.textBox24.Name = "textBox24";
+            this.textBox24.Size = new System.Drawing.Size(100, 20);
+            this.textBox24.TabIndex = 54;
+            this.textBox24.Visible = false;
+            // 
+            // textBox23
+            // 
+            this.textBox23.Location = new System.Drawing.Point(850, 133);
+            this.textBox23.Name = "textBox23";
+            this.textBox23.Size = new System.Drawing.Size(100, 20);
+            this.textBox23.TabIndex = 53;
+            this.textBox23.Visible = false;
+            // 
+            // textBox22
+            // 
+            this.textBox22.Location = new System.Drawing.Point(850, 175);
+            this.textBox22.Name = "textBox22";
+            this.textBox22.Size = new System.Drawing.Size(100, 20);
+            this.textBox22.TabIndex = 52;
+            this.textBox22.Visible = false;
+            // 
+            // textBox19
+            // 
+            this.textBox19.Location = new System.Drawing.Point(737, 211);
+            this.textBox19.Name = "textBox19";
+            this.textBox19.Size = new System.Drawing.Size(100, 20);
+            this.textBox19.TabIndex = 51;
+            this.textBox19.Visible = false;
+            // 
+            // textBox18
+            // 
+            this.textBox18.Location = new System.Drawing.Point(737, 92);
+            this.textBox18.Name = "textBox18";
+            this.textBox18.Size = new System.Drawing.Size(100, 20);
+            this.textBox18.TabIndex = 50;
+            this.textBox18.Visible = false;
+            // 
             // label52
             // 
             this.label52.AutoSize = true;
@@ -1758,194 +1960,66 @@
             this.tabControl1.Size = new System.Drawing.Size(961, 548);
             this.tabControl1.TabIndex = 0;
             // 
-            // textBox18
+            // textBox5
             // 
-            this.textBox18.Location = new System.Drawing.Point(737, 92);
-            this.textBox18.Name = "textBox18";
-            this.textBox18.Size = new System.Drawing.Size(100, 20);
-            this.textBox18.TabIndex = 50;
-            this.textBox18.Visible = false;
+            this.textBox5.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.textBox5.Enabled = false;
+            this.textBox5.Location = new System.Drawing.Point(585, 271);
+            this.textBox5.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(86, 20);
+            this.textBox5.TabIndex = 132;
             // 
-            // textBox19
+            // textBox29
             // 
-            this.textBox19.Location = new System.Drawing.Point(737, 211);
-            this.textBox19.Name = "textBox19";
-            this.textBox19.Size = new System.Drawing.Size(100, 20);
-            this.textBox19.TabIndex = 51;
-            this.textBox19.Visible = false;
+            this.textBox29.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.textBox29.Enabled = false;
+            this.textBox29.Location = new System.Drawing.Point(350, 271);
+            this.textBox29.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox29.Name = "textBox29";
+            this.textBox29.Size = new System.Drawing.Size(86, 20);
+            this.textBox29.TabIndex = 133;
             // 
-            // textBox22
+            // label62
             // 
-            this.textBox22.Location = new System.Drawing.Point(850, 175);
-            this.textBox22.Name = "textBox22";
-            this.textBox22.Size = new System.Drawing.Size(100, 20);
-            this.textBox22.TabIndex = 52;
-            this.textBox22.Visible = false;
+            this.label62.AutoSize = true;
+            this.label62.Location = new System.Drawing.Point(461, 256);
+            this.label62.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label62.Name = "label62";
+            this.label62.Size = new System.Drawing.Size(77, 13);
+            this.label62.TabIndex = 134;
+            this.label62.Text = "ID equipa fora:";
             // 
-            // textBox23
+            // label63
             // 
-            this.textBox23.Location = new System.Drawing.Point(850, 133);
-            this.textBox23.Name = "textBox23";
-            this.textBox23.Size = new System.Drawing.Size(100, 20);
-            this.textBox23.TabIndex = 53;
-            this.textBox23.Visible = false;
+            this.label63.AutoSize = true;
+            this.label63.Location = new System.Drawing.Point(347, 256);
+            this.label63.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label63.Name = "label63";
+            this.label63.Size = new System.Drawing.Size(82, 13);
+            this.label63.TabIndex = 135;
+            this.label63.Text = "ID equipa casa:";
             // 
-            // textBox24
+            // textBox30
             // 
-            this.textBox24.Location = new System.Drawing.Point(850, 92);
-            this.textBox24.Name = "textBox24";
-            this.textBox24.Size = new System.Drawing.Size(100, 20);
-            this.textBox24.TabIndex = 54;
-            this.textBox24.Visible = false;
+            this.textBox30.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.textBox30.Enabled = false;
+            this.textBox30.Location = new System.Drawing.Point(464, 271);
+            this.textBox30.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox30.Name = "textBox30";
+            this.textBox30.Size = new System.Drawing.Size(86, 20);
+            this.textBox30.TabIndex = 136;
+            this.textBox30.TextChanged += new System.EventHandler(this.textBox30_TextChanged);
             // 
-            // textBox25
+            // label64
             // 
-            this.textBox25.Location = new System.Drawing.Point(737, 175);
-            this.textBox25.Name = "textBox25";
-            this.textBox25.Size = new System.Drawing.Size(100, 20);
-            this.textBox25.TabIndex = 55;
-            this.textBox25.Visible = false;
-            // 
-            // textBox26
-            // 
-            this.textBox26.Location = new System.Drawing.Point(737, 133);
-            this.textBox26.Name = "textBox26";
-            this.textBox26.Size = new System.Drawing.Size(100, 20);
-            this.textBox26.TabIndex = 56;
-            this.textBox26.Visible = false;
-            // 
-            // label53
-            // 
-            this.label53.AutoSize = true;
-            this.label53.Location = new System.Drawing.Point(847, 75);
-            this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(39, 13);
-            this.label53.TabIndex = 57;
-            this.label53.Text = "Assists";
-            this.label53.Visible = false;
-            // 
-            // label54
-            // 
-            this.label54.AutoSize = true;
-            this.label54.Location = new System.Drawing.Point(734, 75);
-            this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(38, 13);
-            this.label54.TabIndex = 58;
-            this.label54.Text = "Poimts";
-            this.label54.Visible = false;
-            // 
-            // label55
-            // 
-            this.label55.AutoSize = true;
-            this.label55.Location = new System.Drawing.Point(734, 117);
-            this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(56, 13);
-            this.label55.TabIndex = 59;
-            this.label55.Text = "Rebounds";
-            this.label55.Visible = false;
-            // 
-            // label56
-            // 
-            this.label56.AutoSize = true;
-            this.label56.Location = new System.Drawing.Point(847, 117);
-            this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(39, 13);
-            this.label56.TabIndex = 60;
-            this.label56.Text = "Blocks";
-            this.label56.Visible = false;
-            // 
-            // label57
-            // 
-            this.label57.AutoSize = true;
-            this.label57.Location = new System.Drawing.Point(847, 159);
-            this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(29, 13);
-            this.label57.TabIndex = 61;
-            this.label57.Text = "FG%";
-            this.label57.Visible = false;
-            // 
-            // label58
-            // 
-            this.label58.AutoSize = true;
-            this.label58.Location = new System.Drawing.Point(734, 159);
-            this.label58.Name = "label58";
-            this.label58.Size = new System.Drawing.Size(36, 13);
-            this.label58.TabIndex = 62;
-            this.label58.Text = "Steals";
-            this.label58.Visible = false;
-            // 
-            // label59
-            // 
-            this.label59.AutoSize = true;
-            this.label59.Location = new System.Drawing.Point(734, 198);
-            this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(35, 13);
-            this.label59.TabIndex = 63;
-            this.label59.Text = "3PT%";
-            this.label59.Visible = false;
-            // 
-            // comboBox8
-            // 
-            this.comboBox8.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.comboBox8.Enabled = false;
-            this.comboBox8.FormattingEnabled = true;
-            this.comboBox8.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.comboBox8.Location = new System.Drawing.Point(343, 281);
-            this.comboBox8.Margin = new System.Windows.Forms.Padding(2);
-            this.comboBox8.Name = "comboBox8";
-            this.comboBox8.Size = new System.Drawing.Size(150, 21);
-            this.comboBox8.Sorted = true;
-            this.comboBox8.TabIndex = 64;
-            // 
-            // textBox27
-            // 
-            this.textBox27.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.textBox27.Enabled = false;
-            this.textBox27.Location = new System.Drawing.Point(445, 121);
-            this.textBox27.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox27.Name = "textBox27";
-            this.textBox27.Size = new System.Drawing.Size(148, 20);
-            this.textBox27.TabIndex = 90;
-            // 
-            // textBox28
-            // 
-            this.textBox28.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.textBox28.Enabled = false;
-            this.textBox28.Location = new System.Drawing.Point(275, 121);
-            this.textBox28.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox28.Name = "textBox28";
-            this.textBox28.Size = new System.Drawing.Size(148, 20);
-            this.textBox28.TabIndex = 91;
-            // 
-            // label60
-            // 
-            this.label60.AutoSize = true;
-            this.label60.Location = new System.Drawing.Point(442, 106);
-            this.label60.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(132, 13);
-            this.label60.TabIndex = 92;
-            this.label60.Text = "Número CC do Presidente:";
-            // 
-            // label61
-            // 
-            this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(272, 106);
-            this.label61.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(127, 13);
-            this.label61.TabIndex = 93;
-            this.label61.Text = "Número CC do Treinador:";
-            // 
-            // comboBox9
-            // 
-            this.comboBox9.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.comboBox9.Enabled = false;
-            this.comboBox9.FormattingEnabled = true;
-            this.comboBox9.Location = new System.Drawing.Point(786, 122);
-            this.comboBox9.Name = "comboBox9";
-            this.comboBox9.Size = new System.Drawing.Size(150, 21);
-            this.comboBox9.TabIndex = 94;
+            this.label64.AutoSize = true;
+            this.label64.Location = new System.Drawing.Point(582, 256);
+            this.label64.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label64.Name = "label64";
+            this.label64.Size = new System.Drawing.Size(66, 13);
+            this.label64.TabIndex = 137;
+            this.label64.Text = "ID da arena:";
             // 
             // Form1
             // 
@@ -2126,6 +2200,12 @@
         private System.Windows.Forms.TextBox textBox28;
         private System.Windows.Forms.TextBox textBox27;
         private System.Windows.Forms.ComboBox comboBox9;
+        private System.Windows.Forms.Label label63;
+        private System.Windows.Forms.Label label62;
+        private System.Windows.Forms.TextBox textBox29;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox textBox30;
+        private System.Windows.Forms.Label label64;
     }
 }
 

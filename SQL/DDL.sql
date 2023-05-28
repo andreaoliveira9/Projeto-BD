@@ -100,13 +100,13 @@ create table NBA.Player (
 );
 
 create table NBA.Average_Individual_Numbers (
-    Points                float                         check([Points] >= 0),
-    Assists               float                         check([Assists] >= 0),
-    Rebounds              float                         check([Rebounds] >= 0),
-    Blocks                float                         check([Blocks] >= 0),
-    Steals                float                         check([Steals] >= 0),
-    [FG%]                 float                         check([FG%] >= 0 and [FG%] <= 100),
-    [3PT%]                float                         check([3PT%] >= 0 and [3PT%] <= 100),
+    Points                decimal(10, 2)                         check([Points] >= 0),
+    Assists               decimal(10, 2)                         check([Assists] >= 0),
+    Rebounds              decimal(10, 2)                         check([Rebounds] >= 0),
+    Blocks                decimal(10, 2)                         check([Blocks] >= 0),
+    Steals                decimal(10, 2)                         check([Steals] >= 0),
+    [FG%]                 decimal(10, 2)                         check([FG%] >= 0 and [FG%] <= 100),
+    [3PT%]                decimal(10, 2)                         check([3PT%] >= 0 and [3PT%] <= 100),
     Player_CCNumber       int          not null,
 );
 

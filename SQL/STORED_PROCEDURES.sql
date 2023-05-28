@@ -178,11 +178,12 @@ as
 		declare @errorsCount as int = 0;
 		declare @nextID as int = (select max(ID)+1 from NBA.Team);
 		
-		if (@CoachCCNumber is not null and exists (select 1 from NBA.Team where Coach_CCNumber = @CoachCCNumber))
-			begin
-				set @errorsCount = @errorsCount + 1;
-				raiserror('Não foi possível adicionar equipa! O treinador inserido já pertence a outra equipa.', 16, 1);
-			end
+		if (@Command = 'adicionar')
+			if (@CoachCCNumber is not null and exists (select 1 from NBA.Team where Coach_CCNumber = @CoachCCNumber))
+				begin
+					set @errorsCount = @errorsCount + 1;
+					raiserror('Não foi possível adicionar equipa! O treinador inserido já pertence a outra equipa.', 16, 1);
+				end
 
 		if (@errorsCount = 0)
 			begin
