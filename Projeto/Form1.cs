@@ -40,6 +40,7 @@ namespace Projeto
             InitializeTabela_Classificativa();
             InitializeComboBox4();
             InitializecomboBox8();
+            InitializecomboBox9();
 
             updateListaJogadores();
             updateListaTreinadores();
@@ -287,6 +288,13 @@ namespace Projeto
             comboBox8.Items.Add("Center-Forward");
         }
 
+        private void InitializecomboBox9()
+        {
+            comboBox9.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox9.Items.Add("Eastern");
+            comboBox9.Items.Add("Western");
+        }
+
         private void InitializeTabela_Classificativa()
         {
             SqlCommand cmd = new SqlCommand("select * from NBA.GetTeamStandings() order by [Win%] desc", cn);
@@ -519,7 +527,7 @@ namespace Projeto
                 textBox2.Text = selectedTeam.OwnerName;
                 textBox4.Text = selectedTeam.CoachName;
                 textBox8.Text = selectedTeam.City;
-                textBox5.Text = selectedTeam.Conference;
+                comboBox9.Text = selectedTeam.Conference;
                 textBox7.Text = selectedTeam.FoundYear;
                 textBox28.Text = selectedTeam.CoachCCNumber;
                 textBox27.Text = selectedTeam.OwnerCCNumber;
@@ -1166,7 +1174,7 @@ namespace Projeto
                 {
                     String nome = textBox9.Text;
                     String cidade = textBox8.Text;
-                    String conferencia = textBox5.Text;
+                    String conferencia = comboBox9.Text;
                     String foundYear = textBox7.Text;
                     String coachCCNumber = textBox28.Text;
                     String ownerCCNumber = textBox27.Text;
@@ -1218,7 +1226,7 @@ namespace Projeto
                 {
                     String nome = textBox9.Text;
                     String cidade = textBox8.Text;
-                    String conferencia = textBox5.Text;
+                    String conferencia = comboBox9.Text;
                     String foundYear = textBox7.Text;
                     String coachCCNumber = textBox28.Text;
                     String ownerCCNumber = textBox27.Text;
@@ -1244,175 +1252,6 @@ namespace Projeto
                 catch
                 {
                     MessageBox.Show("Erro ao alterar equipa!");
-                }
-            }
-        }
-
-        private void clear(string janela, string botao)
-        {
-            if (janela == "jogadores")
-            {
-                if (botao != "filtro")
-                {
-                    comboBox2.Enabled = true;
-                    FiltroEquipa_Jogadores.Enabled = true;
-                    comboBox1.Enabled = true;
-                    if (botao != "alterar")
-                    {
-                        comboBox2.SelectedIndex = -1;
-                        FiltroEquipa_Jogadores.SelectedIndex = -1;
-                        comboBox1.SelectedIndex = -1;
-                    }
-                }
-
-                if (botao != "pesquisar")
-                {
-                    Search_Jogadores.Text = "";
-                }
-                
-                button9.Visible = false;
-                button10.Visible = false;
-
-                if (botao != "adicionar" && botao != "alterar")
-                {
-                    button11.Visible = false;
-                    button12.Visible = false;
-                }
-
-                if (botao != "alterar")
-                {
-                    NumeroCC_Jogadores.Text = "";
-                    Name_Jogadores.Text = "";
-                    Altura_Jogadores.Text = "";
-                    Peso_Jogadores.Text = "";
-                    NumeroEquipamento_Jogadores.Text = "";
-                    comboBox8.SelectedIndex = -1;
-                    Idade_Jogadores.Text = "";
-                    IDEquipa_Jogadores.Text = "";
-                    IDContrato_Jogadores.Text = "";
-                    Estatistica_Jogador.Text = "";
-                    Contrato_Jogador.Text = "";
-                    textBox3.Text = "";
-                }
-
-                if (botao == "limpar")
-                {
-                    updateListaJogadores();
-                }
-            }
-            else if (janela == "treinadores")
-            {
-                if (botao != "filtro")
-                {
-                    comboBox6.Enabled = true;
-                    if (botao != "alterar")
-                    {
-                        comboBox6.SelectedIndex = -1;
-                    }
-                }
-
-                if (botao != "pesquisar")
-                {
-                    textBox17.Text = "";
-                }
-
-                button6.Visible = false;
-                button5.Visible = false;
-
-                if (botao != "adicionar" && botao != "alterar")
-                {
-                    button4.Visible = false;
-                    button2.Visible = false;
-                }
-
-                if (botao != "alterar")
-                {
-                    textBox17.Text = "";
-                    textBox16.Text = "";
-                    textBox20.Text = "";
-                    textBox14.Text = "";
-                    textBox1.Text = "";
-                    richTextBox2.Text = "";
-                }
-
-                if (botao == "limpar")
-                {
-                    updateListaTreinadores();
-                }
-            }
-            else if (janela == "equipas")
-            {
-                if (botao != "filtro")
-                {
-                    comboBox7.Enabled = true;
-                    if (botao != "alterar")
-                    {
-                        comboBox7.SelectedIndex = -1;
-                    }
-                }
-
-                if (botao != "pesquisar")
-                {
-                    textBox10.Text = "";
-                }
-
-                button16.Visible = false;
-                button15.Visible = false;
-
-                if (botao != "adicionar" && botao != "alterar")
-                {
-                    button14.Visible = false;
-                    button3.Visible = false;
-                }
-
-                if (botao != "alterar")
-                {
-                    textBox10.Text = "";
-                    textBox9.Text = "";
-                    textBox4.Text = "";
-                    textBox2.Text = "";
-                    textBox7.Text = "";
-                    textBox8.Text = "";
-                    textBox5.Text = "";
-                    textBox28.Text = "";
-                    textBox27.Text = "";
-                    richTextBox3.Text = "";
-                    Lista_Jogos_Equipa.Items.Clear();
-                }
-
-                if (botao == "limpar")
-                {
-                    updateListaEquipas();
-                }
-            } else if (janela == "jogos")
-            {
-                if (botao != "filtro")
-                {
-                    comboBox5.Enabled = true;
-                    comboBox5.SelectedIndex = -1;
-                    comboBox3.Enabled = true;
-                    comboBox3.SelectedIndex = -1;
-                    comboBox4.Enabled = true;
-                    comboBox4.SelectedIndex = -1;
-                }
-
-                button22.Visible = false;
-                button21.Visible = false;
-                button28.Visible = false;
-                button29.Visible = false;
-                button30.Visible = false;
-
-                textBox15.Text = "";
-                textBox6.Text = "";
-                textBox21.Text = "";
-                textBox12.Text = "";
-                textBox13.Text = "";
-                textBox11.Text = "";
-                Bilhetes_Jogo.Items.Clear();
-
-                if (botao == "limpar")
-                {
-                    updateListaJogos();
                 }
             }
         }
@@ -1616,8 +1455,8 @@ namespace Projeto
             textBox27.BackColor = Color.White;
             textBox8.Enabled = true;
             textBox8.BackColor = Color.White;
-            textBox5.Enabled = true;
-            textBox5.BackColor = Color.White;
+            comboBox9.Enabled = true;
+            comboBox9.BackColor = Color.White;
 
             this.textBox28.TextChanged +=
                 new System.EventHandler(textBox28_TextChanged_1);
@@ -1801,8 +1640,8 @@ namespace Projeto
             textBox27.BackColor = Color.White;
             textBox8.Enabled = true;
             textBox8.BackColor = Color.White;
-            textBox5.Enabled = true;
-            textBox5.BackColor = Color.White;
+            comboBox9.Enabled = true;
+            comboBox9.BackColor = Color.White;
 
             this.textBox28.TextChanged +=
                 new System.EventHandler(textBox28_TextChanged_1);
@@ -1810,9 +1649,10 @@ namespace Projeto
             this.textBox27.TextChanged +=
                 new System.EventHandler(textBox27_TextChanged_1);
 
-            clear("treinadores", "alterar");
+            clear("equipas", "alterar");
         }
 
+        // Botão Apagar Jogadores
         private void button9_Click(object sender, EventArgs e)
         {
             button11.Visible = true;
@@ -1823,6 +1663,29 @@ namespace Projeto
             comandoConfirmar = "apagar";
         }
 
+        // Botão Apagar Treinadores
+        private void button6_Click(object sender, EventArgs e)
+        {
+            button2.Visible = true;
+            button4.Visible = true;
+
+            Lista_Treinadores.Enabled = false;
+
+            comandoConfirmar = "apagar";
+        }
+
+        // Botão Apagar Equipas
+        private void button16_Click(object sender, EventArgs e)
+        {
+            button14.Visible = true;
+            button3.Visible = true;
+
+            Lista_Equipas.Enabled = false;
+
+            comandoConfirmar = "apagar";
+        }
+
+        // Botão Cancelar Jogadores
         private void button12_Click(object sender, EventArgs e)
         {
             button11.Visible = false;
@@ -1832,6 +1695,30 @@ namespace Projeto
 
             resetJogadores();
             clear("jogadores", "cancelar");
+        }
+
+        // Botão Cancelar Treinadores
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            button2.Visible = false;
+            button4.Visible = false;
+
+            Lista_Treinadores.Enabled = true;
+
+            resetTreinadores();
+            clear("treinadores", "cancelar");
+        }
+
+        // Botão Cancelar Equipas
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            button14.Visible = false;
+            button3.Visible = false;
+
+            Lista_Equipas.Enabled = true;
+
+            resetEquipas();
+            clear("equipas", "cancelar");
         }
 
         private void resetJogadores()
@@ -1942,50 +1829,178 @@ namespace Projeto
             textBox27.BackColor = Color.LightSteelBlue;
             textBox8.Enabled = false;
             textBox8.BackColor = Color.LightSteelBlue;
-            textBox5.Enabled = false;
-            textBox5.BackColor = Color.LightSteelBlue;
+            comboBox9.Enabled = false;
+            comboBox9.BackColor = Color.LightSteelBlue;
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void clear(string janela, string botao)
         {
-            button2.Visible = true;
-            button4.Visible = true;
+            if (janela == "jogadores")
+            {
+                if (botao != "filtro")
+                {
+                    comboBox2.Enabled = true;
+                    FiltroEquipa_Jogadores.Enabled = true;
+                    comboBox1.Enabled = true;
+                    if (botao != "alterar")
+                    {
+                        comboBox2.SelectedIndex = -1;
+                        FiltroEquipa_Jogadores.SelectedIndex = -1;
+                        comboBox1.SelectedIndex = -1;
+                    }
+                }
 
-            Lista_Treinadores.Enabled = false;
+                if (botao != "pesquisar")
+                {
+                    Search_Jogadores.Text = "";
+                }
 
-            comandoConfirmar = "apagar";
-        }
+                button9.Visible = false;
+                button10.Visible = false;
 
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-            button2.Visible = false;
-            button4.Visible = false;
+                if (botao != "adicionar" && botao != "alterar")
+                {
+                    button11.Visible = false;
+                    button12.Visible = false;
+                }
 
-            Lista_Treinadores.Enabled = true;
+                if (botao != "alterar")
+                {
+                    NumeroCC_Jogadores.Text = "";
+                    Name_Jogadores.Text = "";
+                    Altura_Jogadores.Text = "";
+                    Peso_Jogadores.Text = "";
+                    NumeroEquipamento_Jogadores.Text = "";
+                    comboBox8.SelectedIndex = -1;
+                    Idade_Jogadores.Text = "";
+                    IDEquipa_Jogadores.Text = "";
+                    IDContrato_Jogadores.Text = "";
+                    Estatistica_Jogador.Text = "";
+                    Contrato_Jogador.Text = "";
+                    textBox3.Text = "";
+                }
 
-            resetTreinadores();
-            clear("treinadores", "cancelar");
-        }
+                if (botao == "limpar")
+                {
+                    updateListaJogadores();
+                }
+            }
+            else if (janela == "treinadores")
+            {
+                if (botao != "filtro")
+                {
+                    comboBox6.Enabled = true;
+                    if (botao != "alterar")
+                    {
+                        comboBox6.SelectedIndex = -1;
+                    }
+                }
 
-        private void button16_Click(object sender, EventArgs e)
-        {
-            button14.Visible = true;
-            button3.Visible = true;
+                if (botao != "pesquisar")
+                {
+                    textBox17.Text = "";
+                }
 
-            Lista_Equipas.Enabled = false;
+                button6.Visible = false;
+                button5.Visible = false;
 
-            comandoConfirmar = "apagar";
-        }
+                if (botao != "adicionar" && botao != "alterar")
+                {
+                    button4.Visible = false;
+                    button2.Visible = false;
+                }
 
-        private void button3_Click_1(object sender, EventArgs e)
-        {
-            button14.Visible = false;
-            button3.Visible = false;
+                if (botao != "alterar")
+                {
+                    textBox17.Text = "";
+                    textBox16.Text = "";
+                    textBox20.Text = "";
+                    textBox14.Text = "";
+                    textBox1.Text = "";
+                    richTextBox2.Text = "";
+                }
 
-            Lista_Equipas.Enabled = true;
+                if (botao == "limpar")
+                {
+                    updateListaTreinadores();
+                }
+            }
+            else if (janela == "equipas")
+            {
+                if (botao != "filtro")
+                {
+                    comboBox7.Enabled = true;
+                    if (botao != "alterar")
+                    {
+                        comboBox7.SelectedIndex = -1;
+                    }
+                }
 
-            resetEquipas();
-            clear("equipas", "cancelar");
+                if (botao != "pesquisar")
+                {
+                    textBox10.Text = "";
+                }
+
+                button16.Visible = false;
+                button15.Visible = false;
+
+                if (botao != "adicionar" && botao != "alterar")
+                {
+                    button14.Visible = false;
+                    button3.Visible = false;
+                }
+
+                if (botao != "alterar")
+                {
+                    textBox10.Text = "";
+                    textBox9.Text = "";
+                    textBox4.Text = "";
+                    textBox2.Text = "";
+                    textBox7.Text = "";
+                    textBox8.Text = "";
+                    comboBox9.SelectedIndex = -1;
+                    textBox28.Text = "";
+                    textBox27.Text = "";
+                    richTextBox3.Text = "";
+                    Lista_Jogos_Equipa.Items.Clear();
+                }
+
+                if (botao == "limpar")
+                {
+                    updateListaEquipas();
+                }
+            }
+            else if (janela == "jogos")
+            {
+                if (botao != "filtro")
+                {
+                    comboBox5.Enabled = true;
+                    comboBox5.SelectedIndex = -1;
+                    comboBox3.Enabled = true;
+                    comboBox3.SelectedIndex = -1;
+                    comboBox4.Enabled = true;
+                    comboBox4.SelectedIndex = -1;
+                }
+
+                button22.Visible = false;
+                button21.Visible = false;
+                button28.Visible = false;
+                button29.Visible = false;
+                button30.Visible = false;
+
+                textBox15.Text = "";
+                textBox6.Text = "";
+                textBox21.Text = "";
+                textBox12.Text = "";
+                textBox13.Text = "";
+                textBox11.Text = "";
+                Bilhetes_Jogo.Items.Clear();
+
+                if (botao == "limpar")
+                {
+                    updateListaJogos();
+                }
+            }
         }
 
         //Jogos

@@ -85,7 +85,6 @@
             this.button16 = new System.Windows.Forms.Button();
             this.button17 = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
@@ -183,6 +182,7 @@
             this.textBox28 = new System.Windows.Forms.TextBox();
             this.label60 = new System.Windows.Forms.Label();
             this.label61 = new System.Windows.Forms.Label();
+            this.comboBox9 = new System.Windows.Forms.ComboBox();
             this.tabPage1.SuspendLayout();
             this.Equipas_Tab.SuspendLayout();
             this.Treinadores_Tab.SuspendLayout();
@@ -617,6 +617,7 @@
             // 
             // Equipas_Tab
             // 
+            this.Equipas_Tab.Controls.Add(this.comboBox9);
             this.Equipas_Tab.Controls.Add(this.label61);
             this.Equipas_Tab.Controls.Add(this.label60);
             this.Equipas_Tab.Controls.Add(this.textBox28);
@@ -640,7 +641,6 @@
             this.Equipas_Tab.Controls.Add(this.button16);
             this.Equipas_Tab.Controls.Add(this.button17);
             this.Equipas_Tab.Controls.Add(this.label13);
-            this.Equipas_Tab.Controls.Add(this.textBox5);
             this.Equipas_Tab.Controls.Add(this.textBox7);
             this.Equipas_Tab.Controls.Add(this.textBox8);
             this.Equipas_Tab.Controls.Add(this.textBox9);
@@ -859,16 +859,6 @@
             this.label13.Size = new System.Drawing.Size(94, 13);
             this.label13.TabIndex = 67;
             this.label13.Text = "Pesuisar por nome";
-            // 
-            // textBox5
-            // 
-            this.textBox5.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.textBox5.Enabled = false;
-            this.textBox5.Location = new System.Drawing.Point(786, 121);
-            this.textBox5.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(150, 20);
-            this.textBox5.TabIndex = 51;
             // 
             // textBox7
             // 
@@ -1947,6 +1937,16 @@
             this.label61.TabIndex = 93;
             this.label61.Text = "Número CC do Treinador:";
             // 
+            // comboBox9
+            // 
+            this.comboBox9.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.comboBox9.Enabled = false;
+            this.comboBox9.FormattingEnabled = true;
+            this.comboBox9.Location = new System.Drawing.Point(786, 122);
+            this.comboBox9.Name = "comboBox9";
+            this.comboBox9.Size = new System.Drawing.Size(150, 21);
+            this.comboBox9.TabIndex = 94;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2065,7 +2065,6 @@
         private System.Windows.Forms.Button button16;
         private System.Windows.Forms.Button button17;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.TextBox textBox9;
@@ -2126,6 +2125,7 @@
         private System.Windows.Forms.Label label60;
         private System.Windows.Forms.TextBox textBox28;
         private System.Windows.Forms.TextBox textBox27;
+        private System.Windows.Forms.ComboBox comboBox9;
     }
 }
 
