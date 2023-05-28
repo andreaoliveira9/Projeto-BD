@@ -24,6 +24,7 @@ namespace Projeto
         private String comandoConfirmar;
         private String guardarNumber;
         private String guardarTeamID;
+        private String guardarTeamID1;
 
         public Form1()
         {
@@ -38,6 +39,7 @@ namespace Projeto
             InitializeComboBox3();
             InitializeTabela_Classificativa();
             InitializeComboBox4();
+            InitializecomboBox8();
 
             updateListaJogadores();
             updateListaTreinadores();
@@ -274,6 +276,17 @@ namespace Projeto
             filtroJogos(selectedHomeTeam, selectedAwayTeam, selectedAconteceu);
         }
 
+        private void InitializecomboBox8()
+        {
+            comboBox8.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox8.Items.Add("Guard");
+            comboBox8.Items.Add("Forward");
+            comboBox8.Items.Add("Forward-Center");
+            comboBox8.Items.Add("Guard-Forward");
+            comboBox8.Items.Add("Center");
+            comboBox8.Items.Add("Center-Forward");
+        }
+
         private void InitializeTabela_Classificativa()
         {
             SqlCommand cmd = new SqlCommand("select * from NBA.GetTeamStandings() order by [Win%] desc", cn);
@@ -338,7 +351,7 @@ namespace Projeto
                 Name_Jogadores.Text = selectedPlayer.Name;
                 Altura_Jogadores.Text = selectedPlayer.Height;
                 Peso_Jogadores.Text = selectedPlayer.Weight;
-                Posicao_Jogadores.Text = selectedPlayer.Position;
+                comboBox8.Text = selectedPlayer.Position;
                 NumeroEquipamento_Jogadores.Text = selectedPlayer.Number;
                 Idade_Jogadores.Text = selectedPlayer.Age;
                 IDEquipa_Jogadores.Text = selectedPlayer.TeamID;
@@ -368,11 +381,9 @@ namespace Projeto
 
                 SqlCommand cmd1 = new SqlCommand("select * from NBA.GetPlayerStats(" + selectedPlayer.CCNumber + ")", cn);
                 SqlDataReader reader1 = cmd1.ExecuteReader();
-                int count = 0;
                 PlayerStats playerStats = null;
                 while (reader1.Read())
                 {
-                    count++;
                     playerStats = new PlayerStats();
                     playerStats.Points = reader1["Points"].ToString();
                     playerStats.Assists = reader1["Assists"].ToString();
@@ -381,9 +392,15 @@ namespace Projeto
                     playerStats.Steals = reader1["Steals"].ToString();
                     playerStats.FG = reader1["FG%"].ToString();
                     playerStats.PT3 = reader1["3PT%"].ToString();
-                    
-                } 
-                if (count == 0)
+                }
+                textBox18.Text = playerStats.Points;
+                textBox24.Text = playerStats.Assists;
+                textBox26.Text = playerStats.Rebounds;
+                textBox23.Text = playerStats.Blocks;
+                textBox25.Text = playerStats.Steals;
+                textBox22.Text = playerStats.FG;
+                textBox19.Text = playerStats.PT3;
+                if (playerStats.Points == "")
                 {
                     Estatistica_Jogador.Text = "Sem estatística adicionada\nAltere o jogador para adicionar";
                 }
@@ -436,19 +453,25 @@ namespace Projeto
                 textBox14.Text = selectedCoach.Age;
                 textBox1.Text = selectedCoach.ContractID;
 
-                SqlCommand cmd = new SqlCommand("select * from NBA.[Contract] as C inner join NBA.Person as P on C.ID = P.Contract_ID where C.ID = " + selectedCoach.ContractID, cn);
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                if (selectedCoach.ContractID != "") { 
+                    SqlCommand cmd = new SqlCommand("select * from NBA.[Contract] as C inner join NBA.Person as P on C.ID = P.Contract_ID where C.ID = " + selectedCoach.ContractID, cn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Contract contract = new Contract();
+                        contract.ID = reader["ID"].ToString();
+                        contract.Description = reader["Description"].ToString();
+                        contract.Salary = reader["Salary"].ToString();
+                        contract.StartDate = reader["Start_Date"].ToString();
+                        contract.EndDate = reader["End_Date"].ToString();
+                        richTextBox2.Text = contract.ToString();
+                    }
+                    reader.Close();
+                } 
+                else
                 {
-                    Contract contract = new Contract();
-                    contract.ID = reader["ID"].ToString();
-                    contract.Description = reader["Description"].ToString();
-                    contract.Salary = reader["Salary"].ToString();
-                    contract.StartDate = reader["Start_Date"].ToString();
-                    contract.EndDate = reader["End_Date"].ToString();
-                    richTextBox2.Text = contract.ToString();
+                    richTextBox2.Text = "";
                 }
-                reader.Close();
 
                 button5.Visible = true;
                 button6.Visible = true;
@@ -471,6 +494,8 @@ namespace Projeto
                 team.FoundYear = reader["Found_Year"].ToString();
                 team.CoachName = reader["CoachName"].ToString();
                 team.OwnerName = reader["OwnerName"].ToString();
+                team.CoachCCNumber = reader["CoachCCNumber"].ToString();
+                team.OwnerCCNumber = reader["OwnerCCNumber"].ToString();
 
                 totalItems++;
                 Lista_Equipas.Items.Add(team);
@@ -496,6 +521,9 @@ namespace Projeto
                 textBox8.Text = selectedTeam.City;
                 textBox5.Text = selectedTeam.Conference;
                 textBox7.Text = selectedTeam.FoundYear;
+                textBox28.Text = selectedTeam.CoachCCNumber;
+                textBox27.Text = selectedTeam.OwnerCCNumber;
+                guardarTeamID1 = selectedTeam.ID;
 
                 Lista_Jogos_Equipa.Items.Clear();
                 //Console.WriteLine("select * from NBA.GetTeamGames(" + "'" + selectedTeam.ID + "')");
@@ -668,6 +696,7 @@ namespace Projeto
                 player.Weight = reader["Weight"].ToString();
                 player.Position = reader["Position"].ToString();
                 player.TeamID = reader["Team_ID"].ToString();
+                player.TeamName = reader["TeamName"].ToString();
 
                 totalItems++;
                 Lista_Jogadores.Items.Add(player);
@@ -739,6 +768,8 @@ namespace Projeto
                 team.FoundYear = reader["Found_Year"].ToString();
                 team.CoachName = reader["CoachName"].ToString();
                 team.OwnerName = reader["OwnerName"].ToString();
+                team.CoachCCNumber = reader["CoachCCNumber"].ToString();
+                team.OwnerCCNumber = reader["OwnerCCNumber"].ToString();
 
                 totalItems++;
                 Lista_Equipas.Items.Add(team);
@@ -907,6 +938,7 @@ namespace Projeto
             }
         }
 
+        // Adicionar/Alterar/Apagar jogador
         private void button11_Click(object sender, EventArgs e)
         {
             if (comandoConfirmar == "adicionar")
@@ -918,7 +950,7 @@ namespace Projeto
                     String altura = Altura_Jogadores.Text;
                     String numeroEquipamento = NumeroEquipamento_Jogadores.Text;
                     String peso = Peso_Jogadores.Text;
-                    String posicao = Posicao_Jogadores.Text;
+                    String posicao = comboBox8.Text;
                     String idade = Idade_Jogadores.Text;
                     String IDEquipa = IDEquipa_Jogadores.Text;
                     String IDContrato = IDContrato_Jogadores.Text;
@@ -933,25 +965,19 @@ namespace Projeto
                     cmd.Parameters.Add(new SqlParameter("@Weight", peso));
                     cmd.Parameters.Add(new SqlParameter("@Position", posicao));
                     cmd.Parameters.Add(new SqlParameter("@Team_ID", IDEquipa));
-                    cmd.Parameters.Add(new SqlParameter("@Command", "adicionar"));
-                    cmd.Parameters.Add(new SqlParameter("@NumberOrTeamIDChanged", "Sim"));
                     if (IDContrato != "")
                     {
                         cmd.Parameters.Add(new SqlParameter("@Contract_ID", IDContrato));
                     }
-                    /*cmd.Parameters.Add(new SqlParameter("@Points", 0));
-                    cmd.Parameters.Add(new SqlParameter("@Assists", 0));
-                    cmd.Parameters.Add(new SqlParameter("@Rebounds", 0));
-                    cmd.Parameters.Add(new SqlParameter("@Blocks", 0));
-                    cmd.Parameters.Add(new SqlParameter("@Steals", 0));
-                    cmd.Parameters.Add(new SqlParameter("@FG", 0));
-                    cmd.Parameters.Add(new SqlParameter("@PT3", 0));*/
+                    cmd.Parameters.Add(new SqlParameter("@Command", "adicionar"));
+                    cmd.Parameters.Add(new SqlParameter("@NumberOrTeamIDChanged", "Sim"));
 
                     SqlDataReader reader = cmd.ExecuteReader();
                     MessageBox.Show("Jogador adicionado com sucesso!");
                     reader.Close();
                     clear("jogadores", "limpar");
                     resetJogadores();
+                    Lista_Jogadores.Enabled = true;
                 }
                 catch
                 {
@@ -970,6 +996,7 @@ namespace Projeto
                     MessageBox.Show("Jogador apagado com sucesso!");
                     clear("jogadores", "limpar");
                     resetJogadores();
+                    Lista_Jogadores.Enabled = true;
                 }
                 catch
                 {
@@ -985,17 +1012,17 @@ namespace Projeto
                     String altura = Altura_Jogadores.Text;
                     String numeroEquipamento = NumeroEquipamento_Jogadores.Text;
                     String peso = Peso_Jogadores.Text;
-                    String posicao = Posicao_Jogadores.Text;
+                    String posicao = comboBox8.Text;
                     String idade = Idade_Jogadores.Text;
                     String IDEquipa = IDEquipa_Jogadores.Text;
                     String IDContrato = IDContrato_Jogadores.Text;
-                    float points = float.Parse(textBox18.Text);
-                    float assists = float.Parse(textBox24.Text);
-                    float rebounds = float.Parse(textBox26.Text);
-                    float blocks = float.Parse(textBox23.Text);
-                    float steals = float.Parse(textBox25.Text);
-                    float fg = float.Parse(textBox22.Text);
-                    float pt3 = float.Parse(textBox19.Text);
+                    String points = textBox18.Text;
+                    String assists = textBox24.Text;
+                    String rebounds = textBox26.Text;
+                    String blocks = textBox23.Text;
+                    String steals = textBox25.Text;
+                    String fg = textBox22.Text;
+                    String pt3 = textBox19.Text;
 
                     SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarJogador", cn);
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -1007,6 +1034,10 @@ namespace Projeto
                     cmd.Parameters.Add(new SqlParameter("@Weight", peso));
                     cmd.Parameters.Add(new SqlParameter("@Position", posicao));
                     cmd.Parameters.Add(new SqlParameter("@Team_ID", IDEquipa));
+                    if (IDContrato != "")
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@Contract_ID", IDContrato));
+                    }
                     cmd.Parameters.Add(new SqlParameter("@Command", "alterar"));
                     if (numeroEquipamento != guardarNumber || IDEquipa != guardarTeamID)
                     {
@@ -1015,10 +1046,6 @@ namespace Projeto
                     else
                     {
                         cmd.Parameters.Add(new SqlParameter("@NumberOrTeamIDChanged", "Nao"));
-                    }
-                    if (IDContrato != "")
-                    {
-                        cmd.Parameters.Add(new SqlParameter("@Contract_ID", IDContrato));
                     }
                     cmd.Parameters.Add(new SqlParameter("@Points", points));
                     cmd.Parameters.Add(new SqlParameter("@Assists", assists));
@@ -1033,13 +1060,192 @@ namespace Projeto
                     reader.Close();
                     clear("jogadores", "limpar");
                     resetJogadores();
+                    Lista_Jogadores.Enabled = true;
                 }
                 catch
                 {
                     MessageBox.Show("Erro ao alterar Jogador!");
                 }
             }
-            Lista_Jogadores.Enabled = true;
+        }
+
+        // Adicionar/Alterar/Apagar treinador
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (comandoConfirmar == "adicionar")
+            {
+                try
+                {
+                    String numeroCC = textBox16.Text;
+                    String nome = textBox20.Text;
+                    String idade = textBox14.Text;
+                    String IDContrato = textBox1.Text;
+
+                    SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarTreinador", cn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@CCNumber", numeroCC));
+                    cmd.Parameters.Add(new SqlParameter("@Name", nome));
+                    cmd.Parameters.Add(new SqlParameter("@Age", idade));
+                    if (IDContrato != "")
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@Contract_ID", IDContrato));
+                    }
+                    cmd.Parameters.Add(new SqlParameter("@Command", "adicionar"));
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    MessageBox.Show("Treinador adicionado com sucesso!");
+                    reader.Close();
+                    clear("treinadores", "limpar");
+                    resetTreinadores();
+                    Lista_Treinadores.Enabled = true;
+                }
+                catch
+                {
+                    MessageBox.Show("Erro ao adicionar treinador!");
+                }
+            }
+            else if (comandoConfirmar == "apagar")
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("NBA.apagarTreinador", cn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@CCNumber", textBox16.Text));
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    reader.Close();
+                    MessageBox.Show("Treinador apagado com sucesso!");
+                    clear("treinadores", "limpar");
+                    resetTreinadores();
+                    Lista_Treinadores.Enabled = true;
+                }
+                catch
+                {
+                    MessageBox.Show("Erro ao apagar treinador!");
+                }
+            }
+            else if (comandoConfirmar == "alterar")
+            {
+                try
+                {
+                    String numeroCC = textBox16.Text;
+                    String nome = textBox20.Text;
+                    String idade = textBox14.Text;
+                    String IDContrato = textBox1.Text;
+
+                    SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarTreinador", cn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@CCNumber", numeroCC));
+                    cmd.Parameters.Add(new SqlParameter("@Name", nome));
+                    cmd.Parameters.Add(new SqlParameter("@Age", idade));
+                    if (IDContrato != "")
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@Contract_ID", IDContrato));
+                    }
+                    cmd.Parameters.Add(new SqlParameter("@Command", "alterar"));
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    MessageBox.Show("Treinador alterado com sucesso!");
+                    reader.Close();
+                    clear("treinadores", "limpar");
+                    resetTreinadores();
+                    Lista_Treinadores.Enabled = true;
+                }
+                catch
+                {
+                    MessageBox.Show("Erro ao alterar treinador!");
+                }
+            }
+        }
+
+        // Adicionar/Alterar/Apagar equipa
+        private void button14_Click(object sender, EventArgs e)
+        {
+            if (comandoConfirmar == "adicionar")
+            {
+                try
+                {
+                    String nome = textBox9.Text;
+                    String cidade = textBox8.Text;
+                    String conferencia = textBox5.Text;
+                    String foundYear = textBox7.Text;
+                    String coachCCNumber = textBox28.Text;
+                    String ownerCCNumber = textBox27.Text;
+
+                    SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarEquipa", cn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@Name", nome));
+                    cmd.Parameters.Add(new SqlParameter("@City", cidade));
+                    cmd.Parameters.Add(new SqlParameter("@Conference", conferencia));
+                    cmd.Parameters.Add(new SqlParameter("@FoundYear", foundYear));
+                    cmd.Parameters.Add(new SqlParameter("@CoachCCNumber", coachCCNumber));
+                    cmd.Parameters.Add(new SqlParameter("@OwnerCCNumber", ownerCCNumber));
+                    cmd.Parameters.Add(new SqlParameter("@Command", "adicionar"));
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    MessageBox.Show("Equipa adicionada com sucesso!");
+                    reader.Close();
+                    clear("equipas", "limpar");
+                    resetEquipas();
+                    Lista_Equipas.Enabled = true;
+                }
+                catch
+                {
+                    MessageBox.Show("Erro ao adicionar equipa!");
+                }
+            }
+            else if (comandoConfirmar == "apagar")
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("NBA.apagarEquipa", cn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@ID", guardarTeamID1));
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    reader.Close();
+                    MessageBox.Show("Equipa apagada com sucesso!");
+                    clear("equipas", "limpar");
+                    resetEquipas();
+                    Lista_Equipas.Enabled = true;
+                }
+                catch
+                {
+                    MessageBox.Show("Erro ao apagar equipa!");
+                }
+            }
+            else if (comandoConfirmar == "alterar")
+            {
+                try
+                {
+                    String nome = textBox9.Text;
+                    String cidade = textBox8.Text;
+                    String conferencia = textBox5.Text;
+                    String foundYear = textBox7.Text;
+                    String coachCCNumber = textBox28.Text;
+                    String ownerCCNumber = textBox27.Text;
+
+                    SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarEquipa", cn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@ID", guardarTeamID1));
+                    cmd.Parameters.Add(new SqlParameter("@Name", nome));
+                    cmd.Parameters.Add(new SqlParameter("@City", cidade));
+                    cmd.Parameters.Add(new SqlParameter("@Conference", conferencia));
+                    cmd.Parameters.Add(new SqlParameter("@FoundYear", foundYear));
+                    cmd.Parameters.Add(new SqlParameter("@CoachCCNumber", coachCCNumber));
+                    cmd.Parameters.Add(new SqlParameter("@OwnerCCNumber", ownerCCNumber));
+                    cmd.Parameters.Add(new SqlParameter("@Command", "alterar"));
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    MessageBox.Show("Equipa alterada com sucesso!");
+                    reader.Close();
+                    clear("equipas", "limpar");
+                    resetEquipas();
+                    Lista_Equipas.Enabled = true;
+                }
+                catch
+                {
+                    MessageBox.Show("Erro ao alterar equipa!");
+                }
+            }
         }
 
         private void clear(string janela, string botao)
@@ -1049,11 +1255,14 @@ namespace Projeto
                 if (botao != "filtro")
                 {
                     comboBox2.Enabled = true;
-                    comboBox2.SelectedIndex = -1;
                     FiltroEquipa_Jogadores.Enabled = true;
-                    FiltroEquipa_Jogadores.SelectedIndex = -1;
                     comboBox1.Enabled = true;
-                    comboBox1.SelectedIndex = -1;
+                    if (botao != "alterar")
+                    {
+                        comboBox2.SelectedIndex = -1;
+                        FiltroEquipa_Jogadores.SelectedIndex = -1;
+                        comboBox1.SelectedIndex = -1;
+                    }
                 }
 
                 if (botao != "pesquisar")
@@ -1077,7 +1286,7 @@ namespace Projeto
                     Altura_Jogadores.Text = "";
                     Peso_Jogadores.Text = "";
                     NumeroEquipamento_Jogadores.Text = "";
-                    Posicao_Jogadores.Text = "";
+                    comboBox8.SelectedIndex = -1;
                     Idade_Jogadores.Text = "";
                     IDEquipa_Jogadores.Text = "";
                     IDContrato_Jogadores.Text = "";
@@ -1096,7 +1305,10 @@ namespace Projeto
                 if (botao != "filtro")
                 {
                     comboBox6.Enabled = true;
-                    comboBox6.SelectedIndex = -1;
+                    if (botao != "alterar")
+                    {
+                        comboBox6.SelectedIndex = -1;
+                    }
                 }
 
                 if (botao != "pesquisar")
@@ -1106,15 +1318,22 @@ namespace Projeto
 
                 button6.Visible = false;
                 button5.Visible = false;
-                button4.Visible = false;
-                button2.Visible = false;
 
-                textBox17.Text = "";
-                textBox16.Text = "";
-                textBox20.Text = "";
-                textBox14.Text = "";
-                textBox1.Text = "";
-                richTextBox2.Text = "";
+                if (botao != "adicionar" && botao != "alterar")
+                {
+                    button4.Visible = false;
+                    button2.Visible = false;
+                }
+
+                if (botao != "alterar")
+                {
+                    textBox17.Text = "";
+                    textBox16.Text = "";
+                    textBox20.Text = "";
+                    textBox14.Text = "";
+                    textBox1.Text = "";
+                    richTextBox2.Text = "";
+                }
 
                 if (botao == "limpar")
                 {
@@ -1126,7 +1345,10 @@ namespace Projeto
                 if (botao != "filtro")
                 {
                     comboBox7.Enabled = true;
-                    comboBox7.SelectedIndex = -1;
+                    if (botao != "alterar")
+                    {
+                        comboBox7.SelectedIndex = -1;
+                    }
                 }
 
                 if (botao != "pesquisar")
@@ -1136,18 +1358,27 @@ namespace Projeto
 
                 button16.Visible = false;
                 button15.Visible = false;
-                button14.Visible = false;
-                button3.Visible = false;
 
-                textBox10.Text = "";
-                textBox9.Text = "";
-                textBox4.Text = "";
-                textBox2.Text = "";
-                textBox7.Text = "";
-                textBox8.Text = "";
-                textBox5.Text = "";
-                richTextBox3.Text = "";
-                Lista_Jogos_Equipa.Items.Clear();
+                if (botao != "adicionar" && botao != "alterar")
+                {
+                    button14.Visible = false;
+                    button3.Visible = false;
+                }
+
+                if (botao != "alterar")
+                {
+                    textBox10.Text = "";
+                    textBox9.Text = "";
+                    textBox4.Text = "";
+                    textBox2.Text = "";
+                    textBox7.Text = "";
+                    textBox8.Text = "";
+                    textBox5.Text = "";
+                    textBox28.Text = "";
+                    textBox27.Text = "";
+                    richTextBox3.Text = "";
+                    Lista_Jogos_Equipa.Items.Clear();
+                }
 
                 if (botao == "limpar")
                 {
@@ -1186,9 +1417,12 @@ namespace Projeto
             }
         }
 
-        //Jogadores
+        // Botão Adicionar Jogadores
         private void button8_Click(object sender, EventArgs e)
         {
+            clear("jogadores", "adicionar");
+            updateListaJogadores();
+
             button11.Visible = true;
             button12.Visible = true;
 
@@ -1213,9 +1447,6 @@ namespace Projeto
             // Estatistica
             label19.Visible = false;
             Estatistica_Jogador.Visible = false;
-            // Contrato
-            label20.Visible = false;
-            Contrato_Jogador.Visible = false;
             // Campos preenchimento
             NumeroCC_Jogadores.Enabled = true;
             NumeroCC_Jogadores.BackColor = Color.White;
@@ -1227,8 +1458,8 @@ namespace Projeto
             NumeroEquipamento_Jogadores.BackColor = Color.White;
             Peso_Jogadores.Enabled = true;
             Peso_Jogadores.BackColor = Color.White;
-            Posicao_Jogadores.Enabled = true;
-            Posicao_Jogadores.BackColor = Color.White;
+            comboBox8.Enabled = true;
+            comboBox8.BackColor = Color.White;
             Idade_Jogadores.Enabled = true;
             Idade_Jogadores.BackColor = Color.White;
             IDEquipa_Jogadores.Enabled = true;
@@ -1239,24 +1470,201 @@ namespace Projeto
             this.IDEquipa_Jogadores.TextChanged +=
                 new System.EventHandler(IDEquipa_Jogadores_TextChanged_1);
 
-            clear("jogadores", "adicionar");
-            updateListaJogadores();
+            this.IDContrato_Jogadores.TextChanged +=
+                new System.EventHandler(IDContrato_Jogadores_TextChanged_1);
         }
-
-        
 
         private void IDEquipa_Jogadores_TextChanged_1(object sender, EventArgs e)
         {
             String selectedTeamID = IDEquipa_Jogadores.Text;
-            SqlCommand cmd = new SqlCommand("select * from NBA.Team where ID = " + "'" + selectedTeamID + "'", cn);
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
+            if (selectedTeamID != "")
             {
-                textBox3.Text = reader["Name"].ToString();
+                SqlCommand cmd = new SqlCommand("select * from NBA.Team where ID = " + "'" + selectedTeamID + "'", cn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    textBox3.Text = reader["Name"].ToString();
+                }
+                reader.Close();
             }
-            reader.Close();
+            else
+            {
+                textBox3.Text = "";
+            }
         }
 
+        private void IDContrato_Jogadores_TextChanged_1(object sender, EventArgs e)
+        {
+            String selectedContractID = IDContrato_Jogadores.Text;
+            if (selectedContractID != "")
+            {
+                SqlCommand cmd = new SqlCommand("select * from NBA.[Contract] where ID = '" + selectedContractID + "'", cn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Contract contract = new Contract();
+                    contract.ID = reader["ID"].ToString();
+                    contract.Description = reader["Description"].ToString();
+                    contract.Salary = reader["Salary"].ToString();
+                    contract.StartDate = reader["Start_Date"].ToString();
+                    contract.EndDate = reader["End_Date"].ToString();
+                    Contrato_Jogador.Text = contract.ToString();
+                }
+                reader.Close();
+            }
+            else
+            {
+                Contrato_Jogador.Text = "";
+            }
+        }
+
+        // Botão Adicionar Treinadores
+        private void button7_Click(object sender, EventArgs e)
+        {
+            clear("treinadores", "adicionar");
+            updateListaTreinadores();
+
+            button2.Visible = true;
+            button4.Visible = true;
+
+            Lista_Treinadores.Enabled = false;
+
+            comandoConfirmar = "adicionar";
+
+            // Searchbar
+            label18.Visible = false;
+            textBox17.Visible = false;
+            button13.Visible = false;
+            button25.Visible = false;
+            // Filtros
+            label41.Visible = false;
+            comboBox6.Visible = false;
+            // Campos preenchimento
+            textBox16.Enabled = true;
+            textBox16.BackColor = Color.White;
+            textBox20.Enabled = true;
+            textBox20.BackColor = Color.White;
+            textBox14.Enabled = true;
+            textBox14.BackColor = Color.White;
+            textBox1.Enabled = true;
+            textBox1.BackColor = Color.White;
+
+            this.textBox1.TextChanged +=
+                new System.EventHandler(textBox1_TextChanged_1);
+        }
+
+        private void textBox1_TextChanged_1(object sender, EventArgs e)
+        {
+            String selectedContractID = textBox1.Text;
+            if (selectedContractID != "")
+            {
+                SqlCommand cmd = new SqlCommand("select * from NBA.[Contract] where ID = '" + selectedContractID + "'", cn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Contract contract = new Contract();
+                    contract.ID = reader["ID"].ToString();
+                    contract.Description = reader["Description"].ToString();
+                    contract.Salary = reader["Salary"].ToString();
+                    contract.StartDate = reader["Start_Date"].ToString();
+                    contract.EndDate = reader["End_Date"].ToString();
+                    richTextBox2.Text = contract.ToString();
+                }
+                reader.Close();
+            }
+            else
+            {
+                richTextBox2.Text = "";
+            }
+        }
+
+        //Botão Adicionar Equipas
+        private void button17_Click(object sender, EventArgs e)
+        {
+            clear("equipas", "adicionar");
+            updateListaEquipas();
+
+            button14.Visible = true;
+            button3.Visible = true;
+
+            Lista_Equipas.Enabled = false;
+
+            comandoConfirmar = "adicionar";
+
+            // Searchbar
+            label13.Visible = false;
+            textBox10.Visible = false;
+            button18.Visible = false;
+            button26.Visible = false;
+            // Filtros
+            label43.Visible = false;
+            comboBox7.Visible = false;
+            // Jogos Equipa
+            label47.Visible = false;
+            Lista_Jogos_Equipa.Visible = false;
+            // Estatistica
+            label9.Visible = false;
+            richTextBox3.Visible = false;
+            // Campos preenchimento
+            textBox9.Enabled = true;
+            textBox9.BackColor = Color.White;
+            textBox7.Enabled = true;
+            textBox7.BackColor = Color.White;
+            textBox28.Enabled = true;
+            textBox28.BackColor = Color.White;
+            textBox27.Enabled = true;
+            textBox27.BackColor = Color.White;
+            textBox8.Enabled = true;
+            textBox8.BackColor = Color.White;
+            textBox5.Enabled = true;
+            textBox5.BackColor = Color.White;
+
+            this.textBox28.TextChanged +=
+                new System.EventHandler(textBox28_TextChanged_1);
+
+            this.textBox27.TextChanged +=
+                new System.EventHandler(textBox27_TextChanged_1);
+        }
+
+        private void textBox28_TextChanged_1(object sender, EventArgs e)
+        {
+            String selectedCoachCCNumber = textBox28.Text;
+            if (selectedCoachCCNumber != "")
+            {
+                SqlCommand cmd = new SqlCommand("select * from NBA.Person where CCNumber = " + "'" + selectedCoachCCNumber + "'", cn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    textBox4.Text = reader["Name"].ToString();
+                }
+                reader.Close();
+            }
+            else
+            {
+                textBox4.Text = "";
+            }
+        }
+
+        private void textBox27_TextChanged_1(object sender, EventArgs e)
+        {
+            String selectedOwnerCCNumber = textBox27.Text;
+            if (selectedOwnerCCNumber != "")
+            {
+                SqlCommand cmd = new SqlCommand("select * from NBA.Person where CCNumber = " + "'" + selectedOwnerCCNumber + "'", cn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    textBox2.Text = reader["Name"].ToString();
+                }
+                reader.Close();
+            }
+            else
+            {
+                textBox2.Text = "";
+            }
+        }
+
+        // Botão Alterar Jogadores
         private void button10_Click(object sender, EventArgs e)
         {
             button11.Visible = true;
@@ -1299,9 +1707,6 @@ namespace Projeto
             textBox25.Visible = true;
             textBox22.Visible = true;
             textBox19.Visible = true;
-            // Contrato
-            label20.Visible = false;
-            Contrato_Jogador.Visible = false;
             // Campos preenchimento
             Name_Jogadores.Enabled = true;
             Name_Jogadores.BackColor = Color.White;
@@ -1311,8 +1716,8 @@ namespace Projeto
             NumeroEquipamento_Jogadores.BackColor = Color.White;
             Peso_Jogadores.Enabled = true;
             Peso_Jogadores.BackColor = Color.White;
-            Posicao_Jogadores.Enabled = true;
-            Posicao_Jogadores.BackColor = Color.White;
+            comboBox8.Enabled = true;
+            comboBox8.BackColor = Color.White;
             Idade_Jogadores.Enabled = true;
             Idade_Jogadores.BackColor = Color.White;
             IDEquipa_Jogadores.Enabled = true;
@@ -1323,7 +1728,89 @@ namespace Projeto
             this.IDEquipa_Jogadores.TextChanged +=
                 new System.EventHandler(IDEquipa_Jogadores_TextChanged_1);
 
+            this.IDContrato_Jogadores.TextChanged +=
+                new System.EventHandler(IDContrato_Jogadores_TextChanged_1);
+
             clear("jogadores", "alterar");
+        }
+
+        // Botão Alterar Treinadores
+        private void button5_Click(object sender, EventArgs e)
+        {
+            button2.Visible = true;
+            button4.Visible = true;
+
+            Lista_Treinadores.Enabled = false;
+
+            comandoConfirmar = "alterar";
+
+            // Searchbar
+            label18.Visible = false;
+            textBox17.Visible = false;
+            button13.Visible = false;
+            button25.Visible = false;
+            // Filtros
+            label41.Visible = false;
+            comboBox6.Visible = false;
+            // Campos preenchimento
+            textBox20.Enabled = true;
+            textBox20.BackColor = Color.White;
+            textBox14.Enabled = true;
+            textBox14.BackColor = Color.White;
+            textBox1.Enabled = true;
+            textBox1.BackColor = Color.White;
+
+            this.textBox1.TextChanged +=
+                new System.EventHandler(textBox1_TextChanged_1);
+
+            clear("treinadores", "alterar");
+        }
+
+        // Botão Alterar Equipas
+        private void button15_Click(object sender, EventArgs e)
+        {
+            button14.Visible = true;
+            button3.Visible = true;
+
+            Lista_Equipas.Enabled = false;
+
+            comandoConfirmar = "alterar";
+
+            // Searchbar
+            label13.Visible = false;
+            textBox10.Visible = false;
+            button18.Visible = false;
+            button26.Visible = false;
+            // Filtros
+            label43.Visible = false;
+            comboBox7.Visible = false;
+            // Jogos Equipa
+            label47.Visible = false;
+            Lista_Jogos_Equipa.Visible = false;
+            // Estatistica
+            label9.Visible = false;
+            richTextBox3.Visible = false;
+            // Campos preenchimento
+            textBox9.Enabled = true;
+            textBox9.BackColor = Color.White;
+            textBox7.Enabled = true;
+            textBox7.BackColor = Color.White;
+            textBox28.Enabled = true;
+            textBox28.BackColor = Color.White;
+            textBox27.Enabled = true;
+            textBox27.BackColor = Color.White;
+            textBox8.Enabled = true;
+            textBox8.BackColor = Color.White;
+            textBox5.Enabled = true;
+            textBox5.BackColor = Color.White;
+
+            this.textBox28.TextChanged +=
+                new System.EventHandler(textBox28_TextChanged_1);
+
+            this.textBox27.TextChanged +=
+                new System.EventHandler(textBox27_TextChanged_1);
+
+            clear("treinadores", "alterar");
         }
 
         private void button9_Click(object sender, EventArgs e)
@@ -1394,8 +1881,8 @@ namespace Projeto
             NumeroEquipamento_Jogadores.BackColor = Color.LightSteelBlue;
             Peso_Jogadores.Enabled = false;
             Peso_Jogadores.BackColor = Color.LightSteelBlue;
-            Posicao_Jogadores.Enabled = false;
-            Posicao_Jogadores.BackColor = Color.LightSteelBlue;
+            comboBox8.Enabled = false;
+            comboBox8.BackColor = Color.LightSteelBlue;
             Idade_Jogadores.Enabled = false;
             Idade_Jogadores.BackColor = Color.LightSteelBlue;
             IDEquipa_Jogadores.Enabled = false;
@@ -1404,66 +1891,101 @@ namespace Projeto
             IDContrato_Jogadores.BackColor = Color.LightSteelBlue;
         }
 
-        //Treinadores
-        private void button7_Click(object sender, EventArgs e)
+        private void resetTreinadores()
         {
-            button2.Visible = true;
-            button4.Visible = true;
+            // Searchbar
+            label18.Visible = true;
+            textBox17.Visible = true;
+            button13.Visible = true;
+            button25.Visible = true;
+            // Filtros
+            label41.Visible = true;
+            comboBox6.Visible = true;
+            // Contrato
+            label24.Visible = true;
+            richTextBox2.Visible = true;
+            // Campos preenchimento
+            textBox16.Enabled = false;
+            textBox16.BackColor = Color.LightSteelBlue;
+            textBox20.Enabled = false;
+            textBox20.BackColor = Color.LightSteelBlue;
+            textBox14.Enabled = false;
+            textBox14.BackColor = Color.LightSteelBlue;
+            textBox1.Enabled = false;
+            textBox1.BackColor = Color.LightSteelBlue;
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void resetEquipas()
         {
-            button2.Visible = true;
-            button4.Visible = true;
+            // Searchbar
+            label13.Visible = true;
+            textBox10.Visible = true;
+            button18.Visible = true;
+            button26.Visible = true;
+            // Filtros
+            label43.Visible = true;
+            comboBox7.Visible = true;
+            // Jogos Equipa
+            label47.Visible = true;
+            Lista_Jogos_Equipa.Visible = true;
+            // Estatistica
+            label9.Visible = true;
+            richTextBox3.Visible = true;
+            // Campos preenchimento
+            textBox9.Enabled = false;
+            textBox9.BackColor = Color.LightSteelBlue;
+            textBox7.Enabled = false;
+            textBox7.BackColor = Color.LightSteelBlue;
+            textBox28.Enabled = false;
+            textBox28.BackColor = Color.LightSteelBlue;
+            textBox27.Enabled = false;
+            textBox27.BackColor = Color.LightSteelBlue;
+            textBox8.Enabled = false;
+            textBox8.BackColor = Color.LightSteelBlue;
+            textBox5.Enabled = false;
+            textBox5.BackColor = Color.LightSteelBlue;
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
             button2.Visible = true;
             button4.Visible = true;
+
+            Lista_Treinadores.Enabled = false;
+
+            comandoConfirmar = "apagar";
         }
 
         private void button2_Click_1(object sender, EventArgs e)
         {
             button2.Visible = false;
             button4.Visible = false;
-        }
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-            button2.Visible = false;
-            button4.Visible = false;
-        }
+            Lista_Treinadores.Enabled = true;
 
-        //Equipas
-        private void button17_Click(object sender, EventArgs e)
-        {
-            button14.Visible = true;
-            button3.Visible = true;
-        }
-
-        private void button15_Click(object sender, EventArgs e)
-        {
-            button14.Visible = true;
-            button3.Visible = true;
+            resetTreinadores();
+            clear("treinadores", "cancelar");
         }
 
         private void button16_Click(object sender, EventArgs e)
         {
             button14.Visible = true;
             button3.Visible = true;
+
+            Lista_Equipas.Enabled = false;
+
+            comandoConfirmar = "apagar";
         }
 
         private void button3_Click_1(object sender, EventArgs e)
         {
             button14.Visible = false;
             button3.Visible = false;
-        }
 
-        private void button14_Click(object sender, EventArgs e)
-        {
-            button14.Visible = false;
-            button3.Visible = false;
+            Lista_Equipas.Enabled = true;
+
+            resetEquipas();
+            clear("equipas", "cancelar");
         }
 
         //Jogos

@@ -148,7 +148,6 @@
             this.IDContrato_Jogadores = new System.Windows.Forms.TextBox();
             this.Peso_Jogadores = new System.Windows.Forms.TextBox();
             this.IDEquipa_Jogadores = new System.Windows.Forms.TextBox();
-            this.Posicao_Jogadores = new System.Windows.Forms.TextBox();
             this.Altura_Jogadores = new System.Windows.Forms.TextBox();
             this.NumeroCC_Jogadores = new System.Windows.Forms.TextBox();
             this.Search_Jogadores = new System.Windows.Forms.TextBox();
@@ -179,6 +178,11 @@
             this.label57 = new System.Windows.Forms.Label();
             this.label58 = new System.Windows.Forms.Label();
             this.label59 = new System.Windows.Forms.Label();
+            this.comboBox8 = new System.Windows.Forms.ComboBox();
+            this.textBox27 = new System.Windows.Forms.TextBox();
+            this.textBox28 = new System.Windows.Forms.TextBox();
+            this.label60 = new System.Windows.Forms.Label();
+            this.label61 = new System.Windows.Forms.Label();
             this.tabPage1.SuspendLayout();
             this.Equipas_Tab.SuspendLayout();
             this.Treinadores_Tab.SuspendLayout();
@@ -613,6 +617,10 @@
             // 
             // Equipas_Tab
             // 
+            this.Equipas_Tab.Controls.Add(this.label61);
+            this.Equipas_Tab.Controls.Add(this.label60);
+            this.Equipas_Tab.Controls.Add(this.textBox28);
+            this.Equipas_Tab.Controls.Add(this.textBox27);
             this.Equipas_Tab.Controls.Add(this.label47);
             this.Equipas_Tab.Controls.Add(this.label46);
             this.Equipas_Tab.Controls.Add(this.comboBox7);
@@ -727,16 +735,16 @@
             // 
             this.textBox4.BackColor = System.Drawing.Color.LightSteelBlue;
             this.textBox4.Enabled = false;
-            this.textBox4.Location = new System.Drawing.Point(616, 74);
+            this.textBox4.Location = new System.Drawing.Point(445, 74);
             this.textBox4.Margin = new System.Windows.Forms.Padding(2);
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(320, 20);
+            this.textBox4.Size = new System.Drawing.Size(150, 20);
             this.textBox4.TabIndex = 81;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(613, 59);
+            this.label12.Location = new System.Drawing.Point(442, 59);
             this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(55, 13);
@@ -757,7 +765,7 @@
             // 
             this.textBox2.BackColor = System.Drawing.Color.LightSteelBlue;
             this.textBox2.Enabled = false;
-            this.textBox2.Location = new System.Drawing.Point(275, 121);
+            this.textBox2.Location = new System.Drawing.Point(616, 74);
             this.textBox2.Margin = new System.Windows.Forms.Padding(2);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(148, 20);
@@ -766,7 +774,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(272, 106);
+            this.label10.Location = new System.Drawing.Point(613, 59);
             this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(60, 13);
@@ -866,7 +874,7 @@
             // 
             this.textBox7.BackColor = System.Drawing.Color.LightSteelBlue;
             this.textBox7.Enabled = false;
-            this.textBox7.Location = new System.Drawing.Point(445, 121);
+            this.textBox7.Location = new System.Drawing.Point(786, 74);
             this.textBox7.Margin = new System.Windows.Forms.Padding(2);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(150, 20);
@@ -889,7 +897,7 @@
             this.textBox9.Location = new System.Drawing.Point(275, 74);
             this.textBox9.Margin = new System.Windows.Forms.Padding(2);
             this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(320, 20);
+            this.textBox9.Size = new System.Drawing.Size(148, 20);
             this.textBox9.TabIndex = 47;
             // 
             // textBox10
@@ -903,7 +911,7 @@
             // label31
             // 
             this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(442, 106);
+            this.label31.Location = new System.Drawing.Point(783, 59);
             this.label31.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(80, 13);
@@ -1247,6 +1255,7 @@
             // 
             // Jogadores_Tab
             // 
+            this.Jogadores_Tab.Controls.Add(this.comboBox8);
             this.Jogadores_Tab.Controls.Add(this.label59);
             this.Jogadores_Tab.Controls.Add(this.label58);
             this.Jogadores_Tab.Controls.Add(this.label57);
@@ -1287,7 +1296,6 @@
             this.Jogadores_Tab.Controls.Add(this.IDContrato_Jogadores);
             this.Jogadores_Tab.Controls.Add(this.Peso_Jogadores);
             this.Jogadores_Tab.Controls.Add(this.IDEquipa_Jogadores);
-            this.Jogadores_Tab.Controls.Add(this.Posicao_Jogadores);
             this.Jogadores_Tab.Controls.Add(this.Altura_Jogadores);
             this.Jogadores_Tab.Controls.Add(this.NumeroCC_Jogadores);
             this.Jogadores_Tab.Controls.Add(this.Search_Jogadores);
@@ -1519,7 +1527,7 @@
             // Contrato_Jogador
             // 
             this.Contrato_Jogador.Enabled = false;
-            this.Contrato_Jogador.Location = new System.Drawing.Point(737, 248);
+            this.Contrato_Jogador.Location = new System.Drawing.Point(739, 264);
             this.Contrato_Jogador.Margin = new System.Windows.Forms.Padding(2);
             this.Contrato_Jogador.Name = "Contrato_Jogador";
             this.Contrato_Jogador.Size = new System.Drawing.Size(214, 68);
@@ -1529,7 +1537,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(734, 233);
+            this.label20.Location = new System.Drawing.Point(736, 249);
             this.label20.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(47, 13);
@@ -1588,16 +1596,6 @@
             this.IDEquipa_Jogadores.Size = new System.Drawing.Size(150, 20);
             this.IDEquipa_Jogadores.TabIndex = 7;
             this.IDEquipa_Jogadores.TextChanged += new System.EventHandler(this.IDEquipa_Jogadores_TextChanged);
-            // 
-            // Posicao_Jogadores
-            // 
-            this.Posicao_Jogadores.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.Posicao_Jogadores.Enabled = false;
-            this.Posicao_Jogadores.Location = new System.Drawing.Point(342, 282);
-            this.Posicao_Jogadores.Margin = new System.Windows.Forms.Padding(2);
-            this.Posicao_Jogadores.Name = "Posicao_Jogadores";
-            this.Posicao_Jogadores.Size = new System.Drawing.Size(150, 20);
-            this.Posicao_Jogadores.TabIndex = 6;
             // 
             // Altura_Jogadores
             // 
@@ -1896,6 +1894,59 @@
             this.label59.Text = "3PT%";
             this.label59.Visible = false;
             // 
+            // comboBox8
+            // 
+            this.comboBox8.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.comboBox8.Enabled = false;
+            this.comboBox8.FormattingEnabled = true;
+            this.comboBox8.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.comboBox8.Location = new System.Drawing.Point(343, 281);
+            this.comboBox8.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBox8.Name = "comboBox8";
+            this.comboBox8.Size = new System.Drawing.Size(150, 21);
+            this.comboBox8.Sorted = true;
+            this.comboBox8.TabIndex = 64;
+            // 
+            // textBox27
+            // 
+            this.textBox27.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.textBox27.Enabled = false;
+            this.textBox27.Location = new System.Drawing.Point(445, 121);
+            this.textBox27.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox27.Name = "textBox27";
+            this.textBox27.Size = new System.Drawing.Size(148, 20);
+            this.textBox27.TabIndex = 90;
+            // 
+            // textBox28
+            // 
+            this.textBox28.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.textBox28.Enabled = false;
+            this.textBox28.Location = new System.Drawing.Point(275, 121);
+            this.textBox28.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox28.Name = "textBox28";
+            this.textBox28.Size = new System.Drawing.Size(148, 20);
+            this.textBox28.TabIndex = 91;
+            // 
+            // label60
+            // 
+            this.label60.AutoSize = true;
+            this.label60.Location = new System.Drawing.Point(442, 106);
+            this.label60.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label60.Name = "label60";
+            this.label60.Size = new System.Drawing.Size(132, 13);
+            this.label60.TabIndex = 92;
+            this.label60.Text = "Número CC do Presidente:";
+            // 
+            // label61
+            // 
+            this.label61.AutoSize = true;
+            this.label61.Location = new System.Drawing.Point(272, 106);
+            this.label61.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label61.Name = "label61";
+            this.label61.Size = new System.Drawing.Size(127, 13);
+            this.label61.TabIndex = 93;
+            this.label61.Text = "Número CC do Treinador:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1926,7 +1977,6 @@
         private System.Windows.Forms.TabPage Jogadores_Tab;
         private System.Windows.Forms.TextBox Peso_Jogadores;
         private System.Windows.Forms.TextBox IDEquipa_Jogadores;
-        private System.Windows.Forms.TextBox Posicao_Jogadores;
         private System.Windows.Forms.TextBox Altura_Jogadores;
         private System.Windows.Forms.TextBox NumeroCC_Jogadores;
         private System.Windows.Forms.TextBox Search_Jogadores;
@@ -2071,6 +2121,11 @@
         private System.Windows.Forms.TextBox textBox22;
         private System.Windows.Forms.TextBox textBox19;
         private System.Windows.Forms.TextBox textBox18;
+        private System.Windows.Forms.ComboBox comboBox8;
+        private System.Windows.Forms.Label label61;
+        private System.Windows.Forms.Label label60;
+        private System.Windows.Forms.TextBox textBox28;
+        private System.Windows.Forms.TextBox textBox27;
     }
 }
 

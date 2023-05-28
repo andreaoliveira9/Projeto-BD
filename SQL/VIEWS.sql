@@ -4,7 +4,7 @@ use p4g1;
 drop view IF EXISTS NBA.PersonPlayer
 go 
 create view NBA.PersonPlayer as 
-	select Pe.CCNumber, Pe.[Name], Pe.Age, Pe.Contract_ID, Pl.[Number], Pl.Height, Pl.[Weight], Pl.Position, Pl.Team_ID
+	select Pe.CCNumber, Pe.[Name], Pe.Age, Pe.Contract_ID, Pl.[Number], Pl.Height, Pl.[Weight], Pl.Position, Pl.Team_ID, T.[Name] as TeamName
 	from ((NBA.Player as Pl join NBA.Person as Pe on Pl.CCNumber = Pe.CCNumber) inner join NBA.Team as T on Pl.Team_ID = T.ID);
 go
 
@@ -56,7 +56,7 @@ go
 drop view IF EXISTS NBA.TeamCoachOwner
 go 
 create view NBA.TeamCoachOwner as 
-	select T.ID, T.[Name], T.City, T.Conference, T.Found_Year, C.[Name] as CoachName, P.[Name] as OwnerName
+	select T.ID, T.[Name], T.City, T.Conference, T.Found_Year, C.[Name] as CoachName, P.[Name] as OwnerName, C.CCNumber as CoachCCNumber, P.CCNumber as OwnerCCNumber
 	from ((NBA.Team as T join NBA.PersonCoach as C on T.Coach_CCNumber = C.CCNumber) join NBA.Person as P on T.Owner_CCNumber = P.CCNumber);
 go
 

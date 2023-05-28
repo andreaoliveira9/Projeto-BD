@@ -83,7 +83,7 @@ create table NBA.Ticket (
 
 
 create table NBA.Coach (
-    CCNumber                int                 not null,
+    CCNumber                int                 not null		check(len(CCNumber) = 8),
 
     primary key (CCNumber)
 );
@@ -100,14 +100,14 @@ create table NBA.Player (
 );
 
 create table NBA.Average_Individual_Numbers (
-    Points                float                 not null        check([Points] >= 0),
-    Assists               float                 not null        check([Assists] >= 0),
-    Rebounds              float                 not null        check([Rebounds] >= 0),
-    Blocks                float                 not null        check([Blocks] >= 0),
-    Steals                float                 not null        check([Steals] >= 0),
-    [FG%]                 float                 not null        check([FG%] >= 0 and [FG%] <= 100),
-    [3PT%]                float                 not null        check([3PT%] >= 0 and [3PT%] <= 100),
-    Player_CCNumber       int                   not null,
+    Points                float                         check([Points] >= 0),
+    Assists               float                         check([Assists] >= 0),
+    Rebounds              float                         check([Rebounds] >= 0),
+    Blocks                float                         check([Blocks] >= 0),
+    Steals                float                         check([Steals] >= 0),
+    [FG%]                 float                         check([FG%] >= 0 and [FG%] <= 100),
+    [3PT%]                float                         check([3PT%] >= 0 and [3PT%] <= 100),
+    Player_CCNumber       int          not null,
 );
 
 create table NBA.Game (

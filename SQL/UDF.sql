@@ -6,7 +6,7 @@ go
 create function NBA.filtrarJogadoresPorEquipaEContratoEPosicao(@equipa varchar(50), @contrato varchar(3), @posicao varchar(30)) returns table
 as
 return (
-    select P.CCNumber,P.[Name],P.Age,P.Contract_ID,P.Number,P.Height,P.[Weight],P.Position,P.Team_ID
+    select P.CCNumber,P.[Name],P.Age,P.Contract_ID,P.Number,P.Height,P.[Weight],P.Position,P.Team_ID, T.[Name] as TeamName
     from NBA.PersonPlayer as P join NBA.Team as T on P.Team_ID = T.ID
     where 
         (T.[Name] = @equipa or @equipa is null) and (

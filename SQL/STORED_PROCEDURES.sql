@@ -29,14 +29,14 @@ create procedure NBA.adicionarAlterarJogador
     @Team_ID int,
     @Contract_ID int = null,
 	@Command varchar(20),
-	@NumberOrTeamIDChanged varchar(3)
-	--@Points float,
-    --@Assists float,
-    --@Rebounds float,
-    --@Blocks float,
-    --@Steals float,
-    --@FG float,
-    --@PT3 float
+	@NumberOrTeamIDChanged varchar(3),
+	@Points float = null,
+    @Assists float = null,
+    @Rebounds float = null,
+    @Blocks float = null,
+    @Steals float = null,
+    @FG float = null,
+    @PT3 float = null
 as
 	begin
 		declare @errorsCount as int = 0;
@@ -54,12 +54,6 @@ as
 					raiserror('Não foi possível adicionar/alterar jogador! Já existe um jogador da mesma equipa com o mesmo número de equipamento.', 16, 1);
 				end
 
-		if (@Position is not null and not exists(select 1 from NBA.Player where Position = @Position))
-				begin
-					set @errorsCount = @errorsCount + 1;
-					raiserror('Não foi possível adicionar/altera jogador! Posição inválida.', 16, 1);
-				end
-
 		if (@errorsCount = 0)
 			begin
 				if (@Command = 'adicionar')
@@ -67,7 +61,7 @@ as
 						begin tran
 							insert into NBA.Person values(@CCNumber, @Name, @Age, @Contract_ID);
 							insert into NBA.Player values(@CCNumber, @Number, @Height, @Weight, @Position, @Team_ID);
-							--insert into NBA.Average_Individual_Numbers values (@Points, @Assists, @Rebounds, @Blocks, @Steals, @FG ,@PT3, @CCNumber);
+							insert into NBA.Average_Individual_Numbers values (@Points, @Assists, @Rebounds, @Blocks, @Steals, @FG ,@PT3, @CCNumber);
 						commit tran
 					end try
 					begin catch
@@ -90,7 +84,7 @@ as
 						rollback tran
 						raiserror('Jogador não alterado! Algum dado está incorreto', 16, 1);
 					end catch
-					/*begin try
+					begin try
 						begin tran
 							update NBA.Average_Individual_Numbers
 							set Points = @Points, Assists = @Assists, Rebounds = @Rebounds, Blocks = @Blocks, Steals = @Steals, [FG%] = @FG, [3PT%] = @PT3
@@ -100,7 +94,7 @@ as
 					begin catch
 						rollback tran
 						raiserror('Estatística não alterado! Algum dado está incorreto', 16, 1);
-					end catch*/
+					end catch
 			end
 	end
 go
@@ -113,4 +107,116 @@ create procedure NBA.apagarJogador
 as
 	delete from NBA.Player where CCNumber = @CCNumber;
 	delete from NBA.Person where CCNumber = @CCNumber;
+go
+
+-- Procedure para adicionar ou alterar treinador
+drop procedure IF EXISTS NBA.adicionarAlterarTreinador;
+go
+create procedure NBA.adicionarAlterarTreinador
+    @CCNumber int,
+    @Name varchar(50),
+    @Age int,
+    @Contract_ID int = null,
+	@Command varchar(20)
+as
+	begin
+		declare @errorsCount as int = 0;
+	
+		if (@errorsCount = 0)
+			begin
+				if (@Command = 'adicionar')
+					begin try
+						begin tran
+							insert into NBA.Person values(@CCNumber, @Name, @Age, @Contract_ID);
+							insert into NBA.Coach values(@CCNumber);
+						commit tran
+					end try
+					begin catch
+						rollback tran
+						raiserror('Jogador não inserido! Algum dado está incorreto', 16, 1);
+					end catch
+				else if (@Command = 'alterar')
+					begin try
+						begin tran
+							update NBA.Person
+							set [Name] = @Name, Age = @Age, Contract_ID = @Contract_ID
+							where CCNumber = @CCNumber;
+						commit tran
+					end try
+					begin catch
+						rollback tran
+						raiserror('Jogador não alterado! Algum dado está incorreto', 16, 1);
+					end catch
+			end
+	end
+go
+
+-- Procedure para apagar treinador
+drop procedure IF EXISTS NBA.apagarTreinador;
+go
+create procedure NBA.apagarTreinador
+	@CCNumber int
+as
+	delete from NBA.Coach where CCNumber = @CCNumber;
+	delete from NBA.Person where CCNumber = @CCNumber;
+go
+
+-- Procedure para adicionar ou alterar equipa
+drop procedure IF EXISTS NBA.adicionarAlterarEquipa;
+go
+create procedure NBA.adicionarAlterarEquipa
+	@ID int = null,
+    @Name varchar(50),
+	@City varchar(50),
+	@Conference varchar(50),
+    @FoundYear int,
+    @CoachCCNumber int,
+	@OwnerCCNumber int,
+	@Command varchar(20)
+as
+	begin
+		declare @errorsCount as int = 0;
+		declare @nextID as int = (select max(ID)+1 from NBA.Team);
+		
+		if (@CoachCCNumber is not null and exists (select 1 from NBA.Team where Coach_CCNumber = @CoachCCNumber))
+			begin
+				set @errorsCount = @errorsCount + 1;
+				raiserror('Não foi possível adicionar equipa! O treinador inserido já pertence a outra equipa.', 16, 1);
+			end
+
+		if (@errorsCount = 0)
+			begin
+				if (@Command = 'adicionar')
+					begin try
+						begin tran
+							insert into NBA.Team values(@nextID, @Name, @City, @Conference, @FoundYear, @OwnerCCNumber, @CoachCCNumber);
+						commit tran
+					end try
+					begin catch
+						rollback tran
+						raiserror('Equipa não inserida! Algum dado está incorreto', 16, 1);
+					end catch
+				else if (@Command = 'alterar')
+					begin try
+						begin tran
+							update NBA.Team
+							set [Name] = @Name, Conference = @Conference, Found_Year = @FoundYear, Owner_CCNumber = @OwnerCCNumber, Coach_CCNumber =@CoachCCNumber 
+							where ID = @ID;
+						commit tran
+					end try
+					begin catch
+						rollback tran
+						raiserror('Equipa não alterado! Algum dado está incorreto', 16, 1);
+					end catch
+			end
+	end
+go
+
+-- Procedure para apagar equipa
+drop procedure IF EXISTS NBA.apagarEquipa;
+go
+create procedure NBA.apagarEquipa
+	@ID int
+as
+	delete from NBA.Team where ID = @ID;
 go
