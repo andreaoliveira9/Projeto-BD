@@ -409,7 +409,7 @@
             // richTextBox1
             // 
             this.richTextBox1.EnableAutoDragDrop = true;
-            this.richTextBox1.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.richTextBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.richTextBox1.Location = new System.Drawing.Point(716, 261);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(236, 134);
