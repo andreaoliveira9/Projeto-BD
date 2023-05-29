@@ -82,7 +82,7 @@ go
 drop function IF EXISTS NBA.getTeamAverageStats
 go
 create function NBA.getTeamAverageStats(@InputTeamID INT) returns @TeamAverageStats table (
-    TeamID INT,
+    TeamID int,
     TeamName varchar(50),
     AveragePoints decimal(10, 2),
     AverageAssists decimal(10, 2),
