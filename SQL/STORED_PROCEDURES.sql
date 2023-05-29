@@ -1,3 +1,5 @@
+use p4g1;
+
 -- Procedure para barra de pesquisa
 drop procedure IF EXISTS NBA.pesquisarPorNome;
 go
@@ -93,7 +95,7 @@ as
 					end try
 					begin catch
 						rollback tran
-						raiserror('Estatística não alterado! Algum dado está incorreto', 16, 1);
+						raiserror('Estatística não alterads! Algum dado está incorreto', 16, 1);
 					end catch
 			end
 	end
@@ -219,6 +221,7 @@ go
 create procedure NBA.apagarEquipa
 	@ID int
 as
+	delete from NBA.Game where Home_Team_ID = @ID or Away_Team_ID= @ID
 	delete from NBA.Team where ID = @ID;
 go
 

@@ -1039,13 +1039,13 @@ namespace Projeto
                     String idade = Idade_Jogadores.Text;
                     String IDEquipa = IDEquipa_Jogadores.Text;
                     String IDContrato = IDContrato_Jogadores.Text;
-                    String points = textBox18.Text;
-                    String assists = textBox24.Text;
-                    String rebounds = textBox26.Text;
-                    String blocks = textBox23.Text;
-                    String steals = textBox25.Text;
-                    String fg = textBox22.Text;
-                    String pt3 = textBox19.Text;
+                    String points = textBox18.Text.Replace(",", "."); ;
+                    String assists = textBox24.Text.Replace(",", "."); ;
+                    String rebounds = textBox26.Text.Replace(",", "."); ;
+                    String blocks = textBox23.Text.Replace(",", "."); ;
+                    String steals = textBox25.Text.Replace(",", "."); ;
+                    String fg = textBox22.Text.Replace(",", "."); ;
+                    String pt3 = textBox19.Text.Replace(",", "."); ;
 
                     SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarJogador", cn);
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -1070,13 +1070,18 @@ namespace Projeto
                     {
                         cmd.Parameters.Add(new SqlParameter("@NumberOrTeamIDChanged", "Nao"));
                     }
-                    cmd.Parameters.Add(new SqlParameter("@Points", points));
-                    cmd.Parameters.Add(new SqlParameter("@Assists", assists));
-                    cmd.Parameters.Add(new SqlParameter("@Rebounds", rebounds));
-                    cmd.Parameters.Add(new SqlParameter("@Blocks", blocks));
-                    cmd.Parameters.Add(new SqlParameter("@Steals", steals));
-                    cmd.Parameters.Add(new SqlParameter("@FG", fg));
-                    cmd.Parameters.Add(new SqlParameter("@PT3", pt3));
+
+                    if (points != "" || assists != "" || rebounds != "" || blocks != "" || steals != "" || fg != "" || pt3 != "")
+                    {
+                        Console.WriteLine("oi");
+                        cmd.Parameters.Add(new SqlParameter("@Points", points));
+                        cmd.Parameters.Add(new SqlParameter("@Assists", assists));
+                        cmd.Parameters.Add(new SqlParameter("@Rebounds", rebounds));
+                        cmd.Parameters.Add(new SqlParameter("@Blocks", blocks));
+                        cmd.Parameters.Add(new SqlParameter("@Steals", steals));
+                        cmd.Parameters.Add(new SqlParameter("@FG", fg));
+                        cmd.Parameters.Add(new SqlParameter("@PT3", pt3));
+                    }
 
                     SqlDataReader reader = cmd.ExecuteReader();
                     MessageBox.Show("Jogador alterado com sucesso!");
