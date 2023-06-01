@@ -44,7 +44,6 @@
             this.label49 = new System.Windows.Forms.Label();
             this.label48 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.textBox21 = new System.Windows.Forms.TextBox();
             this.label37 = new System.Windows.Forms.Label();
@@ -189,6 +188,17 @@
             this.Lista_Jogadores = new System.Windows.Forms.ListBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.button31 = new System.Windows.Forms.Button();
+            this.textBox31 = new System.Windows.Forms.TextBox();
+            this.textBox32 = new System.Windows.Forms.TextBox();
+            this.textBox33 = new System.Windows.Forms.TextBox();
+            this.textBox34 = new System.Windows.Forms.TextBox();
+            this.textBox35 = new System.Windows.Forms.TextBox();
+            this.textBox36 = new System.Windows.Forms.TextBox();
+            this.label65 = new System.Windows.Forms.Label();
+            this.label66 = new System.Windows.Forms.Label();
+            this.label67 = new System.Windows.Forms.Label();
             this.tabPage1.SuspendLayout();
             this.Equipas_Tab.SuspendLayout();
             this.Treinadores_Tab.SuspendLayout();
@@ -198,6 +208,16 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label67);
+            this.tabPage1.Controls.Add(this.label66);
+            this.tabPage1.Controls.Add(this.label65);
+            this.tabPage1.Controls.Add(this.textBox36);
+            this.tabPage1.Controls.Add(this.textBox35);
+            this.tabPage1.Controls.Add(this.textBox34);
+            this.tabPage1.Controls.Add(this.textBox33);
+            this.tabPage1.Controls.Add(this.textBox32);
+            this.tabPage1.Controls.Add(this.textBox31);
+            this.tabPage1.Controls.Add(this.button31);
             this.tabPage1.Controls.Add(this.label64);
             this.tabPage1.Controls.Add(this.textBox30);
             this.tabPage1.Controls.Add(this.label63);
@@ -248,6 +268,7 @@
             this.tabPage1.TabIndex = 3;
             this.tabPage1.Text = "Jogos";
             this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
             // 
             // label64
             // 
@@ -312,7 +333,7 @@
             // 
             // button30
             // 
-            this.button30.Location = new System.Drawing.Point(836, 32);
+            this.button30.Location = new System.Drawing.Point(828, 237);
             this.button30.Margin = new System.Windows.Forms.Padding(2);
             this.button30.Name = "button30";
             this.button30.Size = new System.Drawing.Size(101, 20);
@@ -324,7 +345,7 @@
             // 
             // button29
             // 
-            this.button29.Location = new System.Drawing.Point(836, 8);
+            this.button29.Location = new System.Drawing.Point(828, 217);
             this.button29.Margin = new System.Windows.Forms.Padding(2);
             this.button29.Name = "button29";
             this.button29.Size = new System.Drawing.Size(101, 20);
@@ -336,12 +357,12 @@
             // 
             // button28
             // 
-            this.button28.Location = new System.Drawing.Point(731, 8);
+            this.button28.Location = new System.Drawing.Point(738, 217);
             this.button28.Margin = new System.Windows.Forms.Padding(2);
             this.button28.Name = "button28";
-            this.button28.Size = new System.Drawing.Size(101, 44);
+            this.button28.Size = new System.Drawing.Size(86, 40);
             this.button28.TabIndex = 129;
-            this.button28.Text = "Comprar Bilhete";
+            this.button28.Text = "Publicar Bilhetes";
             this.button28.UseVisualStyleBackColor = true;
             this.button28.Visible = false;
             this.button28.Click += new System.EventHandler(this.button28_Click);
@@ -400,20 +421,11 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(713, 245);
+            this.label28.Location = new System.Drawing.Point(713, 278);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(104, 13);
             this.label28.TabIndex = 123;
             this.label28.Text = "Tabela Classificativa";
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.richTextBox1.Location = new System.Drawing.Point(716, 261);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(236, 134);
-            this.richTextBox1.TabIndex = 122;
-            this.richTextBox1.Text = "";
             // 
             // dateTimePicker1
             // 
@@ -508,6 +520,7 @@
             this.Bilhetes_Jogo.Name = "Bilhetes_Jogo";
             this.Bilhetes_Jogo.Size = new System.Drawing.Size(237, 134);
             this.Bilhetes_Jogo.TabIndex = 107;
+            this.Bilhetes_Jogo.SelectedIndexChanged += new System.EventHandler(this.Bilhetes_Jogo_SelectedIndexChanged_1);
             // 
             // textBox6
             // 
@@ -686,7 +699,7 @@
             this.Lista_Jogos.Location = new System.Drawing.Point(5, 79);
             this.Lista_Jogos.Margin = new System.Windows.Forms.Padding(2);
             this.Lista_Jogos.Name = "Lista_Jogos";
-            this.Lista_Jogos.Size = new System.Drawing.Size(298, 316);
+            this.Lista_Jogos.Size = new System.Drawing.Size(298, 329);
             this.Lista_Jogos.TabIndex = 85;
             // 
             // Equipas_Tab
@@ -2021,6 +2034,124 @@
             this.tabControl1.Size = new System.Drawing.Size(961, 548);
             this.tabControl1.TabIndex = 0;
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.richTextBox1.Location = new System.Drawing.Point(714, 289);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(236, 134);
+            this.richTextBox1.TabIndex = 122;
+            this.richTextBox1.Text = "";
+            // 
+            // button31
+            // 
+            this.button31.Location = new System.Drawing.Point(738, 217);
+            this.button31.Margin = new System.Windows.Forms.Padding(2);
+            this.button31.Name = "button31";
+            this.button31.Size = new System.Drawing.Size(86, 40);
+            this.button31.TabIndex = 138;
+            this.button31.Text = "Atualizar Bilhetes";
+            this.button31.UseVisualStyleBackColor = true;
+            this.button31.Visible = false;
+            this.button31.Click += new System.EventHandler(this.button31_Click);
+            // 
+            // textBox31
+            // 
+            this.textBox31.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.textBox31.Enabled = false;
+            this.textBox31.Location = new System.Drawing.Point(716, 95);
+            this.textBox31.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox31.Name = "textBox31";
+            this.textBox31.Size = new System.Drawing.Size(65, 20);
+            this.textBox31.TabIndex = 139;
+            this.textBox31.Visible = false;
+            // 
+            // textBox32
+            // 
+            this.textBox32.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.textBox32.Enabled = false;
+            this.textBox32.Location = new System.Drawing.Point(854, 119);
+            this.textBox32.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox32.Name = "textBox32";
+            this.textBox32.Size = new System.Drawing.Size(65, 20);
+            this.textBox32.TabIndex = 140;
+            this.textBox32.Visible = false;
+            // 
+            // textBox33
+            // 
+            this.textBox33.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.textBox33.Enabled = false;
+            this.textBox33.Location = new System.Drawing.Point(785, 119);
+            this.textBox33.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox33.Name = "textBox33";
+            this.textBox33.Size = new System.Drawing.Size(65, 20);
+            this.textBox33.TabIndex = 141;
+            this.textBox33.Visible = false;
+            // 
+            // textBox34
+            // 
+            this.textBox34.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.textBox34.Enabled = false;
+            this.textBox34.Location = new System.Drawing.Point(716, 119);
+            this.textBox34.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox34.Name = "textBox34";
+            this.textBox34.Size = new System.Drawing.Size(65, 20);
+            this.textBox34.TabIndex = 142;
+            this.textBox34.Visible = false;
+            // 
+            // textBox35
+            // 
+            this.textBox35.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.textBox35.Enabled = false;
+            this.textBox35.Location = new System.Drawing.Point(785, 95);
+            this.textBox35.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox35.Name = "textBox35";
+            this.textBox35.Size = new System.Drawing.Size(65, 20);
+            this.textBox35.TabIndex = 143;
+            this.textBox35.Visible = false;
+            this.textBox35.TextChanged += new System.EventHandler(this.textBox35_TextChanged);
+            // 
+            // textBox36
+            // 
+            this.textBox36.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.textBox36.Enabled = false;
+            this.textBox36.Location = new System.Drawing.Point(854, 95);
+            this.textBox36.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox36.Name = "textBox36";
+            this.textBox36.Size = new System.Drawing.Size(65, 20);
+            this.textBox36.TabIndex = 144;
+            this.textBox36.Visible = false;
+            // 
+            // label65
+            // 
+            this.label65.AutoSize = true;
+            this.label65.Location = new System.Drawing.Point(735, 82);
+            this.label65.Name = "label65";
+            this.label65.Size = new System.Drawing.Size(28, 13);
+            this.label65.TabIndex = 145;
+            this.label65.Text = "Tipo";
+            this.label65.Visible = false;
+            // 
+            // label66
+            // 
+            this.label66.AutoSize = true;
+            this.label66.Location = new System.Drawing.Point(800, 82);
+            this.label66.Name = "label66";
+            this.label66.Size = new System.Drawing.Size(35, 13);
+            this.label66.TabIndex = 146;
+            this.label66.Text = "Preço";
+            this.label66.Visible = false;
+            // 
+            // label67
+            // 
+            this.label67.AutoSize = true;
+            this.label67.Location = new System.Drawing.Point(855, 82);
+            this.label67.Name = "label67";
+            this.label67.Size = new System.Drawing.Size(55, 13);
+            this.label67.TabIndex = 147;
+            this.label67.Text = "Restantes";
+            this.label67.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2163,7 +2294,6 @@
         private System.Windows.Forms.ComboBox comboBox7;
         private System.Windows.Forms.Label label43;
         private System.Windows.Forms.Label label28;
-        private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Label label49;
         private System.Windows.Forms.Label label48;
         private System.Windows.Forms.Label label47;
@@ -2206,6 +2336,17 @@
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.TextBox textBox30;
         private System.Windows.Forms.Label label64;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Button button31;
+        private System.Windows.Forms.TextBox textBox36;
+        private System.Windows.Forms.TextBox textBox35;
+        private System.Windows.Forms.TextBox textBox34;
+        private System.Windows.Forms.TextBox textBox33;
+        private System.Windows.Forms.TextBox textBox32;
+        private System.Windows.Forms.TextBox textBox31;
+        private System.Windows.Forms.Label label67;
+        private System.Windows.Forms.Label label66;
+        private System.Windows.Forms.Label label65;
     }
 }
 

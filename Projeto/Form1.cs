@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 using ComboBox = System.Windows.Forms.ComboBox;
 
 namespace Projeto
@@ -23,11 +24,13 @@ namespace Projeto
         private SqlConnection cn;
         private int totalItems;
         private String comandoConfirmar;
+        private String comandoConfirmarBilhetes;
         private String guardarNumber;
         private String guardarTeamID;
         private String guardarTeamID1;
-        private String guardarGameID;
         private String guardarCCNumber;
+        private String guardarteamID2;
+        private String guardarGameID;
 
         public Form1()
         {
@@ -612,6 +615,14 @@ namespace Projeto
             ListBox ListBox = (ListBox)sender;
             Bilhetes_Jogo.Items.Clear();
             Game1 selectedGame = (Game1)Lista_Jogos.SelectedItem;
+
+            textBox31.Text = "";
+            textBox35.Text = "";
+            textBox36.Text = "";
+            textBox34.Text = "";
+            textBox33.Text = "";
+            textBox32.Text = "";
+
             if (selectedGame != null)
             {
                 textBox15.Text = selectedGame.HomeTeamName;
@@ -624,6 +635,7 @@ namespace Projeto
                 textBox13.Text = selectedGame.HomeScore;
                 textBox11.Text = selectedGame.AwayScore;
                 guardarGameID = selectedGame.ID;
+                guardarteamID2 = selectedGame.HomeID;
 
                 DateTime data = new DateTime(int.Parse(selectedGame.Date.Substring(6,4)), int.Parse(selectedGame.Date.Substring(3, 2)), int.Parse(selectedGame.Date.Substring(0, 2)));
                 dateTimePicker1.Value = data;
@@ -636,34 +648,51 @@ namespace Projeto
                 {
                     SqlCommand cmd = new SqlCommand("select * from NBA.GetGameTickets(" + "'" + selectedGame.ID + "')", cn);
                     SqlDataReader reader = cmd.ExecuteReader();
+                    int count = 0;
                     while (reader.Read())
                     {
+                        count++;
                         Ticket ticket = new Ticket();
                         ticket.Type = reader["Type"].ToString();
                         ticket.Price = reader["Price"].ToString();
                         ticket.Restantes = reader["Restantes"].ToString();
 
                         Bilhetes_Jogo.Items.Add(ticket);
-                        totalItems++;
-                    }
-                    reader.Close();
+                        comandoConfirmarBilhetes = "alterar";
 
-                    this.Bilhetes_Jogo.SelectedIndexChanged +=
-                        new System.EventHandler(Bilhetes_Jogo_SelectedIndexChanged);
+                        if (count == 1)
+                        {
+                            textBox31.Text = ticket.Type;
+                            textBox35.Text = ticket.Price;
+                            textBox36.Text = ticket.Restantes;
+                        }
+                        else
+                        {
+                            textBox34.Text = ticket.Type;
+                            textBox33.Text = ticket.Price;
+                            textBox32.Text = ticket.Restantes;
+                        }
+
+                        Console.WriteLine("oi");
+                        button31.Visible = true;
+                        button28.Visible = false;
+                    }
+
+                    if (count == 0)
+                    {
+                        Bilhetes_Jogo.Items.Add("Bilhetes por publicar");
+                        comandoConfirmarBilhetes = "adicionar";
+                        button31.Visible = false;
+                        button28.Visible = true;
+                    }
+
+                    reader.Close();
                 }
 
                 button21.Visible = true;
                 button22.Visible = true;
-            }
-        }
-
-        private void Bilhetes_Jogo_SelectedIndexChanged(object sender, System.EventArgs e)
-        {
-            ListBox ListBox = (ListBox)sender;
-            Ticket selectedTicket = (Ticket)Bilhetes_Jogo.SelectedItem;
-            if (selectedTicket != null)
-            {
-                button28.Visible = true;
+                button29.Visible = false;
+                button30.Visible = false;
             }
         }
 
@@ -1040,13 +1069,13 @@ namespace Projeto
                     String idade = Idade_Jogadores.Text;
                     String IDEquipa = IDEquipa_Jogadores.Text;
                     String IDContrato = IDContrato_Jogadores.Text;
-                    String points = textBox18.Text.Replace(",", "."); ;
-                    String assists = textBox24.Text.Replace(",", "."); ;
-                    String rebounds = textBox26.Text.Replace(",", "."); ;
-                    String blocks = textBox23.Text.Replace(",", "."); ;
-                    String steals = textBox25.Text.Replace(",", "."); ;
-                    String fg = textBox22.Text.Replace(",", "."); ;
-                    String pt3 = textBox19.Text.Replace(",", "."); ;
+                    String points = textBox18.Text.Replace(",", ".");
+                    String assists = textBox24.Text.Replace(",", ".");
+                    String rebounds = textBox26.Text.Replace(",", ".");
+                    String blocks = textBox23.Text.Replace(",", ".");
+                    String steals = textBox25.Text.Replace(",", ".");
+                    String fg = textBox22.Text.Replace(",", ".");
+                    String pt3 = textBox19.Text.Replace(",", ".");
 
                     SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarJogador", cn);
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -1398,6 +1427,106 @@ namespace Projeto
                 catch
                 {
                     MessageBox.Show("Erro ao alterar jogo!");
+                }
+            }
+        }
+
+        // Botão adicionar/alterar bilhetes
+        private void button29_Click(object sender, EventArgs e)
+        {
+            String tipo1 = textBox31.Text;
+            String preco1 = textBox35.Text.Replace(",", ".");
+            String restantes1 = textBox36.Text;
+            String tipo2 = textBox34.Text;
+            String preco2 = textBox33.Text.Replace(",", ".");
+            String restantes2 = textBox32.Text;
+
+            if (comandoConfirmarBilhetes == "adicionar")
+            {
+                try
+                {
+                    if (tipo1 != "" && preco1 != "" && restantes1 != "")
+                    {
+                        SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarBilhetes", cn);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add(new SqlParameter("@Type", tipo1));
+                        cmd.Parameters.Add(new SqlParameter("@Price", preco1));
+                        cmd.Parameters.Add(new SqlParameter("@Restantes", restantes1));
+                        cmd.Parameters.Add(new SqlParameter("@Game_ID", guardarGameID));
+                        cmd.Parameters.Add(new SqlParameter("@Team_ID", guardarteamID2));
+                        cmd.Parameters.Add(new SqlParameter("@Command", "adicionar"));
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        reader.Close();
+                    }
+
+                    if (tipo2 != "" && preco2 != "" && restantes2 != "")
+                    {
+                        SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarBilhetes", cn);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add(new SqlParameter("@Type", tipo2));
+                        cmd.Parameters.Add(new SqlParameter("@Price", preco2));
+                        cmd.Parameters.Add(new SqlParameter("@Restantes", restantes2));
+                        cmd.Parameters.Add(new SqlParameter("@Game_ID", guardarGameID));
+                        cmd.Parameters.Add(new SqlParameter("@Team_ID", guardarteamID2));
+                        cmd.Parameters.Add(new SqlParameter("@Command", "adicionar"));
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        reader.Close();
+                    }
+
+                    MessageBox.Show("Bilhetes adicionados com sucesso!");
+                    clear("jogos", "limpar");
+                    resetJogos();
+                    resetTabelaClassificativa();
+                    Lista_Jogos.Enabled = true;
+                }
+                catch
+                {
+                    MessageBox.Show("Erro ao publicar bilhetes!");
+                }
+            }
+            else if (comandoConfirmarBilhetes == "alterar")
+            {
+                try
+                {
+
+                    if (tipo1 != "" && preco1 != "" && restantes1 != "")
+                    {
+                        SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarBilhetes", cn);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add(new SqlParameter("@Type", tipo1));
+                        cmd.Parameters.Add(new SqlParameter("@Price", preco1));
+                        cmd.Parameters.Add(new SqlParameter("@Restantes", restantes1));
+                        cmd.Parameters.Add(new SqlParameter("@Game_ID", guardarGameID));
+                        cmd.Parameters.Add(new SqlParameter("@Team_ID", guardarteamID2));
+                        cmd.Parameters.Add(new SqlParameter("@Command", "alterar"));
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        reader.Close();
+                    }
+
+                    if (tipo2 != "" && preco2 != "" && restantes2 != "")
+                    {
+                        SqlCommand cmd = new SqlCommand("NBA.adicionarAlterarBilhetes", cn);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add(new SqlParameter("@Type", tipo2));
+                        cmd.Parameters.Add(new SqlParameter("@Price", preco2));
+                        cmd.Parameters.Add(new SqlParameter("@Restantes", restantes2));
+                        cmd.Parameters.Add(new SqlParameter("@Game_ID", guardarGameID));
+                        cmd.Parameters.Add(new SqlParameter("@Team_ID", guardarteamID2));
+                        cmd.Parameters.Add(new SqlParameter("@Command", "alterar"));
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        reader.Close();
+                    }
+
+                    MessageBox.Show("Bilhetes altearados com sucesso!");
+                    resetTabelaClassificativa();
+                    clear("jogos", "limpar");
+                    resetJogos();
+                    resetTabelaClassificativa();
+                    Lista_Jogos.Enabled = true;
+                }
+                catch
+                {
+                    MessageBox.Show("Erro ao alterar bilhetes!");
                 }
             }
         }
@@ -2371,12 +2500,12 @@ namespace Projeto
             }
             else if (janela == "jogos")
             {
-                if (botao != "filtro")
+                if (botao != "filtro" && botao != "bilhetes")
                 {
                     comboBox5.Enabled = true;
                     comboBox3.Enabled = true;
                     comboBox4.Enabled = true;
-                    if (botao != "alterar")
+                    if (botao != "alterar" && botao != "bilhetes")
                     {
                         comboBox5.SelectedIndex = -1;
                         comboBox3.SelectedIndex = -1;
@@ -2386,8 +2515,27 @@ namespace Projeto
 
                 button22.Visible = false;
                 button21.Visible = false;
+                button28.Visible = false;
+                button29.Visible = false;
+                button30.Visible = false;
 
-                if (botao != "adicionar" && botao != "alterar")
+                if (botao != "bilhetes")
+                {
+                    button31.Visible = false;
+                }
+
+                label65.Visible = false;
+                label66.Visible = false;
+                label67.Visible = false;
+
+                textBox31.Visible = false;
+                textBox32.Visible = false;
+                textBox33.Visible = false;
+                textBox34.Visible = false;
+                textBox35.Visible = false;
+                textBox36.Visible = false;
+
+                if (botao != "adicionar" && botao != "alterar" && botao != "bilhetes")
                 {
                     button20.Visible = false;
                     button19.Visible = false;
@@ -2396,7 +2544,7 @@ namespace Projeto
                     button30.Visible = false;
                 }
 
-                if (botao != "alterar")
+                if (botao != "alterar" && botao != "bilhetes")
                 {
                     textBox15.Text = "";
                     textBox6.Text = "";
@@ -2410,30 +2558,89 @@ namespace Projeto
                     Bilhetes_Jogo.Items.Clear();
                 }
 
-                if (botao == "limpar")
+                if (botao == "limpar" && botao != "bilhetes")
                 {
                     updateListaJogos();
                 }
             }
         }
 
-        //Compra bilhetes
+        // Botão alterar bilhetes
+        private void button31_Click(object sender, EventArgs e)
+        {
+            button29.Visible = true;
+            button30.Visible = true;
+            Bilhetes_Jogo.Visible = false;
+            label65.Visible = true;
+            label66.Visible = true;
+            label67.Visible = true;
+
+            textBox31.Visible = true;
+            textBox32.Visible = true;
+            textBox33.Visible = true;
+            textBox34.Visible = true;
+            textBox35.Visible = true;
+            textBox36.Visible = true;
+
+            textBox31.Enabled = false;
+            textBox32.Enabled = true;
+            textBox33.Enabled = true;
+            textBox34.Enabled = false;
+            textBox35.Enabled = true;
+            textBox36.Enabled = true;
+
+            textBox31.BackColor = Color.LightSteelBlue;
+            textBox32.BackColor = Color.White;
+            textBox33.BackColor = Color.White;
+            textBox34.BackColor = Color.LightSteelBlue;
+            textBox35.BackColor = Color.White;
+            textBox36.BackColor = Color.White;
+        }
+
+        // Botão publicar bilhetes
         private void button28_Click(object sender, EventArgs e)
         {
             button29.Visible = true;
             button30.Visible = true;
+            Bilhetes_Jogo.Visible = false;
+            label65.Visible = true;
+            label66.Visible = true;
+            label67.Visible = true;
+
+            textBox31.Visible = true;
+            textBox32.Visible = true;
+            textBox33.Visible = true;
+            textBox34.Visible = true;
+            textBox35.Visible = true;
+            textBox36.Visible = true;
+
+            textBox31.Enabled = true;
+            textBox32.Enabled = true;
+            textBox33.Enabled = true;
+            textBox34.Enabled = true;
+            textBox35.Enabled = true;
+            textBox36.Enabled = true;
+
+            textBox31.BackColor = Color.White;
+            textBox32.BackColor = Color.White;
+            textBox33.BackColor = Color.White;
+            textBox34.BackColor = Color.White;
+            textBox35.BackColor = Color.White;
+            textBox36.BackColor = Color.White;
         }
 
-        private void button29_Click(object sender, EventArgs e)
-        {
-            button29.Visible = false;
-            button30.Visible = false;
-        }
+        
 
+        // Botão cancelar bilhetes
         private void button30_Click(object sender, EventArgs e)
         {
             button29.Visible = false;
             button30.Visible = false;
+
+            Lista_Jogos.Enabled = true;
+
+            resetJogos();
+            clear("jogos", "bilhetes");
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -2694,6 +2901,21 @@ namespace Projeto
         }
 
         private void textBox30_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Bilhetes_Jogo_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox35_TextChanged(object sender, EventArgs e)
         {
 
         }

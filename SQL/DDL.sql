@@ -76,8 +76,8 @@ create table NBA.Stadium (
 
 create table NBA.Ticket (
     [Type]                  varchar(30)         not null,
-    Price                   float               not null        check(Price > 0),
-    Restantes               int                 not null        check(Restantes >= 0),
+    Price                   decimal(10,2)        not null        check(Price > 0),
+    Restantes               int							        check(Restantes >= 0),
     Game_ID                 int                 not null,
     Team_ID                 int                 not null
 );

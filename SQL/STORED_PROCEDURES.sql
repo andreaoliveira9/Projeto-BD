@@ -42,12 +42,6 @@ create procedure NBA.adicionarAlterarJogador
 as
 	begin
 		declare @errorsCount as int = 0;
-		if (@Command = 'adicionar')
-			if (@CCNumber is not null and exists(select 1 from NBA.Person where CCNumber = @CCNumber))
-				begin
-					set @errorsCount = @errorsCount + 1;
-					raiserror('Não foi possível adicionar jogador! O número de cartão de cidadão inserido já se encontra registado.', 16, 1);
-				end
 
 		if (@NumberOrTeamIDChanged = 'Sim')
 			if (@Number is not null and exists(select 1 from (NBA.Team as T inner join NBA.Player as P on T.ID = P.Team_ID) where Team_ID = @Team_ID and Number = @Number))
@@ -324,5 +318,48 @@ go
 create procedure NBA.apagarJogo
 	@ID int
 as
+	delete from NBA.Ticket where Game_ID = @ID;
 	delete from NBA.Game where ID = @ID;
+go
+
+-- Procedure para adicionar ou alterar bilhetes de jogos
+drop procedure IF EXISTS NBA.adicionarAlterarBilhetes;
+go
+create procedure NBA.adicionarAlterarBilhetes
+	@Type varchar(30),
+    @Price float,
+	@Restantes int,
+	@Game_ID int,
+	@Team_ID int,
+	@Command varchar(30)
+as
+	begin
+		declare @errorsCount as int = 0;
+
+		if (@errorsCount = 0)
+			begin
+				if (@Command = 'adicionar')
+					begin try
+						begin tran
+							insert into NBA.Ticket values(@Type, @Price, @Restantes, @Game_ID, @Team_ID);
+						commit tran
+					end try
+					begin catch
+						rollback tran
+						raiserror('Bilhetes não inseridos! Algum dado está incorreto', 16, 1);
+					end catch
+				else if (@Command = 'alterar')
+					begin try
+						begin tran
+							update NBA.Ticket
+							set Price = @Price, Restantes = @Restantes
+							where [Type] = @Type and Game_ID = @Game_ID;
+						commit tran
+					end try
+					begin catch
+						rollback tran
+						raiserror('Bilhetes não alterados! Algum dado está incorreto', 16, 1);
+					end catch
+			end
+	end
 go
