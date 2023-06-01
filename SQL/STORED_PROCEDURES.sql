@@ -174,25 +174,34 @@ create procedure NBA.adicionarAlterarEquipa
     @FoundYear int,
     @CoachCCNumber int,
 	@OwnerCCNumber int,
-	@Command varchar(20)
+	@Command varchar(20),
+	@CoachChanged varchar(3)
 as
 	begin
 		declare @errorsCount as int = 0;
 		declare @nextID as int = (select max(ID)+1 from NBA.Team);
 		
-		if (@Command = 'adicionar')
-			if (@CoachCCNumber is not null and exists (select 1 from NBA.Team where Coach_CCNumber = @CoachCCNumber))
-				begin
-					set @errorsCount = @errorsCount + 1;
-					raiserror('Não foi possível adicionar equipa! O treinador inserido já pertence a outra equipa.', 16, 1);
-				end
+		if ((@OwnerCCNumber is not null and exists (select 1 from NBA.Coach where CCNumber = @OwnerCCNumber)) or (@OwnerCCNumber is not null and exists (select 1 from NBA.Player where CCNumber = @OwnerCCNumber)))
+			begin
+				set @errorsCount = @errorsCount + 1;
+				raiserror('Não foi possível adicionar/alterar equipa! O presidente iserido é um treinaodr/jogador.', 16, 1);
+			end
+
+		if (@CoachChanged = 'Sim')
+			begin
+				if (@CoachCCNumber is not null and exists (select 1 from NBA.Team where Coach_CCNumber = @CoachCCNumber))
+					begin
+						set @errorsCount = @errorsCount + 1;
+						raiserror('Não foi possível adicionar/alterar equipa! O treinador inserido já pertence a outra equipa.', 16, 1);
+					end
+			end
 
 		if (@errorsCount = 0)
 			begin
 				if (@Command = 'adicionar')
 					begin try
 						begin tran
-							insert into NBA.Team values(@nextID, @Name, @City, @Conference, @FoundYear, @OwnerCCNumber, @CoachCCNumber);
+							insert into NBA.Team values(@nextID, @Name, @City, @Conference, @FoundYear, @OwnerCCNumber, @CoachCCNumber, 0);
 						commit tran
 					end try
 					begin catch
@@ -221,8 +230,22 @@ go
 create procedure NBA.apagarEquipa
 	@ID int
 as
-	delete from NBA.Game where Home_Team_ID = @ID or Away_Team_ID= @ID
-	delete from NBA.Team where ID = @ID;
+	begin 
+		if exists(select * from NBA.Game where Home_Team_ID = @ID or Away_Team_ID = @ID)
+			begin
+				begin try
+					begin tran
+						update NBA.Team set disabled = 1 where ID = @ID;
+					commit tran
+				end try
+				begin catch
+					rollback tran
+					raiserror('Erro! Equipa não desativada', 16, 1);
+				end catch
+				
+			end
+		delete from NBA.Game where Home_Team_ID = @ID or Away_Team_ID= @ID
+	end
 go
 
 -- Procedure para adicionar ou alterar jogo

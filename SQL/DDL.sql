@@ -55,6 +55,7 @@ create table NBA.Team (
     Found_Year      int                 not null        check(Found_Year > 0),
     Owner_CCNumber  int,
     Coach_CCNumber  int,
+	disabled		bit					default 0,
 
     primary key (ID),
     unique ([Name])

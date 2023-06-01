@@ -27,6 +27,7 @@ namespace Projeto
         private String guardarTeamID;
         private String guardarTeamID1;
         private String guardarGameID;
+        private String guardarCCNumber;
 
         public Form1()
         {
@@ -1208,7 +1209,7 @@ namespace Projeto
                     cmd.Parameters.Add(new SqlParameter("@CoachCCNumber", coachCCNumber));
                     cmd.Parameters.Add(new SqlParameter("@OwnerCCNumber", ownerCCNumber));
                     cmd.Parameters.Add(new SqlParameter("@Command", "adicionar"));
-                    cmd.Parameters.Add(new SqlParameter("@CCNumbersChanged", "Sim"));
+                    cmd.Parameters.Add(new SqlParameter("@CoachChanged", "Sim"));
 
                     SqlDataReader reader = cmd.ExecuteReader();
                     MessageBox.Show("Equipa adicionada com sucesso!");
@@ -1262,6 +1263,16 @@ namespace Projeto
                     cmd.Parameters.Add(new SqlParameter("@CoachCCNumber", coachCCNumber));
                     cmd.Parameters.Add(new SqlParameter("@OwnerCCNumber", ownerCCNumber));
                     cmd.Parameters.Add(new SqlParameter("@Command", "alterar"));
+                    if (guardarCCNumber == coachCCNumber)
+                    {
+                        Console.WriteLine("oi1");
+                        cmd.Parameters.Add(new SqlParameter("@CoachChanged", "Nao"));
+                    }
+                    else
+                    {
+                        Console.WriteLine("oi2");
+                        cmd.Parameters.Add(new SqlParameter("@CoachChanged", "Sim"));
+                    }
 
                     SqlDataReader reader = cmd.ExecuteReader();
                     MessageBox.Show("Equipa alterada com sucesso!");
@@ -1888,6 +1899,8 @@ namespace Projeto
             button3.Visible = true;
 
             Lista_Equipas.Enabled = false;
+
+            guardarCCNumber = textBox28.Text;
 
             comandoConfirmar = "alterar";
 
