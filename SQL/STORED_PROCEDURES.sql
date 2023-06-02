@@ -336,7 +336,7 @@ as
 	end
 go
 
--- Procedure para apagar equipa
+-- Procedure para apagar jogo
 drop procedure IF EXISTS NBA.apagarJogo;
 go
 create procedure NBA.apagarJogo
