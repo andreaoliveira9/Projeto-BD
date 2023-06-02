@@ -17,7 +17,7 @@ create index searchContractEndDate on NBA.[Contract] ([End_Date]);
 create index searchPersonName on NBA.Person ([Name]);
 
 -- Criação de indexes na tabela NBA.Team
-create index seacrhTeamName on NBA.Team ([Name]);
+create index seacrhTeamName on NBA.Team ([Name]) where disabled = 0;
 
 -- Criação de indexes na tabela NBA.Player
 create index seacrhPlayerTeam on NBA.Player (Team_ID);
