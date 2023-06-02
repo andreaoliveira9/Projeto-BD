@@ -174,6 +174,12 @@ as
 	begin
 		declare @errorsCount as int = 0;
 		declare @nextID as int = (select max(ID)+1 from NBA.Team);
+		declare @nextIDStadium as int = (select max(ID)+1 from NBA.Stadium);
+		declare @s as varchar(7) = 'Stadium';
+		declare @nameStadium as varchar(50) = @Name+ ' ' + @s;
+		declare @nextIDContract as int = (select max(ID)+1 from NBA.[Contract]);
+		declare @c as varchar(8) = 'Contract';
+		declare @descriptionContract as varchar(50) = @Name+ ' ' + @c;
 		
 		if ((@OwnerCCNumber is not null and exists (select 1 from NBA.Coach where CCNumber = @OwnerCCNumber)) or (@OwnerCCNumber is not null and exists (select 1 from NBA.Player where CCNumber = @OwnerCCNumber)))
 			begin
@@ -183,10 +189,10 @@ as
 
 		if (@CoachChanged = 'Sim')
 			begin
-				if (@CoachCCNumber is not null and exists (select 1 from NBA.Team where Coach_CCNumber = @CoachCCNumber))
+				if (@CoachCCNumber is not null and exists (select 1 from NBA.Team where Coach_CCNumber = @CoachCCNumber) or @CoachCCNumber is not null and exists (select 1 from NBA.Person where CCNumber = @CoachCCNumber and Contract_ID is not null))
 					begin
 						set @errorsCount = @errorsCount + 1;
-						raiserror('Não foi possível adicionar/alterar equipa! O treinador inserido já pertence a outra equipa.', 16, 1);
+						raiserror('Não foi possível adicionar/alterar equipa! O treinador inserido já pertence a outra equipa ou já tem contrato.', 16, 1);
 					end
 			end
 
@@ -196,6 +202,9 @@ as
 					begin try
 						begin tran
 							insert into NBA.Team values(@nextID, @Name, @City, @Conference, @FoundYear, @OwnerCCNumber, @CoachCCNumber, 0);
+							insert into NBA.Stadium values(@nextIDStadium, @nameStadium, @City, 20000, @nextID);
+							insert into NBA.[Contract] values(@nextIDContract, @descriptionContract, 5000000, getdate(), dateadd(year, 5, getdate()));
+							update NBA.Person set Contract_ID = @nextIDContract where CCNumber = @CoachCCNumber;
 						commit tran
 					end try
 					begin catch
@@ -206,7 +215,7 @@ as
 					begin try
 						begin tran
 							update NBA.Team
-							set [Name] = @Name, Conference = @Conference, Found_Year = @FoundYear, Owner_CCNumber = @OwnerCCNumber, Coach_CCNumber =@CoachCCNumber 
+							set [Name] = @Name, Conference = @Conference, Found_Year = @FoundYear, Owner_CCNumber = @OwnerCCNumber, Coach_CCNumber = @CoachCCNumber 
 							where ID = @ID;
 						commit tran
 					end try
@@ -225,11 +234,14 @@ create procedure NBA.apagarEquipa
 	@ID int
 as
 	begin 
+		declare @coachCCNumber as int = (select Coach_CCNumber from NBA.Team where ID = @ID);
+
 		if exists(select * from NBA.Game where Home_Team_ID = @ID or Away_Team_ID = @ID)
 			begin
 				begin try
 					begin tran
 						update NBA.Team set disabled = 1 where ID = @ID;
+						update NBA.Person set Contract_ID = null where CCNumber = @coachCCNumber;
 					commit tran
 				end try
 				begin catch
@@ -238,7 +250,19 @@ as
 				end catch
 				
 			end
-		delete from NBA.Game where Home_Team_ID = @ID or Away_Team_ID= @ID
+		else
+			begin
+				begin try
+					begin tran
+						delete from NBA.Team where ID = @ID;
+						update NBA.Person set Contract_ID = null where CCNumber = @coachCCNumber;
+					commit tran
+				end try
+				begin catch
+					rollback tran
+					raiserror('Erro! Equipa não apagada', 16, 1);
+				end catch
+			end
 	end
 go
 

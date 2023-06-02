@@ -104,18 +104,18 @@ namespace Projeto
 
         private void InitializeFiltroEquipa_JogadoresComboBox()
         {
+            FiltroEquipa_Jogadores.Items.Clear();
             FiltroEquipa_Jogadores.DropDownStyle = ComboBoxStyle.DropDownList;
             FiltroEquipa_Jogadores.Items.Add("");
-            FiltroEquipa_Jogadores.Items.Add("Los Angeles Lakers");
-            FiltroEquipa_Jogadores.Items.Add("Boston Celtics");
-            FiltroEquipa_Jogadores.Items.Add("Golden State Warriors");
-            FiltroEquipa_Jogadores.Items.Add("New York Knicks");
-            FiltroEquipa_Jogadores.Items.Add("Chicago Bulls");
-            FiltroEquipa_Jogadores.Items.Add("Miami Heat");
-            FiltroEquipa_Jogadores.Items.Add("Dallas Mavericks");
-            FiltroEquipa_Jogadores.Items.Add("San Antonio Spurs");
-            FiltroEquipa_Jogadores.Items.Add("Houston Rockets");
-            FiltroEquipa_Jogadores.Items.Add("Portland Trail Blazers");
+
+            SqlCommand cmd = new SqlCommand("select [Name] from NBA.Team", cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                FiltroEquipa_Jogadores.Items.Add(reader["Name"].ToString());
+            }
+
+            reader.Close();
 
             this.FiltroEquipa_Jogadores.SelectedIndexChanged +=
                 new System.EventHandler(FiltroEquipa_JogadoresComboBox_SelectedIndexChanged_1);
@@ -200,18 +200,18 @@ namespace Projeto
 
         private void InitializeComboBox5()
         {
+            comboBox5.Items.Clear();
             comboBox5.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox5.Items.Add("");
-            comboBox5.Items.Add("Los Angeles Lakers");
-            comboBox5.Items.Add("Boston Celtics");
-            comboBox5.Items.Add("Golden State Warriors");
-            comboBox5.Items.Add("New York Knicks");
-            comboBox5.Items.Add("Chicago Bulls");
-            comboBox5.Items.Add("Miami Heat");
-            comboBox5.Items.Add("Dallas Mavericks");
-            comboBox5.Items.Add("San Antonio Spurs");
-            comboBox5.Items.Add("Houston Rockets");
-            comboBox5.Items.Add("Portland Trail Blazers");
+
+            SqlCommand cmd = new SqlCommand("select [Name] from NBA.Team", cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                comboBox5.Items.Add(reader["Name"].ToString());
+            }
+
+            reader.Close();
 
             this.comboBox5.SelectedIndexChanged +=
                 new System.EventHandler(comboBox5_SelectedIndexChanged_1);
@@ -231,18 +231,18 @@ namespace Projeto
 
         private void InitializeComboBox3()
         {
+            comboBox3.Items.Clear();
             comboBox3.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox3.Items.Add("");
-            comboBox3.Items.Add("Los Angeles Lakers");
-            comboBox3.Items.Add("Boston Celtics");
-            comboBox3.Items.Add("Golden State Warriors");
-            comboBox3.Items.Add("New York Knicks");
-            comboBox3.Items.Add("Chicago Bulls");
-            comboBox3.Items.Add("Miami Heat");
-            comboBox3.Items.Add("Dallas Mavericks");
-            comboBox3.Items.Add("San Antonio Spurs");
-            comboBox3.Items.Add("Houston Rockets");
-            comboBox3.Items.Add("Portland Trail Blazers");
+
+            SqlCommand cmd = new SqlCommand("select [Name] from NBA.Team", cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                comboBox3.Items.Add(reader["Name"].ToString());
+            }
+
+            reader.Close();
 
             this.comboBox3.SelectedIndexChanged +=
                 new System.EventHandler(comboBox3_SelectedIndexChanged_1);
@@ -303,6 +303,7 @@ namespace Projeto
 
         private void InitializeTabela_Classificativa()
         {
+            richTextBox1.Text = "";
             SqlCommand cmd = new SqlCommand("select * from NBA.GetTeamStandings() order by [Win%] desc", cn);
             SqlDataReader reader = cmd.ExecuteReader();
             totalItems = 0;
@@ -1154,7 +1155,8 @@ namespace Projeto
                     MessageBox.Show("Treinador adicionado com sucesso!");
                     reader.Close();
                     clear("treinadores", "limpar");
-                    resetTreinadores();
+                    updateListaTreinadores();
+                    updateListaEquipas();
                     Lista_Treinadores.Enabled = true;
                 }
                 catch
@@ -1173,7 +1175,8 @@ namespace Projeto
                     MessageBox.Show("Treinador apagado com sucesso!");
                     reader.Close();
                     clear("treinadores", "limpar");
-                    resetTreinadores();
+                    updateListaTreinadores();
+                    updateListaEquipas();
                     Lista_Treinadores.Enabled = true;
                 }
                 catch
@@ -1205,7 +1208,8 @@ namespace Projeto
                     MessageBox.Show("Treinador alterado com sucesso!");
                     reader.Close();
                     clear("treinadores", "limpar");
-                    resetTreinadores();
+                    updateListaTreinadores();
+                    updateListaEquipas();
                     Lista_Treinadores.Enabled = true;
                 }
                 catch
@@ -1246,6 +1250,12 @@ namespace Projeto
                     clear("equipas", "limpar");
                     resetEquipas();
                     Lista_Equipas.Enabled = true;
+                    InitializeFiltroEquipa_JogadoresComboBox();
+                    InitializeComboBox5();
+                    InitializeComboBox3();
+                    updateListaJogos();
+                    updateListaTreinadores();
+                    InitializeTabela_Classificativa();
                 }
                 catch
                 {
@@ -1265,6 +1275,12 @@ namespace Projeto
                     clear("equipas", "limpar");
                     resetEquipas();
                     Lista_Equipas.Enabled = true;
+                    InitializeFiltroEquipa_JogadoresComboBox();
+                    InitializeComboBox5();
+                    InitializeComboBox3();
+                    InitializeTabela_Classificativa();
+                    updateListaJogos();
+                    updateListaTreinadores();
                 }
                 catch
                 {
@@ -1309,6 +1325,12 @@ namespace Projeto
                     clear("equipas", "limpar");
                     resetEquipas();
                     Lista_Equipas.Enabled = true;
+                    InitializeFiltroEquipa_JogadoresComboBox();
+                    InitializeComboBox5();
+                    InitializeComboBox3();
+                    updateListaJogos();
+                    updateListaTreinadores();
+                    InitializeTabela_Classificativa();
                 }
                 catch
                 {
@@ -1918,6 +1940,37 @@ namespace Projeto
             }
         }
 
+        // Botão publicar bilhetes
+        private void button28_Click(object sender, EventArgs e)
+        {
+            button29.Visible = true;
+            button30.Visible = true;
+            Bilhetes_Jogo.Visible = false;
+            label65.Visible = true;
+            label66.Visible = true;
+            label67.Visible = true;
+
+            textBox31.Visible = true;
+            textBox32.Visible = true;
+            textBox33.Visible = true;
+            textBox34.Visible = true;
+            textBox35.Visible = true;
+            textBox36.Visible = true;
+
+            textBox31.Enabled = true;
+            textBox32.Enabled = true;
+            textBox33.Enabled = true;
+            textBox34.Enabled = true;
+            textBox35.Enabled = true;
+            textBox36.Enabled = true;
+
+            textBox31.BackColor = Color.White;
+            textBox32.BackColor = Color.White;
+            textBox33.BackColor = Color.White;
+            textBox34.BackColor = Color.White;
+            textBox35.BackColor = Color.White;
+            textBox36.BackColor = Color.White;
+        }
 
         // Botão Alterar Jogadores
         private void button10_Click(object sender, EventArgs e)
@@ -2120,6 +2173,38 @@ namespace Projeto
             clear("jogos", "alterar");
         }
 
+        // Botão alterar bilhetes
+        private void button31_Click(object sender, EventArgs e)
+        {
+            button29.Visible = true;
+            button30.Visible = true;
+            Bilhetes_Jogo.Visible = false;
+            label65.Visible = true;
+            label66.Visible = true;
+            label67.Visible = true;
+
+            textBox31.Visible = true;
+            textBox32.Visible = true;
+            textBox33.Visible = true;
+            textBox34.Visible = true;
+            textBox35.Visible = true;
+            textBox36.Visible = true;
+
+            textBox31.Enabled = false;
+            textBox32.Enabled = true;
+            textBox33.Enabled = true;
+            textBox34.Enabled = false;
+            textBox35.Enabled = true;
+            textBox36.Enabled = true;
+
+            textBox31.BackColor = Color.LightSteelBlue;
+            textBox32.BackColor = Color.White;
+            textBox33.BackColor = Color.White;
+            textBox34.BackColor = Color.LightSteelBlue;
+            textBox35.BackColor = Color.White;
+            textBox36.BackColor = Color.White;
+        }
+
         // Botão Apagar Jogadores
         private void button9_Click(object sender, EventArgs e)
         {
@@ -2210,6 +2295,18 @@ namespace Projeto
 
             resetJogos();
             clear("jogos", "cancelar");
+        }
+
+        // Botão cancelar bilhetes
+        private void button30_Click(object sender, EventArgs e)
+        {
+            button29.Visible = false;
+            button30.Visible = false;
+
+            Lista_Jogos.Enabled = true;
+
+            resetJogos();
+            clear("jogos", "bilhetes");
         }
 
         private void resetJogadores()
@@ -2563,84 +2660,6 @@ namespace Projeto
                     updateListaJogos();
                 }
             }
-        }
-
-        // Botão alterar bilhetes
-        private void button31_Click(object sender, EventArgs e)
-        {
-            button29.Visible = true;
-            button30.Visible = true;
-            Bilhetes_Jogo.Visible = false;
-            label65.Visible = true;
-            label66.Visible = true;
-            label67.Visible = true;
-
-            textBox31.Visible = true;
-            textBox32.Visible = true;
-            textBox33.Visible = true;
-            textBox34.Visible = true;
-            textBox35.Visible = true;
-            textBox36.Visible = true;
-
-            textBox31.Enabled = false;
-            textBox32.Enabled = true;
-            textBox33.Enabled = true;
-            textBox34.Enabled = false;
-            textBox35.Enabled = true;
-            textBox36.Enabled = true;
-
-            textBox31.BackColor = Color.LightSteelBlue;
-            textBox32.BackColor = Color.White;
-            textBox33.BackColor = Color.White;
-            textBox34.BackColor = Color.LightSteelBlue;
-            textBox35.BackColor = Color.White;
-            textBox36.BackColor = Color.White;
-        }
-
-        // Botão publicar bilhetes
-        private void button28_Click(object sender, EventArgs e)
-        {
-            button29.Visible = true;
-            button30.Visible = true;
-            Bilhetes_Jogo.Visible = false;
-            label65.Visible = true;
-            label66.Visible = true;
-            label67.Visible = true;
-
-            textBox31.Visible = true;
-            textBox32.Visible = true;
-            textBox33.Visible = true;
-            textBox34.Visible = true;
-            textBox35.Visible = true;
-            textBox36.Visible = true;
-
-            textBox31.Enabled = true;
-            textBox32.Enabled = true;
-            textBox33.Enabled = true;
-            textBox34.Enabled = true;
-            textBox35.Enabled = true;
-            textBox36.Enabled = true;
-
-            textBox31.BackColor = Color.White;
-            textBox32.BackColor = Color.White;
-            textBox33.BackColor = Color.White;
-            textBox34.BackColor = Color.White;
-            textBox35.BackColor = Color.White;
-            textBox36.BackColor = Color.White;
-        }
-
-        
-
-        // Botão cancelar bilhetes
-        private void button30_Click(object sender, EventArgs e)
-        {
-            button29.Visible = false;
-            button30.Visible = false;
-
-            Lista_Jogos.Enabled = true;
-
-            resetJogos();
-            clear("jogos", "bilhetes");
         }
 
         private void button1_Click(object sender, EventArgs e)
